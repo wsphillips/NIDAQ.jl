@@ -44,7 +44,7 @@ export counter_input_channels, counter_output_channels
 
 export RSE, NRSE, Differential, PseudoDifferential
 
-const nidaqmx = ":libnidaqmx"
+const nidaqmx = :libnidaqmx
 const SafeCstring = Ref{UInt8}
 
 primitive type Bool32<:Integer 32 end
