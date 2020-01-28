@@ -1,7 +1,7 @@
-# Automatically generated using Clang.jl wrap_c
+# Automatically generated using Clang.jl
 
 
-#const CVICALLBACK = CVICDECL
+# const CVICALLBACK = CVICDECL
 const TRUE = Int32(1)
 const FALSE = Int32(0)
 const NULL = Int32(0)
@@ -206,6 +206,11 @@ const DAQmx_AI_LossyLSBRemoval_CompressedSampSize = 0x22d9
 const DAQmx_AI_DevScalingCoeff = 0x1930
 const DAQmx_AI_EnhancedAliasRejectionEnable = 0x2294
 const DAQmx_AI_OpenChanDetectEnable = Float32(0x030f)
+const DAQmx_AI_InputLimitsFaultDetect_UpperLimit = 0x318c
+const DAQmx_AI_InputLimitsFaultDetect_LowerLimit = 0x318d
+const DAQmx_AI_InputLimitsFaultDetectEnable = 0x318e
+const DAQmx_AI_PowerSupplyFaultDetectEnable = 0x3191
+const DAQmx_AI_OvercurrentDetectEnable = 0x3194
 const DAQmx_AO_Max = 0x1186
 const DAQmx_AO_Min = 0x1187
 const DAQmx_AO_CustomScaleName = 0x1188
@@ -780,8 +785,12 @@ const DAQmx_Read_OpenThrmcplChansExist = 0x2a96
 const DAQmx_Read_OpenThrmcplChans = 0x2a97
 const DAQmx_Read_OverloadedChansExist = 0x2174
 const DAQmx_Read_OverloadedChans = 0x2175
+const DAQmx_Read_InputLimitsFaultChansExist = Float32(0x0318)
+const DAQmx_Read_InputLimitsFaultChans = 0x3190
 const DAQmx_Read_PLL_UnlockedChansExist = 0x3118
 const DAQmx_Read_PLL_UnlockedChans = 0x3119
+const DAQmx_Read_PowerSupplyFaultChansExist = 0x3192
+const DAQmx_Read_PowerSupplyFaultChans = 0x3193
 const DAQmx_Read_Sync_UnlockedChansExist = 0x313d
 const DAQmx_Read_Sync_UnlockedChans = 0x313e
 const DAQmx_Read_AccessoryInsertionOrRemovalDetected = 0x2f70
@@ -917,6 +926,7 @@ const DAQmx_FirstSampTimestamp_Timescale = 0x313b
 const DAQmx_FirstSampTimestamp_Val = 0x313a
 const DAQmx_FirstSampClk_When = 0x3182
 const DAQmx_FirstSampClk_Timescale = 0x3183
+const DAQmx_FirstSampClk_Offset = 0x31aa
 const DAQmx_StartTrig_Type = 0x1393
 const DAQmx_StartTrig_Term = 0x2f1e
 const DAQmx_DigEdge_StartTrig_Src = 0x1407
@@ -1767,6 +1777,13 @@ const DAQmxSuccess = 0
 
 # Skipping MacroDefinition: DAQmxFailed ( error ) ( ( error ) < 0 )
 
+const DAQmxErrorInvalidTargetTaskForDebugSession = -209877
+const DAQmxErrorFunctionNotSupportedForDevice = -209876
+const DAQmxErrorMultipleTargetTasksFoundForDebugSession = -209875
+const DAQmxErrorTargetTaskNotFoundForDebugSession = -209874
+const DAQmxErrorOperationNotSupportedInDebugSession = -209873
+const DAQmxErrorOperationNotPermittedInMonitorModeForDebugSession = -209872
+const DAQmxErrorGetActiveDevPrptyFailedDueToDifftVals = -209871
 const DAQmxErrorTaskAlreadyRegisteredATimingSource = -209870
 const DAQmxErrorFilterNotSupportedOnHWRev = -209869
 const DAQmxErrorSensorPowerSupplyVoltageLevel = -209868
@@ -3631,10 +3648,9 @@ const int64 = Clonglong
 const uInt64 = Culonglong
 
 struct CVIAbsoluteTime
-    u32Data::NTuple{4, uInt32}
+    cviTime::CVITime
 end
 
-#const bool32 = uInt32
 const bool32 = Bool32
 const TaskHandle = Ptr{Cvoid}
 const CalHandle = uInt32

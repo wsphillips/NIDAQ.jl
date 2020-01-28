@@ -1,8 +1,7 @@
 /*============================================================================*/
 /*                 National Instruments / Data Acquisition                    */
 /*----------------------------------------------------------------------------*/
-/*    Copyright (c) National Instruments 2003-2018.  All Rights Reserved.
- *    */
+/*    Copyright (c) National Instruments 2003-2019.  All Rights Reserved.     */
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /* Title:       NIDAQmx.h                                                     */
@@ -17,7 +16,7 @@
 	extern "C" {
 #endif
 
-#if defined(__linux__) || defined(__APPLE__) || defined(_WIN64)
+#if defined(__linux__) || defined(__APPLE__)
 #define __CFUNC
 #define __CFUNC_C
 #define __CFUNCPTRVAR
@@ -80,7 +79,7 @@
 #endif
 #ifndef _NI_int64_DEFINED_
 #define _NI_int64_DEFINED_
-#if defined(__linux__) || defined(__APPLE__) || defined(_WIN64)
+#if defined(__linux__) || defined(__APPLE__)
 	typedef long long int      int64;
 #else
 	typedef __int64            int64;
@@ -88,7 +87,7 @@
 #endif
 #ifndef _NI_uInt64_DEFINED_
 #define _NI_uInt64_DEFINED_
-#if defined(__linux__) || defined(__APPLE__) || defined(_WIN64)
+#if defined(__linux__) || defined(__APPLE__)
 	typedef unsigned long long uInt64;
 #else
 	typedef unsigned __int64   uInt64;
@@ -338,6 +337,11 @@ typedef uInt32             CalHandle;
 #define DAQmx_AI_DevScalingCoeff                                         0x1930 // Indicates the coefficients of a polynomial equation that NI-DAQmx uses to scale values from the native format of the device to volts. Each element of the array corresponds to a term of the equation. For example, if index two of the array is 4, the third term of the equation is 4x^2. Scaling coefficients do not account for any custom scales or sensors contained by the channel.
 #define DAQmx_AI_EnhancedAliasRejectionEnable                            0x2294 // Specifies whether to enable enhanced alias rejection. Leave this property set to the default value for most applications.
 #define DAQmx_AI_OpenChanDetectEnable                                    0x30FF // Specifies whether to enable open channel detection.
+#define DAQmx_AI_InputLimitsFaultDetect_UpperLimit                       0x318C // Specifies the level of the upper limit for input limits detection. An input sample outside the upper and lower bounds causes a fault. Note: Fault detection applies to both positive and negative inputs. For instance, if you specify a lower limit of 2 mA and an upper limit of 12 mA, NI-DAQmx detects a fault at 15 mA and -15 mA, but not at -6 mA because it is in the range of -12 mA to -2 mA.
+#define DAQmx_AI_InputLimitsFaultDetect_LowerLimit                       0x318D // Specifies the level of the lower limit for input limits detection. An input sample outside the upper and lower bounds causes a fault. Note: Fault detection applies to both positive and negative inputs. For instance, if you specify a lower limit of 2 mA and an upper limit of 12 mA, NI-DAQmx detects a fault at 15 mA and -15 mA, but not at -6 mA because it is in the range of -12 mA to -2 mA.
+#define DAQmx_AI_InputLimitsFaultDetectEnable                            0x318E // Specifies whether to enable input limits fault detection.
+#define DAQmx_AI_PowerSupplyFaultDetectEnable                            0x3191 // Specifies whether to enable power supply fault detection.
+#define DAQmx_AI_OvercurrentDetectEnable                                 0x3194 // Specifies whether to enable overcurrent detection.
 #define DAQmx_AO_Max                                                     0x1186 // Specifies the maximum value you expect to generate. The value is in the units you specify with a units property. If you try to write a value larger than the maximum value, NI-DAQmx generates an error. NI-DAQmx might coerce this value to a smaller value if other task settings restrict the device from generating the desired maximum.
 #define DAQmx_AO_Min                                                     0x1187 // Specifies the minimum value you expect to generate. The value is in the units you specify with a units property. If you try to write a value smaller than the minimum value, NI-DAQmx generates an error. NI-DAQmx might coerce this value to a larger value if other task settings restrict the device from generating the desired minimum.
 #define DAQmx_AO_CustomScaleName                                         0x1188 // Specifies the name of a custom scale for the channel.
@@ -926,8 +930,12 @@ typedef uInt32             CalHandle;
 #define DAQmx_Read_OpenThrmcplChans                                      0x2A97 // Indicates a list of names of any virtual channels in the task for which the device(s) detected an open thermcouple. You must read Open Thermocouple Channels Exist before you read this property. Otherwise, you will receive an error.
 #define DAQmx_Read_OverloadedChansExist                                  0x2174 // Indicates if the device(s) detected an overload in any virtual channel in the task. Reading this property clears the overload status for all channels in the task. You must read this property before you read Overloaded Channels. Otherwise, you will receive an error.
 #define DAQmx_Read_OverloadedChans                                       0x2175 // Indicates a list of names of any overloaded virtual channels in the task. You must read Overloaded Channels Exist before you read this property. Otherwise, you will receive an error.
+#define DAQmx_Read_InputLimitsFaultChansExist                            0x318F // Indicates if the device or devices detected a sample that was outside the upper or lower limits configured for each channel in the task. Reading this property clears the input limits fault channel status for all channels in the task. You must read this property before you read Input Limits Fault Channels. Otherwise, you will receive an error. Note: Fault detection applies to both positive and negative inputs. For ...
+#define DAQmx_Read_InputLimitsFaultChans                                 0x3190 // Indicates the virtual channels that have detected samples outside the upper or lower limits configured for each channel in the task. You must read Input Limits Fault Channels Exist before you read this property. Otherwise, you will receive an error.
 #define DAQmx_Read_PLL_UnlockedChansExist                                0x3118 // Indicates whether the PLL is currently locked, or whether it became unlocked during the previous acquisition. Devices may report PLL Unlock either during acquisition or after acquisition.
 #define DAQmx_Read_PLL_UnlockedChans                                     0x3119 // Indicates the channels that had their PLLs unlock.
+#define DAQmx_Read_PowerSupplyFaultChansExist                            0x3192 // Indicates if the device or devices detected a power supply fault condition in any virtual channel in the task. Reading this property clears the power supply fault status for all channels in this task. You must read this property before you read Power Supply Fault Channels. Otherwise, you will receive an error.
+#define DAQmx_Read_PowerSupplyFaultChans                                 0x3193 // Indicates the virtual channels that have detected a power supply fault. You must read Power Supply Fault Channels Exist before you read this property. Otherwise, you will receive an error.
 #define DAQmx_Read_Sync_UnlockedChansExist                               0x313D // Indicates whether the target is currently locked to the grand master. Devices may report PLL Unlock either during acquisition or after acquisition.
 #define DAQmx_Read_Sync_UnlockedChans                                    0x313E // Indicates the channels from devices in an unlocked target.
 #define DAQmx_Read_AccessoryInsertionOrRemovalDetected                   0x2F70 // Indicates if any device(s) in the task detected the insertion or removal of an accessory since the task started. Reading this property clears the accessory change status for all channels in the task. You must read this property before you read Devices with Inserted or Removed Accessories. Otherwise, you will receive an error.
@@ -1079,6 +1087,7 @@ typedef uInt32             CalHandle;
 #define DAQmx_FirstSampTimestamp_Val                                     0x313A // Indicates the timestamp of the first sample.
 #define DAQmx_FirstSampClk_When                                          0x3182 // Specifies the time of the first sample clock pulse.
 #define DAQmx_FirstSampClk_Timescale                                     0x3183 // Specifies the timescale to be used for the value of When.
+#define DAQmx_FirstSampClk_Offset                                        0x31AA // Specifies, in seconds, the offset to apply to the When value. This offset modifies when the first sample clock occurs and is used to account for known delays in the signal path.
 
 //********** Trigger Attributes **********
 #define DAQmx_StartTrig_Type                                             0x1393 // Specifies the type of trigger to use to start a task.
@@ -3346,8 +3355,13 @@ int32 __CFUNC     DAQmxGetPossibleSCExpressCalAccConnections   (const char devic
 int32 __CFUNC     DAQmxSetSCExpressCalAccBridgeOutput          (CalHandle calHandle, float64 voltsPerVolt);
 
 int32 __CFUNC     DAQmxFieldDAQSetCalTemp         (CalHandle calHandle, float64 temperature);
+int32 __CFUNC     DAQmxGet11601CalAdjustPoints    (CalHandle calHandle, float64 *adjustmentPoints, uInt32 bufferSize);
+int32 __CFUNC     DAQmxAdjust11601Cal             (CalHandle calHandle, const char channelNames[], float64 value);
 int32 __CFUNC     DAQmxGet11603CalAdjustPoints    (CalHandle calHandle, float64 *adjustmentPoints, uInt32 bufferSize);
 int32 __CFUNC     DAQmxAdjust11603Cal             (CalHandle calHandle, const char channelNames[], float64 value);
+int32 __CFUNC     DAQmxSetup11605Cal              (CalHandle calHandle, float64 rangeMin, float64 rangeMax);
+int32 __CFUNC     DAQmxGet11605CalAdjustPoints    (CalHandle calHandle, float64 *adjustmentPoints, uInt32 bufferSize);
+int32 __CFUNC     DAQmxAdjust11605Cal             (CalHandle calHandle, const char channelNames[], float64 value);
 int32 __CFUNC     DAQmxGet11613CalAdjustPoints    (CalHandle calHandle, float64 *adjustmentPoints, uInt32 bufferSize);
 int32 __CFUNC     DAQmxAdjust11613Cal             (CalHandle calHandle, const char channelNames[], float64 value);
 int32 __CFUNC     DAQmxGet11614CalAdjustPoints    (CalHandle calHandle, float64 *adjustmentPoints, uInt32 bufferSize);
@@ -3444,9 +3458,16 @@ int32 __CFUNC     DAQmxGet9250CalAdjustPoints(CalHandle calHandle, float64* adju
 int32 __CFUNC     DAQmxAdjust9250Cal(CalHandle calHandle, const char channelNames[], float64 value);
 int32 __CFUNC     DAQmxGet9251CalAdjustPoints(CalHandle calHandle, float64* adjustmentPoints, uInt32 bufferSize);
 int32 __CFUNC     DAQmxAdjust9251Cal(CalHandle calHandle, const char channelNames[], float64 value);
+int32 __CFUNC     DAQmxGet9252CalAdjustPoints(CalHandle calHandle, float64* adjustmentPoints, uInt32 bufferSize);
+int32 __CFUNC     DAQmxAdjust9252Cal(CalHandle calHandle, const char channelNames[], float64 value);
+int32 __CFUNC     DAQmxGet9253CalAdjustPoints(CalHandle calHandle, float64* adjustmentPoints, uInt32 bufferSize);
+int32 __CFUNC     DAQmxAdjust9253Cal(CalHandle calHandle, const char channelNames[], float64 value);
 int32 __CFUNC     DAQmxGet9260CalAdjustPoints(CalHandle calHandle, int32* adjustmentPoints, uInt32 bufferSize);
 int32 __CFUNC     DAQmxSetup9260Cal(CalHandle calHandle, const char channelNames[], int32 value);
 int32 __CFUNC     DAQmxAdjust9260Cal(CalHandle calHandle, const char channelNames[], float64 value);
+int32 __CFUNC     DAQmxGet9262CalAdjustPoints(CalHandle calHandle, int32* adjustmentPoints, uInt32 bufferSize);
+int32 __CFUNC     DAQmxSetup9262Cal(CalHandle calHandle, const char channelNames[], int32 value);
+int32 __CFUNC     DAQmxAdjust9262Cal(CalHandle calHandle, const char channelNames[], float64 value);
 int32 __CFUNC     DAQmxGet9263CalAdjustPoints(CalHandle calHandle, int32* adjustmentPoints, uInt32 bufferSize);
 int32 __CFUNC     DAQmxSetup9263Cal(CalHandle calHandle, const char channelNames[], int32 value);
 int32 __CFUNC     DAQmxAdjust9263Cal(CalHandle calHandle, const char channelNames[], float64 value);
@@ -4431,6 +4452,26 @@ int32 __CFUNC DAQmxResetAIEnhancedAliasRejectionEnable(TaskHandle taskHandle, co
 int32 __CFUNC DAQmxGetAIOpenChanDetectEnable(TaskHandle taskHandle, const char channel[], bool32 *data);
 int32 __CFUNC DAQmxSetAIOpenChanDetectEnable(TaskHandle taskHandle, const char channel[], bool32 data);
 int32 __CFUNC DAQmxResetAIOpenChanDetectEnable(TaskHandle taskHandle, const char channel[]);
+//*** Set/Get functions for DAQmx_AI_InputLimitsFaultDetect_UpperLimit ***
+int32 __CFUNC DAQmxGetAIInputLimitsFaultDetectUpperLimit(TaskHandle taskHandle, const char channel[], float64 *data);
+int32 __CFUNC DAQmxSetAIInputLimitsFaultDetectUpperLimit(TaskHandle taskHandle, const char channel[], float64 data);
+int32 __CFUNC DAQmxResetAIInputLimitsFaultDetectUpperLimit(TaskHandle taskHandle, const char channel[]);
+//*** Set/Get functions for DAQmx_AI_InputLimitsFaultDetect_LowerLimit ***
+int32 __CFUNC DAQmxGetAIInputLimitsFaultDetectLowerLimit(TaskHandle taskHandle, const char channel[], float64 *data);
+int32 __CFUNC DAQmxSetAIInputLimitsFaultDetectLowerLimit(TaskHandle taskHandle, const char channel[], float64 data);
+int32 __CFUNC DAQmxResetAIInputLimitsFaultDetectLowerLimit(TaskHandle taskHandle, const char channel[]);
+//*** Set/Get functions for DAQmx_AI_InputLimitsFaultDetectEnable ***
+int32 __CFUNC DAQmxGetAIInputLimitsFaultDetectEnable(TaskHandle taskHandle, const char channel[], bool32 *data);
+int32 __CFUNC DAQmxSetAIInputLimitsFaultDetectEnable(TaskHandle taskHandle, const char channel[], bool32 data);
+int32 __CFUNC DAQmxResetAIInputLimitsFaultDetectEnable(TaskHandle taskHandle, const char channel[]);
+//*** Set/Get functions for DAQmx_AI_PowerSupplyFaultDetectEnable ***
+int32 __CFUNC DAQmxGetAIPowerSupplyFaultDetectEnable(TaskHandle taskHandle, const char channel[], bool32 *data);
+int32 __CFUNC DAQmxSetAIPowerSupplyFaultDetectEnable(TaskHandle taskHandle, const char channel[], bool32 data);
+int32 __CFUNC DAQmxResetAIPowerSupplyFaultDetectEnable(TaskHandle taskHandle, const char channel[]);
+//*** Set/Get functions for DAQmx_AI_OvercurrentDetectEnable ***
+int32 __CFUNC DAQmxGetAIOvercurrentDetectEnable(TaskHandle taskHandle, const char channel[], bool32 *data);
+int32 __CFUNC DAQmxSetAIOvercurrentDetectEnable(TaskHandle taskHandle, const char channel[], bool32 data);
+int32 __CFUNC DAQmxResetAIOvercurrentDetectEnable(TaskHandle taskHandle, const char channel[]);
 //*** Set/Get functions for DAQmx_AO_Max ***
 int32 __CFUNC DAQmxGetAOMax(TaskHandle taskHandle, const char channel[], float64 *data);
 int32 __CFUNC DAQmxSetAOMax(TaskHandle taskHandle, const char channel[], float64 data);
@@ -6556,10 +6597,18 @@ int32 __CFUNC DAQmxGetReadOpenThrmcplChans(TaskHandle taskHandle, char *data, uI
 int32 __CFUNC DAQmxGetReadOverloadedChansExist(TaskHandle taskHandle, bool32 *data);
 //*** Set/Get functions for DAQmx_Read_OverloadedChans ***
 int32 __CFUNC DAQmxGetReadOverloadedChans(TaskHandle taskHandle, char *data, uInt32 bufferSize);
+//*** Set/Get functions for DAQmx_Read_InputLimitsFaultChansExist ***
+int32 __CFUNC DAQmxGetReadInputLimitsFaultChansExist(TaskHandle taskHandle, bool32 *data);
+//*** Set/Get functions for DAQmx_Read_InputLimitsFaultChans ***
+int32 __CFUNC DAQmxGetReadInputLimitsFaultChans(TaskHandle taskHandle, char *data, uInt32 bufferSize);
 //*** Set/Get functions for DAQmx_Read_PLL_UnlockedChansExist ***
 int32 __CFUNC DAQmxGetReadPLLUnlockedChansExist(TaskHandle taskHandle, bool32 *data);
 //*** Set/Get functions for DAQmx_Read_PLL_UnlockedChans ***
 int32 __CFUNC DAQmxGetReadPLLUnlockedChans(TaskHandle taskHandle, char *data, uInt32 bufferSize);
+//*** Set/Get functions for DAQmx_Read_PowerSupplyFaultChansExist ***
+int32 __CFUNC DAQmxGetReadPowerSupplyFaultChansExist(TaskHandle taskHandle, bool32 *data);
+//*** Set/Get functions for DAQmx_Read_PowerSupplyFaultChans ***
+int32 __CFUNC DAQmxGetReadPowerSupplyFaultChans(TaskHandle taskHandle, char *data, uInt32 bufferSize);
 //*** Set/Get functions for DAQmx_Read_Sync_UnlockedChansExist ***
 int32 __CFUNC DAQmxGetReadSyncUnlockedChansExist(TaskHandle taskHandle, bool32 *data);
 //*** Set/Get functions for DAQmx_Read_Sync_UnlockedChans ***
@@ -7053,6 +7102,10 @@ int32 __CFUNC DAQmxResetFirstSampClkWhen(TaskHandle taskHandle);
 int32 __CFUNC DAQmxGetFirstSampClkTimescale(TaskHandle taskHandle, int32 *data);
 int32 __CFUNC DAQmxSetFirstSampClkTimescale(TaskHandle taskHandle, int32 data);
 int32 __CFUNC DAQmxResetFirstSampClkTimescale(TaskHandle taskHandle);
+//*** Set/Get functions for DAQmx_FirstSampClk_Offset ***
+int32 __CFUNC DAQmxGetFirstSampClkOffset(TaskHandle taskHandle, float64 *data);
+int32 __CFUNC DAQmxSetFirstSampClkOffset(TaskHandle taskHandle, float64 data);
+int32 __CFUNC DAQmxResetFirstSampClkOffset(TaskHandle taskHandle);
 
 //********** Trigger **********
 //*** Set/Get functions for DAQmx_StartTrig_Type ***
@@ -7808,6 +7861,13 @@ int32 __CFUNC DAQmxResetSampClkTimingResponseMode(TaskHandle taskHandle);
 #define DAQmxFailed(error)                            ((error)<0)
 
 // Error and Warning Codes
+#define DAQmxErrorInvalidTargetTaskForDebugSession                                      (-209877)
+#define DAQmxErrorFunctionNotSupportedForDevice                                         (-209876)
+#define DAQmxErrorMultipleTargetTasksFoundForDebugSession                               (-209875)
+#define DAQmxErrorTargetTaskNotFoundForDebugSession                                     (-209874)
+#define DAQmxErrorOperationNotSupportedInDebugSession                                   (-209873)
+#define DAQmxErrorOperationNotPermittedInMonitorModeForDebugSession                     (-209872)
+#define DAQmxErrorGetActiveDevPrptyFailedDueToDifftVals                                 (-209871)
 #define DAQmxErrorTaskAlreadyRegisteredATimingSource                                    (-209870)
 #define DAQmxErrorFilterNotSupportedOnHWRev                                             (-209869)
 #define DAQmxErrorSensorPowerSupplyVoltageLevel                                         (-209868)

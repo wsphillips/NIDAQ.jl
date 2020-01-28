@@ -44,7 +44,7 @@ export counter_input_channels, counter_output_channels
 
 export RSE, NRSE, Differential, PseudoDifferential
 
-const NIDAQmx = "C:\\Windows\\System32\\nicaiu.dll"
+const nidaqmx = ":libnidaqmx"
 const SafeCstring = Ref{UInt8}
 
 primitive type Bool32<:Integer 32 end
@@ -54,11 +54,11 @@ try
   global ver
   global major, minor, update  # bug in Julia v0.5 on windows?
   major = Ref{UInt32}(0)
-  ccall((:DAQmxGetSysNIDAQMajorVersion,NIDAQmx),Int32,(Ref{UInt32},),major)
+  ccall((:DAQmxGetSysNIDAQMajorVersion,nidaqmx),Int32,(Ref{UInt32},),major)
   minor = Ref{UInt32}(0)
-  ccall((:DAQmxGetSysNIDAQMinorVersion,NIDAQmx),Int32,(Ref{UInt32},),minor)
+  ccall((:DAQmxGetSysNIDAQMinorVersion,nidaqmx),Int32,(Ref{UInt32},),minor)
   update = Ref{UInt32}(0)
-  ccall((:DAQmxGetSysNIDAQUpdateVersion,NIDAQmx),Int32,(Ref{UInt32},),update)
+  ccall((:DAQmxGetSysNIDAQUpdateVersion,nidaqmx),Int32,(Ref{UInt32},),update)
   ver = "$(major[]).$(minor[]).$(update[])"
 catch
   error("can not determine NIDAQmx version.")
