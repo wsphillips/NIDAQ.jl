@@ -57,9 +57,7 @@ try
   ccall((:DAQmxGetSysNIDAQMajorVersion,nidaqmx),Int32,(Ref{UInt32},),major)
   minor = Ref{UInt32}(0)
   ccall((:DAQmxGetSysNIDAQMinorVersion,nidaqmx),Int32,(Ref{UInt32},),minor)
-  update = Ref{UInt32}(0)
-  ccall((:DAQmxGetSysNIDAQUpdateVersion,nidaqmx),Int32,(Ref{UInt32},),update)
-  ver = "$(major[]).$(minor[]).$(update[])"
+  ver = "$(major[]).$(minor[]))"
 catch
   error("can not determine NIDAQmx version.")
 end
