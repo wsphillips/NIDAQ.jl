@@ -3647,9 +3647,9 @@ const float64 = Cdouble
 const int64 = Clonglong
 const uInt64 = Culonglong
 
-struct CVIAbsoluteTime
-    cviTime::CVITime
-end
+#struct CVIAbsoluteTime
+#    cviTime::CVITime
+#end
 
 const bool32 = Bool32
 const TaskHandle = Ptr{Cvoid}
