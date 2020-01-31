@@ -1,10 +1,11 @@
 using Clang, Clang.LibClang
 using CEnum
-cd("/home/wikphi/")
+cd("/home/wikphi@ad.cmm.se/")
 ctx = DefaultContext()
 
-trans_unit = parse_header("NIDAQmx.h",
-                          flags = CXTranslationUnit_DetailedPreprocessingRecord)
+trans_unit = parse_header("NIDAQmx.h", args=["-fparse-all-comments"],
+                          flags = CXTranslationUnit_DetailedPreprocessingRecord |
+                          CXTranslationUnit_IncludeBriefCommentsInCodeCompletion)
 
 ctx.libname = "libnidaqmx"
 push!(ctx.trans_units, trans_unit)
@@ -15,7 +16,9 @@ ctx.children = children(root_cursor)
 
 errors = Vector{CLMacroDefinition}()
 warnings = Vector{CLMacroDefinition}()
-constants = Vector{CLMacroDefinition}()
+values = Vector{CLMacroDefinition}()
+topology = Vector{CLMacroDefinition}()
+attributes = Vector{CLMacroDefinition}()
 
 # Type aliasing map used by NIDAQmx.h
 typedef_map = Dict([("int8", Cchar),
@@ -30,7 +33,7 @@ typedef_map = Dict([("int8", Cchar),
                     ("bool32", Cuint)
                    ])
 
-# Error codes are Cint, all other constants are Cushort
+# Error codes are Cint, all other constants are as indicated
 constant_types = Dict([("DAQmxError", Cint),
                        ("DAQmxWarning", Cint),
                        ("DAQmxAttributes", Cushort),
@@ -55,6 +58,12 @@ for child in ctx.children
             continue
         elseif startswith(child_name, "DAQmxWarning")
             push!(warnings, child)
+            continue
+        elseif startswith(child_name, "DAQmx_Val_Switch_Topology")
+            push!(topology, child)
+            continue
+        elseif startswith(child_name, "DAQmx_Val_")
+            push!(values, child)
             continue
         elseif startswith(child_name, "DAQmx")
             push!(constants, child)
@@ -146,3 +155,19 @@ end
 
 
 #ctx.children = search(root_cursor, x -> kind(x) == CXCursor_MacroDefinition)
+test = search(root_cursor, "DAQmxSetBufOutputBufSize")[1]
+
+function get_comment(cursor::CLCursor)
+    stringptr = (LibClang.clang_getCString(LibClang.clang_Cursor_getRawCommentText(cursor.cursor)))
+    if stringptr !== NULL
+        return unsafe_string(stringptr)
+    else
+        return nothing
+    end
+end
+
+get_comment(test)
+
+test2 = LibClang.clang_Cursor_getRawCommentText(test.cursor)
+cstringtest = LibClang.clang_getCString(test2)
+stringout = unsafe_string(cstringtest)
