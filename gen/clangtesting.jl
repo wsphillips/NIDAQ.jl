@@ -1,6 +1,6 @@
 using Clang, Clang.LibClang
 using CEnum
-cd("/home/wikphi@ad.cmm.se/")
+cd("/home/wikphi/")
 ctx = DefaultContext()
 
 trans_unit = parse_header("NIDAQmx.h", args=["-fparse-all-comments"],
@@ -14,11 +14,11 @@ header = spelling(root_cursor)
 ctx.children = children(root_cursor)
 
 errors = Vector{CLMacroDefinition}()
-warnings = Vector{CLMacroDefinition}()
+
 constants = Vector{CLMacroDefinition}()
 attributes = Vector{CLMacroDefinition}()
 topology = Vector{CLMacroDefinition}()
-junk = Vector{CLCursor}()
+
 # Type aliasing map used by NIDAQmx.h
 typedef_map = Dict([("int8", "Cchar"),
                     ("uInt8", "Cuchar"),
@@ -33,68 +33,41 @@ typedef_map = Dict([("int8", "Cchar"),
                     ("bool32", "Cuint")
                    ])
 
+attribute_map = Dict([("_Buf_", "Buffer"),
+                    ("_AI_", "AIChannel"),
+                    ("_AO_", "AOChannel"),
+                    ("_DI_", "DIChannel"),
+                    ("_DO_", "DOChannel"),
+                    ("_CI_", "CIChannel"),
+                    ("_CO_", "COChannel"),
+                    ("_Dev_", "Device"),
+                    ("_Exported_", "ExportedSignal"),
+                    ("_PersistedChan_", "PersistedChannel"),
+                    ("_PersistedScale_", "PersistedScale"),
+                    ("_PersistedTask_", "PersistedTask"),
+                    ("_PhysicalChan_", "PhysicalChannel"),
+                    ("_Read_", "Read"),
+                    ("_Write_", "Write"),
+                    ("_RealTime_", "RealTime"),
+                    ("_Scale_", "Scale"),
+                    ("_Task_", "Task"),
+                   ])
+
 blacklist = ["unix","linux", "CVIDECL", "CVITime_DECLARED",
              "CVIAbsoluteTime_DECLARED", "TRUE", "FALSE", "NULL", "DAQmxFailed",
              "CVICALLBACK"]
 
 # Error codes are Cint, all other constants are as indicated
-constant_types = Dict([("DAQmxError", Cint),
-                       ("DAQmxWarning", Cint),
-                       ("DAQmxAttributes", Cushort),
-                       ("DAQmxValues", Cint)])
+constant_types = Dict([("Attributes", Cint),
+
 # TODO: need separate non enum constants for DAQmx_Val's that are float32
-
-for child in ctx.children
-    # Cursor properties
-    child_name = name(child)
-    child_kind = kind(child)
-
-    # Skip compiler constants/garbage and type aliasing
-    startswith(child_name, "_") && continue
-    child_name ∈ blacklist && continue
-    (child_kind == CXCursor_TypedefDecl && child_name ∈ keys(typedef_map)) && continue
-
-    # Group macro constants by type (later transformed into Julia enums)
-    if child_kind == CXCursor_MacroDefinition
-        if startswith(child_name, "DAQmxError")
-            push!(errors, child)
-            continue
-        elseif startswith(child_name, "DAQmxWarning")
-            push!(warnings, child)
-           continue
-        elseif startswith(child_name, "DAQmx_Val_Switch_Topology")
-            push!(topology, child)
-            continue
-        elseif startswith(child_name, "DAQmx_Val_")
-            if child_name == "DAQmx_Val_WaitInfinitely"
-                wrap!(ctx, child)
-                continue
-            end
-            push!(values, child)
-            continue
-        elseif startswith(child_name, "DAQmx_")
-            push!(attributes, child)
-            continue
-        else
-            wrap!(ctx,child)
-            continue
-        end
-    end
-    if child_kind == CXCursor_FunctionDecl
-        wrap!(ctx, child)
-    else
-        push!(junk, child)
-    end
-end
-
 function wrap_macro2enum!(ctx::AbstractContext,
-                          cursors::Vector{CLMacroDefinition},
-                          constant_type::String)
+                          cursors::Vector{CLMacroDefinition}, constant_type::String)
 
     enum_sym = symbol_safe(constant_type)
-    enum_type = constant_types[constant_type]
+    enum_type = Cint
     name2value = Tuple{Symbol,enum_type}[]
-    # extract values and names
+    # FIXME: extract values and names
     for cursor in cursors
         if constant_type == "DAQmxConstant"
             item_name = spelling(cursor)[6:end]
@@ -105,11 +78,15 @@ function wrap_macro2enum!(ctx::AbstractContext,
         item_sym = symbol_safe(item_name)
         tokens = tokenize(cursor)
 
+        # Macros include bitshift operators, which we have to check for...
         for i in 1:length(tokens)
-            if typeof(tokens[i]) == Literal && constant_type == "DAQmxError"
-                push!(name2value, (item_sym, -parse(enum_type, tokens[i].text)))
-            elseif typeof(tokens[i]) == Literal
+            if typeof(tokens[i]) == Literal && (i == length(tokens) || tokens[i+1].text ∉ ["<",">"])
                 push!(name2value, (item_sym, parse(enum_type, tokens[i].text)))
+                break
+            elseif typeof(tokens[i]) == Literal && i < length(tokens) && tokens[i+1].text ∈ ["<",">"]
+                bitshift = prod(tokens[i:i+3]) # consolidate tokens to a single string
+                push!(name2value, (item_sym, eval(Meta.parse(bitshift)))) # Julia understands bit-shift notation
+                break
             end
         end
     end
@@ -124,16 +101,13 @@ function wrap_macro2enum!(ctx::AbstractContext,
 
     push!(expr.args, enum_pairs)
 
-
     return ctx
 end
 
-foo = search(root_cursor, "DAQmx_Val_MetersPerSecond")[2]
-wrap_dealias!(ctx, foo)
 function wrap_dealias!(ctx::AbstractContext, cursor::CLFunctionDecl)
     func_type = type(cursor)
     func_name = isempty(ctx.force_name) ? Symbol(spelling(cursor)) : ctx.force_name
-    ret_type = :Cint # all NIDAQmx functions return int32 == Cint (except one depracated function)
+    ret_type = :Cint # all NIDAQmx functions return int32 == Cint
     args = function_args(cursor)
     arg_types = [argtype(func_type, i) for i in 0:length(args)-1]
     # TODO: check arg types for aliases and revise to actual C types
@@ -168,8 +142,9 @@ function wrap_dealias!(ctx::AbstractContext, cursor::CLFunctionDecl)
         n = name_safe(name(x))
         s = !isempty(n) ? n : "arg"*string(arg_count+=1)
         Symbol(s)
-        end
-        signature = Expr(:call, func_name, arg_names...)
+    end
+
+    signature = efunsig(Symbol(spelling(cursor)[6:end]), arg_names, arg_reps)
     body = eccall(func_name, Symbol(ctx.libname), ret_type, arg_names, arg_reps)
     push!(ctx.api_buffer, Expr(:function, signature, Expr(:block, body)))
 
@@ -177,13 +152,12 @@ function wrap_dealias!(ctx::AbstractContext, cursor::CLFunctionDecl)
 end
 
 function eccall(func_name::Symbol, libname::Symbol, rtype, args, types)
-  :(ccall(($(QuoteNode(func_name)), $libname),
+  :(ccall(($(QuoteNode(func_name)), $(QuoteNode(libname))),
             $rtype,
             $(Expr(:tuple, types...)),
             $(args...))
     )
 end
-
 
 function is_ptr_type_expr(@nospecialize t)
     (t === :Cstring || t === :Cwstring) && return true
@@ -191,22 +165,10 @@ function is_ptr_type_expr(@nospecialize t)
     t = t::Expr
     t.head === :curly && t.args[1] === :Ptr
 end
-# NOTE: zip() fuses two interators together so that a combined tuple of the two
-# gets returned when iterating through the result. Handy function!
 
 function efunsig(name::Symbol, args::Vector{Symbol}, types)
     x = [is_ptr_type_expr(t) ? a : Expr(:(::), a, t) for (a,t) in zip(args,types)]
     Expr(:call, name, x...)
-end
-
-wrap_macro2enum!(ctx, warnings, "DAQmxWarning")
-wrap_macro2enum!(ctx, errors, "DAQmxError")
-wrap_macro2enum!(ctx, constants, "DAQmxConstant")
-
-common_file = joinpath(@__DIR__, "test_common.jl")
-open(common_file, "w") do f
-    println(f, "# Automatically generated using Clang.jl\n")
-    print_buffer(f, dump_to_buffer(ctx.common_buffer))
 end
 
 function get_comment(cursor::CLCursor)
@@ -216,5 +178,46 @@ function get_comment(cursor::CLCursor)
     else
         cstring = clang_getCString(stringptr)
         return unsafe_string(cstring)
+    end
+end
+
+for (i, child) in enumerate(ctx.children)
+    # Cursor properties
+    child_name = name(child)
+    child_kind = kind(child)
+    ctx.children_index = i
+    # Skip compiler constants/garbage and type aliasing
+    startswith(child_name, "_") && continue
+    startswith(child_name, "DAQmx_Switch") && continue
+    child_name ∈ blacklist && continue
+    (child_kind == CXCursor_TypedefDecl && child_name ∈ keys(typedef_map)) && continue
+
+    # Group macro constants by type (later transformed into Julia enums)
+    if child_kind == CXCursor_MacroDefinition
+        if startswith(child_name, "DAQmxError") || startswith(child_name, "DAQmxWarning")
+            push!(errors, child)
+            continue
+        elseif startswith(child_name, "DAQmx_Val_Switch_Topology_")
+            push!(topology, child)
+            continue
+        elseif startswith(child_name, "DAQmx_Val_")
+            if child_name == "DAQmx_Val_WaitInfinitely"
+                wrap!(ctx, child)
+                continue
+            end
+            push!(constants, child)
+            continue
+        elseif startswith(child_name, "DAQmx_")
+            push!(attributes, child)
+            continue
+        else
+            wrap!(ctx,child)
+            continue
+        end
+    end
+    if child_kind == CXCursor_FunctionDecl
+        wrap_dealias!(ctx, child)
+    else
+        wrap!(ctx, child)
     end
 end
