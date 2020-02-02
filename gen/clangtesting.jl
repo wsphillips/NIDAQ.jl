@@ -1,6 +1,6 @@
 using Clang, Clang.LibClang
 using CEnum
-cd("/home/wikphi/")
+cd("/home/wikphi@ad.cmm.se/")
 ctx = DefaultContext()
 
 trans_unit = parse_header("NIDAQmx.h", args=["-fparse-all-comments"],
@@ -15,7 +15,7 @@ ctx.children = children(root_cursor)
 
 errors = Vector{CLMacroDefinition}()
 warnings = Vector{CLMacroDefinition}()
-values = Vector{CLMacroDefinition}()
+constants = Vector{CLMacroDefinition}()
 attributes = Vector{CLMacroDefinition}()
 topology = Vector{CLMacroDefinition}()
 junk = Vector{CLCursor}()
@@ -128,7 +128,7 @@ function wrap_macro2enum!(ctx::AbstractContext,
     return ctx
 end
 
-foo = search(root_cursor, "DAQmxWriteAnalogF64")[1]
+foo = search(root_cursor, "DAQmx_Val_MetersPerSecond")[2]
 wrap_dealias!(ctx, foo)
 function wrap_dealias!(ctx::AbstractContext, cursor::CLFunctionDecl)
     func_type = type(cursor)
