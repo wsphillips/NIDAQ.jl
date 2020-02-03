@@ -1,6 +1,6 @@
 using Clang, Clang.LibClang
 using CEnum
-cd("/home/wikphi/")
+cd("/home/wikphi@ad.cmm.se/")
 ctx = DefaultContext()
 
 trans_unit = parse_header("NIDAQmx.h", args=["-fparse-all-comments"],
@@ -12,8 +12,6 @@ push!(ctx.trans_units, trans_unit)
 root_cursor = getcursor(trans_unit)
 header = spelling(root_cursor)
 ctx.children = children(root_cursor)
-
-errors = Vector{CLMacroDefinition}()
 
 constants = Vector{CLMacroDefinition}()
 attributes = Vector{CLMacroDefinition}()
@@ -91,7 +89,7 @@ function wrap_macro2enum!(ctx::AbstractContext,
         end
     end
 
-    expr = Expr(:macrocall, Symbol("@enum"), nothing, Expr(:(::), enum_sym, enum_type))
+    expr = Expr(:macrocall, Symbol("@cenum"), nothing, Expr(:(::), enum_sym, enum_type))
     enum_pairs = Expr(:block)
     ctx.common_buffer[enum_sym] = ExprUnit(expr)
 
@@ -195,7 +193,7 @@ for (i, child) in enumerate(ctx.children)
     # Group macro constants by type (later transformed into Julia enums)
     if child_kind == CXCursor_MacroDefinition
         if startswith(child_name, "DAQmxError") || startswith(child_name, "DAQmxWarning")
-            push!(errors, child)
+            #push!(errors, child) no reason to wrap these actually...
             continue
         elseif startswith(child_name, "DAQmx_Val_Switch_Topology_")
             push!(topology, child)
