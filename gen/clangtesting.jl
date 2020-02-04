@@ -31,7 +31,8 @@ typedef_map = Dict([("int8", "Cchar"),
                     ("uInt64", "Culonglong"),
                     ("bool32", "Cuint")
                    ])
-
+# split up the attribute map into a Dict{String,Vector{CLMacroDefinition}}()
+# push cursors to the different subtypes ad hoc
 attribute_map = Dict([("Buf", "Buffer"),
                     ("AI", "AIChannel"),
                     ("AO", "AOChannel"),
