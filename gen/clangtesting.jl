@@ -1,6 +1,6 @@
 using Clang, Clang.LibClang
 using CEnum
-cd("/home/wikphi@ad.cmm.se/")
+cd("/home/wikphi/")
 ctx = DefaultContext()
 
 trans_unit = parse_header("NIDAQmx.h", args=["-fparse-all-comments"],
@@ -16,7 +16,7 @@ ctx.children = children(root_cursor)
 constants = Vector{CLMacroDefinition}()
 attributes = Vector{CLMacroDefinition}()
 topology = Vector{CLMacroDefinition}()
-
+remaining = Vector{CLCursor}()
 # Type aliasing map used by NIDAQmx.h
 typedef_map = Dict([("int8", "Cchar"),
                     ("uInt8", "Cuchar"),
@@ -51,7 +51,8 @@ attribute_map = Dict([("_Buf_", "Buffer"),
                     ("_Task_", "Task"),
                    ])
 
-blacklist = ["unix","linux", "CVIDECL", "CVITime_DECLARED",
+blacklist = ["unix","linux", "CVIDECL", "CVITime_DECLARED", "CVICDECL",
+             "DAQmxSuccess", "DAQmx_ReadWaitMode",
              "CVIAbsoluteTime_DECLARED", "TRUE", "FALSE", "NULL", "DAQmxFailed",
              "CVICALLBACK"]
 
@@ -188,8 +189,9 @@ for (i, child) in enumerate(ctx.children)
     startswith(child_name, "_") && continue
     startswith(child_name, "DAQmx_Switch") && continue
     child_name ∈ blacklist && continue
-    (child_kind == CXCursor_TypedefDecl && child_name ∈ keys(typedef_map)) && continue
-
+    #(child_kind == CXCursor_TypedefDecl && child_name ∈ keys(typedef_map)) && continue
+    child_kind == CXCursor_TypedefDecl && continue
+    child_name ∈ name.(constants) && continue
     # Group macro constants by type (later transformed into Julia enums)
     if child_kind == CXCursor_MacroDefinition
         if startswith(child_name, "DAQmxError") || startswith(child_name, "DAQmxWarning")
@@ -209,13 +211,33 @@ for (i, child) in enumerate(ctx.children)
             push!(attributes, child)
             continue
         else
-            wrap!(ctx,child)
+            #wrap!(ctx,child)
+            push!(remaining, child)
             continue
         end
     end
     if child_kind == CXCursor_FunctionDecl
-        wrap_dealias!(ctx, child)
+        #wrap_dealias!(ctx, child)
+        continue
     else
-        wrap!(ctx, child)
+        #wrap!(ctx, child)
+        push!(remaining, child)
     end
 end
+
+constant_names = spelling.(constants)
+
+for (i, cname) in enumerate(constant_names)
+    constant_names[i] = cname[11:end]
+end
+    
+attribute_names = spelling.(attributes)
+wordsets = [[]]
+
+for (i, aname) in enumerate(attribute_names)
+    noprefix = aname[7:end]
+    attribute_names[i] = noprefix
+
+    #push!(wordsets, String.(split(noprefix, "_"; keepempty = false)))
+end
+
