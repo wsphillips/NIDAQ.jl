@@ -12,28 +12,28 @@ const DAQmx_Val_WaitInfinitely = -1.0
 end
 
 @cenum DOChannel::Int32 begin
-    DataXferMech = 8806
-    DataXferReqCond = 8807
+    DO_DataXferMech = 8806
+    DO_DataXferReqCond = 8807
     GenerateOn = 10601
-    InvertLines = 4403
+    DO_InvertLines = 4403
     LineStatesDoneState = 10600
     LineStatesPausedState = 10599
     LineStatesStartState = 10610
-    LogicFamily = 10606
-    MemMapEnable = 10603
-    NumLines = 8569
+    DO_LogicFamily = 10606
+    DO_MemMapEnable = 10603
+    DO_NumLines = 8569
     OutputDriveType = 4407
     OvercurrentAutoReenable = 10886
     OvercurrentLimit = 10885
     OvercurrentReenablePeriod = 10887
-    Tristate = 6387
-    UsbXferReqCount = 12291
-    UsbXferReqSize = 10897
-    UseOnlyOnBrdMem = 8805
+    DO_Tristate = 6387
+    DO_UsbXferReqCount = 12291
+    DO_UsbXferReqSize = 10897
+    DO_UseOnlyOnBrdMem = 8805
 end
 
 @cenum Read::Int32 begin
-    AccessoryInsertionOrRemovalDetected = 12144
+    Read_AccessoryInsertionOrRemovalDetected = 12144
     AutoStart = 6182
     AvailSampPerChan = 4643
     ChangeDetectHasOverflowed = 8596
@@ -41,36 +41,36 @@ end
     CommonModeRangeErrorChans = 10905
     CommonModeRangeErrorChansExist = 10904
     CurrReadPos = 4641
-    DevsWithInsertedOrRemovedAccessories = 12145
-    DigitalLinesBytesPerChan = 8572
+    Read_DevsWithInsertedOrRemovedAccessories = 12145
+    Read_DigitalLinesBytesPerChan = 8572
     ExcitFaultChans = 12425
     ExcitFaultChansExist = 12424
-    NumChans = 8571
-    Offset = 6411
+    Read_NumChans = 8571
+    Read_Offset = 6411
     OpenChans = 12545
     OpenChansDetails = 12546
     OpenChansExist = 12544
-    OpenCurrentLoopChans = 10762
-    OpenCurrentLoopChansExist = 10761
+    Read_OpenCurrentLoopChans = 10762
+    Read_OpenCurrentLoopChansExist = 10761
     OpenThrmcplChans = 10903
     OpenThrmcplChansExist = 10902
     OverWrite = 4625
-    OvercurrentChans = 10727
-    OvercurrentChansExist = 10726
-    OverloadedChans = 8565
-    OverloadedChansExist = 8564
-    OvertemperatureChans = 12418
-    OvertemperatureChansExist = 12417
+    Read_OvercurrentChans = 10727
+    Read_OvercurrentChansExist = 10726
+    Read_OverloadedChans = 8565
+    Read_OverloadedChansExist = 8564
+    Read_OvertemperatureChans = 12418
+    Read_OvertemperatureChansExist = 12417
     PLLUnlockedChans = 12569
     PLLUnlockedChansExist = 12568
-    RawDataWidth = 8570
+    Read_RawDataWidth = 8570
     ReadAllAvailSamp = 4629
-    RelativeTo = 6410
-    SleepTime = 8880
-    SyncUnlockedChans = 12606
-    SyncUnlockedChansExist = 12605
+    Read_RelativeTo = 6410
+    Read_SleepTime = 8880
+    Read_SyncUnlockedChans = 12606
+    Read_SyncUnlockedChansExist = 12605
     TotalSampPerChanAcquired = 6442
-    WaitMode = 8754
+    Read_WaitMode = 8754
 end
 
 @cenum Buffer::Int32 begin
@@ -83,28 +83,28 @@ end
 @cenum COChannel::Int32 begin
     AutoIncrCnt = 661
     ConstrainedGenMode = 10738
-    Count = 659
-    CtrTimebaseActiveEdge = 833
-    CtrTimebaseMasterTimebaseDiv = 6339
-    CtrTimebaseRate = 6338
-    CtrTimebaseSrc = 825
-    CtrTimebaseDigFltrEnable = 8822
-    CtrTimebaseDigFltrMinPulseWidth = 8823
-    CtrTimebaseDigFltrTimebaseRate = 8825
-    CtrTimebaseDigFltrTimebaseSrc = 8824
-    CtrTimebaseDigSyncEnable = 8826
-    DataXferMech = 11980
-    DataXferReqCond = 11981
+    CO_Count = 659
+    CO_CtrTimebaseActiveEdge = 833
+    CO_CtrTimebaseMasterTimebaseDiv = 6339
+    CO_CtrTimebaseRate = 6338
+    CO_CtrTimebaseSrc = 825
+    CO_CtrTimebaseDigFltrEnable = 8822
+    CO_CtrTimebaseDigFltrMinPulseWidth = 8823
+    CO_CtrTimebaseDigFltrTimebaseRate = 8825
+    CO_CtrTimebaseDigFltrTimebaseSrc = 8824
+    CO_CtrTimebaseDigSyncEnable = 8826
+    CO_DataXferMech = 11980
+    CO_DataXferReqCond = 11981
     EnableInitialDelayOnRetrigger = 11977
-    MemMapEnable = 11987
-    OutputState = 660
-    OutputType = 6325
-    Prescaler = 8813
+    CO_MemMapEnable = 11987
+    CO_OutputState = 660
+    CO_OutputType = 6325
+    CO_Prescaler = 8813
     PulseDone = 6414
     PulseDutyCyc = 4470
-    PulseFreq = 4472
+    CO_PulseFreq = 4472
     PulseFreqInitialDelay = 665
-    PulseFreqUnits = 6357
+    CO_PulseFreqUnits = 6357
     PulseHighTicks = 4457
     PulseHighTime = 6330
     PulseIdleState = 4464
@@ -113,30 +113,30 @@ end
     PulseTerm = 6369
     PulseTicksInitialDelay = 664
     PulseTimeInitialDelay = 6332
-    PulseTimeUnits = 6358
+    CO_PulseTimeUnits = 6358
     RdyForNewVal = 8959
-    UsbXferReqCount = 12293
-    UsbXferReqSize = 10899
-    UseOnlyOnBrdMem = 11979
+    CO_UsbXferReqCount = 12293
+    CO_UsbXferReqSize = 10899
+    CO_UseOnlyOnBrdMem = 11979
 end
 
 @cenum DIChannel::Int32 begin
     AcquireOn = 10598
-    DataXferMech = 8803
-    DataXferReqCond = 8804
-    DigFltrEnable = 8662
+    DI_DataXferMech = 8803
+    DI_DataXferReqCond = 8804
+    DI_DigFltrEnable = 8662
     DigFltrEnableBusMode = 12030
     DigFltrMinPulseWidth = 8663
     DigFltrTimebaseRate = 11989
     DigFltrTimebaseSrc = 11988
     DigSyncEnable = 11990
-    InvertLines = 1939
-    LogicFamily = 10605
-    MemMapEnable = 10602
-    NumLines = 8568
-    Tristate = 6288
-    UsbXferReqCount = 12290
-    UsbXferReqSize = 10896
+    DI_InvertLines = 1939
+    DI_LogicFamily = 10605
+    DI_MemMapEnable = 10602
+    DI_NumLines = 8568
+    DI_Tristate = 6288
+    DI_UsbXferReqCount = 12290
+    DI_UsbXferReqSize = 10896
 end
 
 @cenum ExportedSignal::Int32 begin
@@ -213,7 +213,7 @@ end
     AIResistanceRngs = 10773
     AISampModes = 12252
     AISimultaneousSamplingSupported = 10639
-    AISupportedMeasTypes = 12242
+    Dev_AISupportedMeasTypes = 12242
     AITrigUsage = 10630
     AIVoltageIntExcitDiscreteVals = 10697
     AIVoltageIntExcitRangeVals = 10698
@@ -227,7 +227,7 @@ end
     AOPhysicalChans = 8991
     AOSampClkSupported = 10646
     AOSampModes = 12253
-    AOSupportedOutputTypes = 12243
+    Dev_AOSupportedOutputTypes = 12243
     AOTrigUsage = 10631
     AOVoltageRngs = 10651
     AccessoryProductNums = 12142
@@ -240,14 +240,14 @@ end
     CIPhysicalChans = 8996
     CISampClkSupported = 10654
     CISampModes = 12254
-    CISupportedMeasTypes = 12244
+    Dev_CISupportedMeasTypes = 12244
     CITrigUsage = 10634
     COMaxSize = 10657
     COMaxTimebase = 10658
     COPhysicalChans = 8997
     COSampClkSupported = 12123
     COSampModes = 12255
-    COSupportedOutputTypes = 12245
+    Dev_COSupportedOutputTypes = 12245
     COTrigUsage = 10635
     ChassisModuleDevNames = 10678
     CompactDAQChassisDevName = 10679
@@ -289,7 +289,7 @@ end
     AngEncoderInitialAngle = 2177
     AngEncoderPulsesPerRev = 2165
     AngEncoderUnits = 6310
-    Count = 328
+    CI_Count = 328
     CountEdgesActiveEdge = 1687
     CountEdgesCountDirDigFltrEnable = 8689
     CountEdgesCountDirDigFltrMinPulseWidth = 8690
@@ -329,17 +329,17 @@ end
     CountEdgesLogicLvlBehavior = 12444
     CountEdgesTerm = 6343
     CountEdgesTermCfg = 12443
-    CtrTimebaseActiveEdge = 322
-    CtrTimebaseMasterTimebaseDiv = 6323
-    CtrTimebaseRate = 6322
-    CtrTimebaseSrc = 323
-    CtrTimebaseDigFltrEnable = 8817
-    CtrTimebaseDigFltrMinPulseWidth = 8818
-    CtrTimebaseDigFltrTimebaseRate = 8820
-    CtrTimebaseDigFltrTimebaseSrc = 8819
-    CtrTimebaseDigSyncEnable = 8821
-    CustomScaleName = 6302
-    DataXferMech = 512
+    CI_CtrTimebaseActiveEdge = 322
+    CI_CtrTimebaseMasterTimebaseDiv = 6323
+    CI_CtrTimebaseRate = 6322
+    CI_CtrTimebaseSrc = 323
+    CI_CtrTimebaseDigFltrEnable = 8817
+    CI_CtrTimebaseDigFltrMinPulseWidth = 8818
+    CI_CtrTimebaseDigFltrTimebaseRate = 8820
+    CI_CtrTimebaseDigFltrTimebaseSrc = 8819
+    CI_CtrTimebaseDigSyncEnable = 8821
+    CI_CustomScaleName = 6302
+    CI_DataXferMech = 512
     DataXferReqCond = 12027
     DupCountPrevent = 8620
     DutyCycleDigFltrEnable = 12430
@@ -391,19 +391,19 @@ end
     FreqStartingEdge = 1945
     FreqTerm = 6306
     FreqTermCfg = 12439
-    FreqUnits = 6305
+    CI_FreqUnits = 6305
     GPSSyncMethod = 4242
     GPSSyncSrc = 4243
     LinEncoderDistPerPulse = 2321
     LinEncoderInitialPos = 2325
     LinEncoderUnits = 6313
-    Max = 6300
+    CI_Max = 6300
     MaxMeasPeriod = 12437
-    MeasType = 6304
-    MemMapEnable = 11986
-    Min = 6301
+    CI_MeasType = 6304
+    CI_MemMapEnable = 11986
+    CI_Min = 6301
     NumPossiblyInvalidSamps = 6460
-    OutputState = 329
+    CI_OutputState = 329
     PeriodDigFltrEnable = 8684
     PeriodDigFltrMinPulseWidth = 8685
     PeriodDigFltrTimebaseRate = 8687
@@ -418,7 +418,7 @@ end
     PeriodTerm = 6308
     PeriodTermCfg = 12441
     PeriodUnits = 6307
-    Prescaler = 8761
+    CI_Prescaler = 8761
     PulseWidthDigFltrEnable = 8714
     PulseWidthDigFltrMinPulseWidth = 8715
     PulseWidthDigFltrTimebaseRate = 8717
@@ -438,7 +438,7 @@ end
     PulseFreqStartEdge = 12037
     PulseFreqTerm = 12036
     PulseFreqTermCfg = 12465
-    PulseFreqUnits = 12043
+    CI_PulseFreqUnits = 12043
     PulseTicksDigFltrEnable = 12054
     PulseTicksDigFltrMinPulseWidth = 12055
     PulseTicksDigFltrTimebaseRate = 12057
@@ -457,7 +457,7 @@ end
     PulseTimeStartEdge = 12045
     PulseTimeTerm = 12044
     PulseTimeTermCfg = 12467
-    PulseTimeUnits = 12051
+    CI_PulseTimeUnits = 12051
     SampClkOverrunBehavior = 12435
     SampClkOverrunSentinelVal = 12436
     SemiPeriodDigFltrEnable = 8729
@@ -493,8 +493,8 @@ end
     TwoEdgeSepSecondDigFltrTimebaseSrc = 8726
     TwoEdgeSepSecondDigSyncEnable = 8728
     TwoEdgeSepUnits = 6316
-    UsbXferReqCount = 12292
-    UsbXferReqSize = 10898
+    CI_UsbXferReqCount = 12292
+    CI_UsbXferReqSize = 10898
     VelocityAngEncoderPulsesPerRev = 12505
     VelocityAngEncoderUnits = 12504
     VelocityDiv = 12524
@@ -519,9 +519,9 @@ end
 end
 
 @cenum PersistedChannel::Int32 begin
-    AllowInteractiveDeletion = 8914
-    AllowInteractiveEditing = 8913
-    Author = 8912
+    PersistedChan_AllowInteractiveDeletion = 8914
+    PersistedChan_AllowInteractiveEditing = 8913
+    PersistedChan_Author = 8912
 end
 
 @cenum Task::Int32 begin
@@ -529,13 +529,13 @@ end
     Complete = 4724
     Devices = 8974
     Name = 4726
-    NumChans = 8577
+    Task_NumChans = 8577
     NumDevices = 10682
 end
 
 @cenum AOChannel::Int32 begin
-    CurrentUnits = 4361
-    CustomScaleName = 4488
+    AO_CurrentUnits = 4361
+    AO_CustomScaleName = 4488
     DACOffsetExtSrc = 8788
     DACOffsetSrc = 8787
     DACOffsetVal = 8789
@@ -546,13 +546,13 @@ end
     DACRefVal = 6194
     DACRngHigh = 6190
     DACRngLow = 6189
-    DataXferMech = 308
-    DataXferReqCond = 6204
-    DevScalingCoeff = 6449
+    AO_DataXferMech = 308
+    AO_DataXferReqCond = 6204
+    AO_DevScalingCoeff = 6449
     EnhancedImageRejectionEnable = 8769
-    FilterDelay = 12405
-    FilterDelayAdjustment = 12402
-    FilterDelayUnits = 12406
+    AO_FilterDelay = 12405
+    AO_FilterDelayAdjustment = 12402
+    AO_FilterDelayUnits = 12406
     FuncGenAmplitude = 10778
     FuncGenFMDeviation = 10787
     FuncGenFreq = 10777
@@ -560,34 +560,34 @@ end
     FuncGenOffset = 10779
     FuncGenSquareDutyCycle = 10780
     FuncGenType = 10776
-    Gain = 280
+    AO_Gain = 280
     IdleOutputBehavior = 8768
     LoadImpedance = 289
-    Max = 4486
-    MemMapEnable = 6287
-    Min = 4487
+    AO_Max = 4486
+    AO_MemMapEnable = 6287
+    AO_Min = 4487
     OutputImpedance = 5264
-    OutputType = 4360
+    AO_OutputType = 4360
     PowerAmpChannelEnable = 12386
     PowerAmpGain = 12389
     PowerAmpOffset = 12390
     PowerAmpOvercurrent = 12388
     PowerAmpScalingCoeff = 12387
     ReglitchEnable = 307
-    Resolution = 6188
-    ResolutionUnits = 6187
-    TermCfg = 6286
-    UsbXferReqCount = 12289
-    UsbXferReqSize = 10895
-    UseOnlyOnBrdMem = 6202
+    AO_Resolution = 6188
+    AO_ResolutionUnits = 6187
+    AO_TermCfg = 6286
+    AO_UsbXferReqCount = 12289
+    AO_UsbXferReqSize = 10895
+    AO_UseOnlyOnBrdMem = 6202
     VoltageCurrentLimit = 10781
-    VoltageUnits = 4484
+    AO_VoltageUnits = 4484
 end
 
 @cenum PersistedScale::Int32 begin
-    AllowInteractiveDeletion = 8918
-    AllowInteractiveEditing = 8917
-    Author = 8916
+    PersistedScale_AllowInteractiveDeletion = 8918
+    PersistedScale_AllowInteractiveEditing = 8917
+    PersistedScale_Author = 8916
 end
 
 @cenum PhysicalChannel::Int32 begin
@@ -599,17 +599,17 @@ end
     AISensorPowerOvercurrent = 12669
     AISensorPowerTypes = 12665
     AISensorPowerVoltageRangeVals = 12666
-    AISupportedMeasTypes = 12247
+    PhysicalChan_AISupportedMeasTypes = 12247
     AITermCfgs = 9026
     AOManualControlAmplitude = 10783
     AOManualControlEnable = 10782
     AOManualControlFreq = 10784
     AOManualControlShortDetected = 11971
-    AOSupportedOutputTypes = 12249
+    PhysicalChan_AOSupportedOutputTypes = 12249
     AOSupportedPowerUpOutputTypes = 12366
     AOTermCfgs = 10659
-    CISupportedMeasTypes = 12250
-    COSupportedOutputTypes = 12251
+    PhysicalChan_CISupportedMeasTypes = 12250
+    PhysicalChan_COSupportedOutputTypes = 12251
     DIChangeDetectSupported = 10662
     DIPortWidth = 10660
     DISampClkSupported = 10661
@@ -687,18 +687,18 @@ end
     CurrentShuntLoc = 6130
     CurrentShuntResistance = 6131
     CurrentACRMSUnits = 6115
-    CurrentUnits = 1793
-    CustomScaleName = 6112
+    AI_CurrentUnits = 1793
+    AI_CustomScaleName = 6112
     DCOffset = 10889
     DataXferCustomThreshold = 8972
     DataXferMaxRate = 12567
-    DataXferMech = 6177
-    DataXferReqCond = 6283
-    DevScalingCoeff = 6448
+    AI_DataXferMech = 6177
+    AI_DataXferReqCond = 6283
+    AI_DevScalingCoeff = 6448
     DigFltrBandpassCenterFreq = 12483
     DigFltrBandpassWidth = 12484
     DigFltrCoeff = 12487
-    DigFltrEnable = 12477
+    AI_DigFltrEnable = 12477
     DigFltrHighpassCutoffFreq = 12482
     DigFltrLowpassCutoffFreq = 12481
     DigFltrNotchCenterFreq = 12485
@@ -721,9 +721,9 @@ end
     ExcitUseMultiplexed = 8576
     ExcitVal = 6133
     ExcitVoltageOrCurrent = 6134
-    FilterDelay = 12269
-    FilterDelayAdjustment = 12404
-    FilterDelayUnits = 12401
+    AI_FilterDelay = 12269
+    AI_FilterDelayAdjustment = 12404
+    AI_FilterDelayUnits = 12401
     FilterEnable = 12659
     FilterFreq = 12660
     FilterOrder = 12662
@@ -734,8 +734,8 @@ end
     ForceUnits = 12149
     FreqHyst = 2068
     FreqThreshVoltage = 2069
-    FreqUnits = 2054
-    Gain = 6168
+    AI_FreqUnits = 2054
+    AI_Gain = 6168
     Impedance = 98
     InputSrc = 8600
     IsTEDS = 10627
@@ -750,11 +750,11 @@ end
     LowpassSwitchCapExtClkDiv = 6278
     LowpassSwitchCapExtClkFreq = 6277
     LowpassSwitchCapOutClkDiv = 6279
-    Max = 6109
-    MeasType = 1685
-    MemMapEnable = 6284
+    AI_Max = 6109
+    AI_MeasType = 1685
+    AI_MemMapEnable = 6284
     MicrophoneSensitivity = 5430
-    Min = 6110
+    AI_Min = 6110
     OpenChanDetectEnable = 12543
     OpenThrmcplDetectEnable = 12146
     PressureUnits = 12150
@@ -773,8 +773,8 @@ end
     RemoveFilterDelay = 12221
     ResistanceCfg = 6273
     ResistanceUnits = 2389
-    Resolution = 5989
-    ResolutionUnits = 5988
+    AI_Resolution = 5989
+    AI_ResolutionUnits = 5988
     RngHigh = 6165
     RngLow = 6166
     RosetteStrainGageOrientation = 12284
@@ -795,7 +795,7 @@ end
     StrainUnits = 2433
     TEDSUnits = 8672
     TempUnits = 4147
-    TermCfg = 4247
+    AI_TermCfg = 4247
     ThrmcplCJCChan = 4148
     ThrmcplCJCSrc = 4149
     ThrmcplCJCVal = 4150
@@ -807,21 +807,21 @@ end
     ThrmstrC = 6346
     ThrmstrR1 = 4193
     TorqueUnits = 12151
-    UsbXferReqCount = 12288
-    UsbXferReqSize = 10894
+    AI_UsbXferReqCount = 12288
+    AI_UsbXferReqSize = 10894
     VelocityIEPESensorSensitivity = 12278
     VelocityIEPESensorSensitivityUnits = 12279
     VelocityIEPESensordBRef = 12277
     VelocityUnits = 12276
     VoltageACRMSUnits = 6114
-    VoltageUnits = 4244
+    AI_VoltageUnits = 4244
     VoltagedBRef = 10672
 end
 
 @cenum PersistedTask::Int32 begin
-    AllowInteractiveDeletion = 8910
-    AllowInteractiveEditing = 8909
-    Author = 8908
+    PersistedTask_AllowInteractiveDeletion = 8910
+    PersistedTask_AllowInteractiveEditing = 8909
+    PersistedTask_Author = 8908
 end
 
 @cenum Scale::Int32 begin
@@ -842,33 +842,33 @@ end
 end
 
 @cenum Write::Int32 begin
-    AccessoryInsertionOrRemovalDetected = 12371
+    Write_AccessoryInsertionOrRemovalDetected = 12371
     CurrWritePos = 5208
-    DevsWithInsertedOrRemovedAccessories = 12372
-    DigitalLinesBytesPerChan = 8575
+    Write_DevsWithInsertedOrRemovedAccessories = 12372
+    Write_DigitalLinesBytesPerChan = 8575
     ExternalOvervoltageChans = 12476
     ExternalOvervoltageChansExist = 12475
-    NumChans = 8574
-    Offset = 6413
-    OpenCurrentLoopChans = 10731
-    OpenCurrentLoopChansExist = 10730
-    OvercurrentChans = 10729
-    OvercurrentChansExist = 10728
-    OverloadedChans = 12421
-    OverloadedChansExist = 12420
-    OvertemperatureChans = 12419
-    OvertemperatureChansExist = 10884
+    Write_NumChans = 8574
+    Write_Offset = 6413
+    Write_OpenCurrentLoopChans = 10731
+    Write_OpenCurrentLoopChansExist = 10730
+    Write_OvercurrentChans = 10729
+    Write_OvercurrentChansExist = 10728
+    Write_OverloadedChans = 12421
+    Write_OverloadedChansExist = 12420
+    Write_OvertemperatureChans = 12419
+    Write_OvertemperatureChansExist = 10884
     PowerSupplyFaultChans = 10733
     PowerSupplyFaultChansExist = 10732
-    RawDataWidth = 8573
+    Write_RawDataWidth = 8573
     RegenMode = 5203
-    RelativeTo = 6412
-    SleepTime = 8882
+    Write_RelativeTo = 6412
+    Write_SleepTime = 8882
     SpaceAvail = 5216
-    SyncUnlockedChans = 12608
-    SyncUnlockedChansExist = 12607
+    Write_SyncUnlockedChans = 12608
+    Write_SyncUnlockedChansExist = 12607
     TotalSampPerChanGenerated = 6443
-    WaitMode = 8881
+    Write_WaitMode = 8881
 end
 
 @cenum DAQmxAttribute::Int32 begin
@@ -1246,8 +1246,8 @@ end
     CounterOutputEvent = 12494
     Create = 15848
     CreateOrReplace = 15847
-    CurrReadPos = 10425
-    CurrWritePos = 10430
+    _CurrReadPos = 10425
+    _CurrWritePos = 10430
     Current = 10134
     CurrentRMS = 10351
     Custom = 10137
@@ -1555,7 +1555,7 @@ end
     Torque_Bridge = 15905
     Transferred_From_Buffer = 2
     Triangle = 14752
-    Tristate = 10310
+    _Tristate = 10310
     TwoEdgeSep = 10267
     TwoPointLinear = 15898
     TwoPulseCounting = 10313

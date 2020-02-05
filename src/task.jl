@@ -28,3 +28,19 @@ for (cfunction, jfunction) in (
 
     """,jfunction," the specified NIDAQ task")) $jfunction
 end
+
+abstract type TaskType end
+abstract type AnalogInput       <: TaskType end
+abstract type AnalogOutput      <: TaskType end
+abstract type DigitalInput      <: TaskType end
+abstract type DigitalOutput     <: TaskType end
+
+struct DAQTask #where T <: TaskType
+    name::String
+    handle::TaskHandle
+        function DAQTask()
+            name = ""
+            handle = TaskHandle()
+            new(name, handle)
+        end
+end

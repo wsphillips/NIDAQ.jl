@@ -5,8 +5,8 @@ function LoadTask(taskName::Ref{UInt8}, taskHandle::Ref{TaskHandle})
     ccall((:DAQmxLoadTask, :libnidaqmx), Cint, (Ref{UInt8}, Ref{TaskHandle}), taskName, taskHandle)
 end
 
-function CreateTask(taskName::Ref{UInt8}, taskHandle::Ref{TaskHandle})
-    ccall((:DAQmxCreateTask, :libnidaqmx), Cint, (Ref{UInt8}, Ref{TaskHandle}), taskName, taskHandle)
+function CreateTask(taskName::String, taskHandle::Ref{TaskHandle})
+    ccall((:DAQmxCreateTask, :libnidaqmx), Cint, (Cstring, Ref{TaskHandle}), taskName, taskHandle)
 end
 
 function AddGlobalChansToTask(taskHandle::TaskHandle, channelNames::Ref{UInt8})
@@ -53,16 +53,16 @@ function GetTaskAttribute(taskHandle::TaskHandle, attribute::Cint, value::Ref{Cv
     ccall((:DAQmxGetTaskAttribute, :libnidaqmx), Cint, (TaskHandle, Cint, Ref{Cvoid}), taskHandle, attribute, value)
 end
 
-function RegisterEveryNSamplesEvent(task::TaskHandle, everyNsamplesEventType::Cint, nSamples::Cuint, options::Cuint, callbackFunction::DAQmxEveryNSamplesEventCallbackPtr, callbackData::Ref{Cvoid})
-    ccall((:DAQmxRegisterEveryNSamplesEvent, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cuint, DAQmxEveryNSamplesEventCallbackPtr, Ref{Cvoid}), task, everyNsamplesEventType, nSamples, options, callbackFunction, callbackData)
+function RegisterEveryNSamplesEvent(task::TaskHandle, everyNsamplesEventType::Cint, nSamples::Cuint, options::Cuint, callbackFunction::EveryNSamplesEventCallbackPtr, callbackData::Ref{Cvoid})
+    ccall((:DAQmxRegisterEveryNSamplesEvent, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cuint, EveryNSamplesEventCallbackPtr, Ref{Cvoid}), task, everyNsamplesEventType, nSamples, options, callbackFunction, callbackData)
 end
 
-function RegisterDoneEvent(task::TaskHandle, options::Cuint, callbackFunction::DAQmxDoneEventCallbackPtr, callbackData::Ref{Cvoid})
-    ccall((:DAQmxRegisterDoneEvent, :libnidaqmx), Cint, (TaskHandle, Cuint, DAQmxDoneEventCallbackPtr, Ref{Cvoid}), task, options, callbackFunction, callbackData)
+function RegisterDoneEvent(task::TaskHandle, options::Cuint, callbackFunction::DoneEventCallbackPtr, callbackData::Ref{Cvoid})
+    ccall((:DAQmxRegisterDoneEvent, :libnidaqmx), Cint, (TaskHandle, Cuint, DoneEventCallbackPtr, Ref{Cvoid}), task, options, callbackFunction, callbackData)
 end
 
-function RegisterSignalEvent(task::TaskHandle, signalID::Cint, options::Cuint, callbackFunction::DAQmxSignalEventCallbackPtr, callbackData::Ref{Cvoid})
-    ccall((:DAQmxRegisterSignalEvent, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, DAQmxSignalEventCallbackPtr, Ref{Cvoid}), task, signalID, options, callbackFunction, callbackData)
+function RegisterSignalEvent(task::TaskHandle, signalID::Cint, options::Cuint, callbackFunction::SignalEventCallbackPtr, callbackData::Ref{Cvoid})
+    ccall((:DAQmxRegisterSignalEvent, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, SignalEventCallbackPtr, Ref{Cvoid}), task, signalID, options, callbackFunction, callbackData)
 end
 
 function CreateAIVoltageChan(taskHandle::TaskHandle, physicalChannel::Ref{UInt8}, nameToAssignToChannel::Ref{UInt8}, terminalConfig::Cint, minVal::Cdouble, maxVal::Cdouble, units::Cint, customScaleName::Ref{UInt8})
