@@ -5,7 +5,7 @@ function wrap_macro2enum!(ctx::AbstractContext,
     enum_sym = symbol_safe(constant_type)
     enum_type = Cint
     name2value = Tuple{Symbol,enum_type}[]
-    # FIXME: extract values and names
+    
     for cursor in cursors
         if constant_type == "DAQmxAttribute"
             item_name = spelling(cursor)[7:end]
