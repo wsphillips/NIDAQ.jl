@@ -1,20 +1,35 @@
-abstract type Task end
 
-for pre in ("AI", "AO", "DI", "DO", "CI", "CO")
-  @eval mutable struct $(Symbol(pre*"Task")) <: Task
-      th::TaskHandle
-  end
-  @eval $(Symbol(pre*"Task"))() = $(Symbol(pre*"Task"))(task())
-  @eval $(Symbol(pre*"Task"))(s::String) = $(Symbol(pre*"Task"))(task(s))
+#= eventually a task type hierarchy
+abstract type TaskType end
+abstract type AnalogIn       <: TaskType end
+abstract type AnalogOut      <: TaskType end
+abstract type DigitalIn      <: TaskType end
+abstract type DigitalOut     <: TaskType end
+=#
+
+struct DAQTask #TODO: create type hierarchy later
+    name::String
+    handle::TaskHandle
+
+        function DAQTask(name::String)
+            handle = TaskHandle()
+            if DAQmx.CreateTask(name, Ref(handle)) !== DAQmx.Success
+                throw("Something wrong.")
+            else
+                new(name, handle)
+            end
+        end
 end
 
-function task(name::String)
-    t = TaskHandle[0]
-    catch_error( DAQmxCreateTask(Ref(codeunits(name),1), pointer(t)) )
-    t[1]
-end
-task() = task("")
+DAQTask() = DAQTask("")
 
+#TODO: add start stop clear task
+
+function start(t::DAQTask) end
+function stop(t::DAQTask) end
+function clear(t::DAQTask) end
+
+#=
 for (cfunction, jfunction) in (
         (DAQmxStartTask, :start),
         (DAQmxStopTask, :stop),
@@ -28,19 +43,4 @@ for (cfunction, jfunction) in (
 
     """,jfunction," the specified NIDAQ task")) $jfunction
 end
-
-abstract type TaskType end
-abstract type AnalogInput       <: TaskType end
-abstract type AnalogOutput      <: TaskType end
-abstract type DigitalInput      <: TaskType end
-abstract type DigitalOutput     <: TaskType end
-
-struct DAQTask #where T <: TaskType
-    name::String
-    handle::TaskHandle
-        function DAQTask()
-            name = ""
-            handle = TaskHandle()
-            new(name, handle)
-        end
-end
+=#

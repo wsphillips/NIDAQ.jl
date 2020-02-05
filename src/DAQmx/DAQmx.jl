@@ -1,9 +1,10 @@
 module DAQmx
 
 export TaskHandle
-cd("src/DAQmx")
+cd("DAQmx")
 using CEnum
 
+const Success = Cint(0)
 const TaskHandle = Ptr{Cvoid}
 const CalHandle = Cuint
 const EveryNSamplesEventCallbackPtr = Ptr{Cvoid}
