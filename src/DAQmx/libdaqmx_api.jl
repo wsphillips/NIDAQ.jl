@@ -1,5 +1,5 @@
-# Automatically generated using Clang.jl
 
+# Task functions
 
 function LoadTask(taskName::Ref{UInt8}, taskHandle::Ref{TaskHandle})
     ccall((:DAQmxLoadTask, :libnidaqmx), Cint, (Ref{UInt8}, Ref{TaskHandle}), taskName, taskHandle)
@@ -64,6 +64,9 @@ end
 function RegisterSignalEvent(task::TaskHandle, signalID::Cint, options::Cuint, callbackFunction::SignalEventCallbackPtr, callbackData::Ref{Cvoid})
     ccall((:DAQmxRegisterSignalEvent, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, SignalEventCallbackPtr, Ref{Cvoid}), task, signalID, options, callbackFunction, callbackData)
 end
+
+#### Channel functions ####
+# Channel creation
 
 function CreateAIVoltageChan(taskHandle::TaskHandle, physicalChannel::Ref{UInt8}, nameToAssignToChannel::Ref{UInt8}, terminalConfig::Cint, minVal::Cdouble, maxVal::Cdouble, units::Cint, customScaleName::Ref{UInt8})
     ccall((:DAQmxCreateAIVoltageChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cdouble, Cdouble, Cint, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, terminalConfig, minVal, maxVal, units, customScaleName)
@@ -368,6 +371,8 @@ end
 function CreateCOPulseChanTicks(taskHandle::TaskHandle, counter::Ref{UInt8}, nameToAssignToChannel::Ref{UInt8}, sourceTerminal::Ref{UInt8}, idleState::Cint, initialDelay::Cint, lowTicks::Cint, highTicks::Cint)
     ccall((:DAQmxCreateCOPulseChanTicks, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Ref{UInt8}, Cint, Cint, Cint, Cint), taskHandle, counter, nameToAssignToChannel, sourceTerminal, idleState, initialDelay, lowTicks, highTicks)
 end
+
+# get/set channel
 
 function GetAIChanCalCalDate(taskHandle::TaskHandle, channelName::Ref{UInt8}, year::Ref{Cuint}, month::Ref{Cuint}, day::Ref{Cuint}, hour::Ref{Cuint}, minute::Ref{Cuint})
     ccall((:DAQmxGetAIChanCalCalDate, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{Cuint}, Ref{Cuint}, Ref{Cuint}, Ref{Cuint}, Ref{Cuint}), taskHandle, channelName, year, month, day, hour, minute)

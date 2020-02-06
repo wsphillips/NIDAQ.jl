@@ -7,40 +7,47 @@ abstract type DigitalIn      <: TaskType end
 abstract type DigitalOut     <: TaskType end
 =#
 
+#TODO: add real error checking/message retrieval
+
 struct DAQTask #TODO: create type hierarchy later
     name::String
     handle::TaskHandle
 
         function DAQTask(name::String)
-            handle = TaskHandle()
-            if DAQmx.CreateTask(name, Ref(handle)) !== DAQmx.Success
+            handleptr = Ref{TaskHandle}()
+            if DAQmx.CreateTask(name, handleptr) !== DAQmx.Success
                 throw("Something wrong.")
             else
-                new(name, handle)
+                new(name, handleptr[])
             end
         end
 end
 
 DAQTask() = DAQTask("")
 
-#TODO: add start stop clear task
+# start, stop, & clear task
 
-function start(t::DAQTask) end
-function stop(t::DAQTask) end
-function clear(t::DAQTask) end
-
-#=
-for (cfunction, jfunction) in (
-        (DAQmxStartTask, :start),
-        (DAQmxStopTask, :stop),
-        (DAQmxClearTask, :clear))
-    @eval function $jfunction(t::Task)
-        catch_error( $cfunction(t.th) )
-        nothing
+function start(t::DAQTask)
+    if DAQmx.StartTask(t.handle) !== DAQmx.Success
+        throw("something wrong.")
+    else
+        return nothing
     end
-
-    @eval @doc $(string("`", jfunction, """(task)`
-
-    """,jfunction," the specified NIDAQ task")) $jfunction
 end
-=#
+
+function stop(t::DAQTask)
+    if DAQmx.StopTask(t.handle) !== DAQmx.Success
+        throw("something wrong.")
+    else
+        return nothing
+    end
+end
+
+function clear(t::DAQTask)
+    if DAQmx.ClearTask(t.handle) !== DAQmx.Success
+        throw("something wrong.")
+    else
+        return nothing
+    end
+end
+
