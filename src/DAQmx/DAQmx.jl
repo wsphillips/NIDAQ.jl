@@ -1,7 +1,6 @@
 module DAQmx
 
 export TaskHandle
-cd("DAQmx")
 using CEnum
 
 const Success = Cint(0)
@@ -20,8 +19,8 @@ struct CVIAbsoluteTime
     cviTime::CVITime
 end
 
-include("libdaqmx_common.jl")
-include("libdaqmx_api.jl")
+include(joinpath(@__DIR__,"libdaqmx_common.jl"))
+include(joinpath(@__DIR__,"libdaqmx_api.jl"))
 
 end # module DAQmx
 
