@@ -1,17 +1,37 @@
-"""
-`devices() -> Vector{String}`
 
-get a list of available NIDAQ devices
-"""
-function devices()
-    sz = GetSysDevNames(Ref{UInt8}(C_NULL), UInt32(0))
-    data=String(zeros(UInt8,sz))
-    catch_error(GetSysDevNames(Ref(codeunits(data),1), UInt32(sz)))
-    devs = map((x)->convert(String,x), split(safechop(ascii(data)),", "))
-    devs[devs .!= ""]
-
+export DAQDevice, lsdev, DefaultDev, ChannelTypes, getchannels
+export AI, AO, DI, DO, CI, CO
+struct DAQDevice
+    name::String
 end
 
+function lsdev()
+    str = Vector{UInt8}(undef, 256) # arbitrary length of 256
+    size = UInt32(length(str))
+
+    if DAQmx.GetSysDevNames(str, size) < 0 
+        throw("something wrong.")
+    else
+        str[end] = 0
+        return String.(split(unsafe_string(pointer(str)), ", "; keepempty=false))
+    end
+end
+
+DefaultDev() = DAQDevice(lsdev()[1])
+
+@enum ChannelTypes begin
+    AI = 1
+    AO = 2
+    DI = 3
+    DO = 4
+    CI = 5
+    CO = 6
+end
+
+function getchannels(chantype::ChannelTypes, dev::DAQDevice=DefaultDev())
+end
+
+#=
 for (jfunction, cfunction) in (
         (:analog_input_channels, GetDevAIPhysicalChans),
         (:analog_output_channels, GetDevAOPhysicalChans),
@@ -214,3 +234,5 @@ function setproperty!(t::Task, channel::String, property::String, value)
     catch_error(ret, "DAQmxSet$kind$property: ")
     nothing
 end
+
+=#

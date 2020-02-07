@@ -10107,11 +10107,11 @@ function GetSysScales(data, bufferSize::Cuint)
 end
 
 function GetSysTasks(data, bufferSize::Cuint)
-    ccall((:DAQmxGetSysTasks, :libnidaqmx), Cint, (Cstring, Cuint), data, bufferSize)
+    ccall((:DAQmxGetSysTasks, :libnidaqmx), Cint, (Ptr{Cuint}, Cuint), data, bufferSize)
 end
 
 function GetSysDevNames(data, bufferSize::Cuint)
-    ccall((:DAQmxGetSysDevNames, :libnidaqmx), Cint, (Cstring, Cuint), data, bufferSize)
+    ccall((:DAQmxGetSysDevNames, :libnidaqmx), Cint, (Ptr{Cuint}, Cuint), data, bufferSize)
 end
 
 function GetSysNIDAQMajorVersion(data::Ref{Cuint})
