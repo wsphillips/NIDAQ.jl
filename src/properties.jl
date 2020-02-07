@@ -1,8 +1,20 @@
-
+using PrettyTables
 export DAQDevice, lsdev, DefaultDev, ChannelTypes, getchannels
 export AI, AO, DI, DO, CI, CO
+
+#=
+import Base.convert
+
+function Base.convert(String, str::DAQString)
+end
+=#
 struct DAQDevice
     name::String
+end
+
+
+function daqstring(str::Vector{UInt8})
+    return String.(split(unsafe_string(pointer(str)), ", "; keepempty=false))
 end
 
 function lsdev()
@@ -13,22 +25,77 @@ function lsdev()
         throw("something wrong.")
     else
         str[end] = 0
-        return String.(split(unsafe_string(pointer(str)), ", "; keepempty=false))
+        return daqstring(str)
     end
 end
 
 DefaultDev() = DAQDevice(lsdev()[1])
 
 @enum ChannelTypes begin
-    AI = 1
-    AO = 2
-    DI = 3
-    DO = 4
-    CI = 5
-    CO = 6
+    ALL = 0
+    AI  = 1
+    AO  = 2
+    DI  = 3
+    DO  = 4
+    CI  = 5
+    CO  = 6
 end
 
-function getchannels(chantype::ChannelTypes, dev::DAQDevice=DefaultDev())
+const chantype_names = ["Analog Input",
+                        "Analog Output",
+                        "Digital Input",
+                        "Digital Output",
+                        "Counter Input",
+                        "Counter Output"]
+
+const getchanfun = Dict([ (AI, DAQmx.GetDevAIPhysicalChans),
+                          (AO, DAQmx.GetDevAOPhysicalChans),
+                          (DI, DAQmx.GetDevDILines),
+                          (DO, DAQmx.GetDevDOLines),
+                          (CI, DAQmx.GetDevCIPhysicalChans),
+                          (CO, DAQmx.GetDevCOPhysicalChans)
+                        ])
+
+function getchannels(chantype::ChannelTypes=ALL, dev::DAQDevice=DefaultDev())
+
+    if chantype == ALL
+        
+        chans = Vector{Vector{String}}(undef, 6)
+        for (i, key) in enumerate(keys(getchanfun))
+            
+            str = Vector{UInt8}(undef, 256)
+            size = UInt32(length(str))
+                          
+            if getchanfun[key](dev, str) < 0
+                throw("something wrong.")
+            else
+                str[end] = 0
+                chans[i] = daqstring(str)
+            end
+        end
+
+        chandata = fill("", maximum(length(chans[x]) for x in 1:6), 6)
+
+        for (i, chan) in enumerate(chans)
+            chandata[1:length(chan), i] = chan
+        end
+
+        return pretty_table(chandata, chantype_names)
+
+    else
+        
+        str = Vector{UInt8}(undef, 256)
+        size = UInt32(length(str))
+
+        if getchanfun[chantype](dev, str) < 0
+            throw("something wrong.")
+        else
+            str[end] = 0
+            chans = daqstring(str)
+        end
+
+        return pretty_table(chans, chantype_names[Int(chantype)])
+    end
 end
 
 #=

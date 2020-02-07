@@ -3,6 +3,7 @@ uuid = "66b72792-1abf-55ab-8064-6e9051317175"
 
 [deps]
 CEnum = "fa961155-64e5-5f13-b03f-caf6b980ea82"
+PrettyTables = "08abe8d2-0d0c-5749-adfa-8a2ac140af0d"
 
 [compat]
 julia = "≥ 0.7.0"
