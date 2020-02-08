@@ -1,35 +1,45 @@
-using PrettyTables
-export DAQDevice, lsdev, DefaultDev, ChannelTypes, getchannels
+using PrettyTables, OrderedCollections
+export DAQDevice, lsdev, DefaultDev, ChannelTypes, lschan
 export AI, AO, DI, DO, CI, CO
 
-#=
-import Base.convert
-
-function Base.convert(String, str::DAQString)
+struct DAQStringBuffer
+    str::Vector{UInt8}
+    size::UInt32
+        function DAQStringBuffer(size::Int = 256)
+            str = Vector{UInt8}(undef, size)
+            size = UInt32(size)
+            new(str,size)
+        end
 end
-=#
+
+function Base.convert( ::Type{Vector{String}},
+                      x::DAQStringBuffer)
+    
+    x.str[end] = 0
+    strvec = split(unsafe_string(pointer(x.str)), ", "; keepempty=false)
+    return String.(strvec)
+end
+
 struct DAQDevice
     name::String
 end
 
-
-function daqstring(str::Vector{UInt8})
-    return String.(split(unsafe_string(pointer(str)), ", "; keepempty=false))
-end
-
-function lsdev()
-    str = Vector{UInt8}(undef, 256) # arbitrary length of 256
-    size = UInt32(length(str))
-
-    if DAQmx.GetSysDevNames(str, size) < 0 
+function lsdev(; show::Bool=true)
+    buf = DAQStringBuffer()
+    if DAQmx.GetSysDevNames(buf.str, buf.size) < 0 
         throw("something wrong.")
     else
-        str[end] = 0
-        return daqstring(str)
+        out = convert(Vector{String}, buf)
+        if show
+            println.(out)
+            return
+        else 
+            return out
+        end
     end
 end
 
-DefaultDev() = DAQDevice(lsdev()[1])
+DefaultDev() = DAQDevice(lsdev(show=false)[1])
 
 @enum ChannelTypes begin
     ALL = 0
@@ -48,86 +58,59 @@ const chantype_names = ["Analog Input",
                         "Counter Input",
                         "Counter Output"]
 
-const getchanfun = Dict([ (AI, DAQmx.GetDevAIPhysicalChans),
-                          (AO, DAQmx.GetDevAOPhysicalChans),
-                          (DI, DAQmx.GetDevDILines),
-                          (DO, DAQmx.GetDevDOLines),
-                          (CI, DAQmx.GetDevCIPhysicalChans),
-                          (CO, DAQmx.GetDevCOPhysicalChans)
-                        ])
+const getchanfun = LittleDict([ (AI, DAQmx.GetDevAIPhysicalChans),
+                                (AO, DAQmx.GetDevAOPhysicalChans),
+                                (DI, DAQmx.GetDevDILines),
+                                (DO, DAQmx.GetDevDOLines),
+                                (CI, DAQmx.GetDevCIPhysicalChans),
+                                (CO, DAQmx.GetDevCOPhysicalChans)
+                               ])
 
-function getchannels(chantype::ChannelTypes=ALL, dev::DAQDevice=DefaultDev())
-
+function lschan(chantype::ChannelTypes = ALL,
+                     dev::DAQDevice    = DefaultDev();
+                    show::Bool         = true)
+    
+    numtypes = length(chantype_names)
     if chantype == ALL
         
-        chans = Vector{Vector{String}}(undef, 6)
+        chans = Vector{Vector{String}}(undef, numtypes)
         for (i, key) in enumerate(keys(getchanfun))
             
-            str = Vector{UInt8}(undef, 256)
-            size = UInt32(length(str))
-                          
-            if getchanfun[key](dev, str) < 0
-                throw("something wrong.")
+            buf = DAQStringBuffer()
+
+            if getchanfun[key](dev.name, buf.str, buf.size) < 0
+                chans[i] = [""]
             else
-                str[end] = 0
-                chans[i] = daqstring(str)
+                chans[i] = convert(Vector{String}, buf)
             end
         end
 
-        chandata = fill("", maximum(length(chans[x]) for x in 1:6), 6)
-
-        for (i, chan) in enumerate(chans)
-            chandata[1:length(chan), i] = chan
-        end
-
-        return pretty_table(chandata, chantype_names)
-
-    else
+        show || return chans
         
-        str = Vector{UInt8}(undef, 256)
-        size = UInt32(length(str))
-
-        if getchanfun[chantype](dev, str) < 0
-            throw("something wrong.")
-        else
-            str[end] = 0
-            chans = daqstring(str)
+        chandata = fill("", maximum(length.(chans)), numtypes)
+        
+        for (j, chan) in enumerate(chans)
+            chandata[1:length(chan), j] = chan
         end
+        
+        return pretty_table(chandata, chantype_names)
+    else
 
-        return pretty_table(chans, chantype_names[Int(chantype)])
+        buf = DAQStringBuffer()
+        
+        if getchanfun[chantype](dev.name, buf.str, buf.size) < 0
+            return nothing
+        else
+            chans = convert(Vector{String}, buf)
+        end
+        
+        show || return chans
+
+        return pretty_table(chans, [chantype_names[Int(chantype)]])
     end
 end
 
 #=
-for (jfunction, cfunction) in (
-        (:analog_input_channels, GetDevAIPhysicalChans),
-        (:analog_output_channels, GetDevAOPhysicalChans),
-        (:digital_input_channels, GetDevDILines),
-        (:digital_output_channels, GetDevDOLines),
-        (:counter_input_channels, GetDevCIPhysicalChans),
-        (:counter_output_channels, GetDevCOPhysicalChans))
-    @eval function $jfunction(device::String)
-        sz = $cfunction(Ref(codeunits(device),1), Ref{UInt8}(C_NULL), UInt32(0))
-        data=zeros(UInt8,sz)
-        catch_error( $cfunction(Ref(codeunits(device),1), Ref(data,1),
-                UInt32(sz)) )
-        map((x)->convert(String,x), split(safechop(ascii(String(data))),", "))
-    end
-
-    @eval function $jfunction()
-        d = devices()
-        length(d)!=1 && error("NIDAQmx: more than one device")
-        $(Symbol(jfunction))(d[1])
-    end
-
-    @eval @doc $(string("`", jfunction, """() -> Vector{String}`
-
-    `""", jfunction, """(device) -> Vector{String}`
-
-    get a list of available channels for either the only available NIDAQ device or for the specified NIDAQ device
-    """)) $jfunction
-end
-
 for (jfunction, cfunction) in (
         (:analog_input_ranges, GetDevAIVoltageRngs),
         (:analog_output_ranges, GetDevAOVoltageRngs))

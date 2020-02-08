@@ -8334,8 +8334,8 @@ function GetDevTimeTrigSupported(device::Ref{UInt8}, data::Ref{Cuint})
     ccall((:DAQmxGetDevTimeTrigSupported, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
 end
 
-function GetDevAIPhysicalChans(device::Ref{UInt8}, data, bufferSize::Cuint)
-    ccall((:DAQmxGetDevAIPhysicalChans, :libnidaqmx), Cint, (Ref{UInt8}, Cstring, Cuint), device, data, bufferSize)
+function GetDevAIPhysicalChans(device::String, data::Vector{UInt8}, bufferSize::UInt32)
+    ccall((:DAQmxGetDevAIPhysicalChans, :libnidaqmx), Cint, (Cstring, Ref{Cuchar}, Cuint), device, data, bufferSize)
 end
 
 function GetDevAISupportedMeasTypes(device::Ref{UInt8}, data::Ref{Cint}, arraySizeInElements::Cuint)
@@ -8438,8 +8438,8 @@ function GetDevAIDigFltrLowpassCutoffFreqRangeVals(device::Ref{UInt8}, data::Ref
     ccall((:DAQmxGetDevAIDigFltrLowpassCutoffFreqRangeVals, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
 end
 
-function GetDevAOPhysicalChans(device::Ref{UInt8}, data, bufferSize::Cuint)
-    ccall((:DAQmxGetDevAOPhysicalChans, :libnidaqmx), Cint, (Ref{UInt8}, Cstring, Cuint), device, data, bufferSize)
+function GetDevAOPhysicalChans(device::String, data::Vector{UInt8}, bufferSize::UInt32)
+    ccall((:DAQmxGetDevAOPhysicalChans, :libnidaqmx), Cint, (Cstring, Ref{Cuchar}, Cuint), device, data, bufferSize)
 end
 
 function GetDevAOSupportedOutputTypes(device::Ref{UInt8}, data::Ref{Cint}, arraySizeInElements::Cuint)
@@ -8486,12 +8486,12 @@ function GetDevAOGains(device::Ref{UInt8}, data::Ref{Cdouble}, arraySizeInElemen
     ccall((:DAQmxGetDevAOGains, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
 end
 
-function GetDevDILines(device::Ref{UInt8}, data, bufferSize::Cuint)
-    ccall((:DAQmxGetDevDILines, :libnidaqmx), Cint, (Ref{UInt8}, Cstring, Cuint), device, data, bufferSize)
+function GetDevDILines(device::String, data::Vector{UInt8}, bufferSize::UInt32)
+    ccall((:DAQmxGetDevDILines, :libnidaqmx), Cint, (Cstring, Ref{Cuchar}, Cuint), device, data, bufferSize)
 end
 
-function GetDevDIPorts(device::Ref{UInt8}, data, bufferSize::Cuint)
-    ccall((:DAQmxGetDevDIPorts, :libnidaqmx), Cint, (Ref{UInt8}, Cstring, Cuint), device, data, bufferSize)
+function GetDevDIPorts(device::String, data::Vector{UInt8}, bufferSize::UInt32)
+    ccall((:DAQmxGetDevDIPorts, :libnidaqmx), Cint, (Cstring, Ref{Cuchar}, Cuint), device, data, bufferSize)
 end
 
 function GetDevDIMaxRate(device::Ref{UInt8}, data::Ref{Cdouble})
@@ -8506,12 +8506,12 @@ function GetDevDITrigUsage(device::Ref{UInt8}, data::Ref{Cint})
     ccall((:DAQmxGetDevDITrigUsage, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}), device, data)
 end
 
-function GetDevDOLines(device::Ref{UInt8}, data, bufferSize::Cuint)
-    ccall((:DAQmxGetDevDOLines, :libnidaqmx), Cint, (Ref{UInt8}, Cstring, Cuint), device, data, bufferSize)
+function GetDevDOLines(device::String, data::Vector{UInt8}, bufferSize::UInt32)
+    ccall((:DAQmxGetDevDOLines, :libnidaqmx), Cint, (Cstring, Ref{Cuchar}, Cuint), device, data, bufferSize)
 end
 
-function GetDevDOPorts(device::Ref{UInt8}, data, bufferSize::Cuint)
-    ccall((:DAQmxGetDevDOPorts, :libnidaqmx), Cint, (Ref{UInt8}, Cstring, Cuint), device, data, bufferSize)
+function GetDevDOPorts(device::String, data::Vector{UInt8}, bufferSize::UInt32)
+    ccall((:DAQmxGetDevDOPorts, :libnidaqmx), Cint, (Cstring, Ref{Cuchar}, Cuint), device, data, bufferSize)
 end
 
 function GetDevDOMaxRate(device::Ref{UInt8}, data::Ref{Cdouble})
@@ -8526,8 +8526,8 @@ function GetDevDOTrigUsage(device::Ref{UInt8}, data::Ref{Cint})
     ccall((:DAQmxGetDevDOTrigUsage, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}), device, data)
 end
 
-function GetDevCIPhysicalChans(device::Ref{UInt8}, data, bufferSize::Cuint)
-    ccall((:DAQmxGetDevCIPhysicalChans, :libnidaqmx), Cint, (Ref{UInt8}, Cstring, Cuint), device, data, bufferSize)
+function GetDevCIPhysicalChans(device::String, data::Vector{UInt8}, bufferSize::UInt32)
+    ccall((:DAQmxGetDevCIPhysicalChans, :libnidaqmx), Cint, (Cstring, Ref{Cuchar}, Cuint), device, data, bufferSize)
 end
 
 function GetDevCISupportedMeasTypes(device::Ref{UInt8}, data::Ref{Cint}, arraySizeInElements::Cuint)
@@ -8554,8 +8554,8 @@ function GetDevCIMaxTimebase(device::Ref{UInt8}, data::Ref{Cdouble})
     ccall((:DAQmxGetDevCIMaxTimebase, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), device, data)
 end
 
-function GetDevCOPhysicalChans(device::Ref{UInt8}, data, bufferSize::Cuint)
-    ccall((:DAQmxGetDevCOPhysicalChans, :libnidaqmx), Cint, (Ref{UInt8}, Cstring, Cuint), device, data, bufferSize)
+function GetDevCOPhysicalChans(device::String, data::Vector{UInt8}, bufferSize::UInt32)
+    ccall((:DAQmxGetDevCOPhysicalChans, :libnidaqmx), Cint, (Cstring, Ref{Cuchar}, Cuint), device, data, bufferSize)
 end
 
 function GetDevCOSupportedOutputTypes(device::Ref{UInt8}, data::Ref{Cint}, arraySizeInElements::Cuint)
@@ -10110,8 +10110,8 @@ function GetSysTasks(data, bufferSize::Cuint)
     ccall((:DAQmxGetSysTasks, :libnidaqmx), Cint, (Ptr{Cuint}, Cuint), data, bufferSize)
 end
 
-function GetSysDevNames(data, bufferSize::Cuint)
-    ccall((:DAQmxGetSysDevNames, :libnidaqmx), Cint, (Ptr{Cuint}, Cuint), data, bufferSize)
+function GetSysDevNames(data::Vector{UInt8}, bufferSize::Cuint)
+    ccall((:DAQmxGetSysDevNames, :libnidaqmx), Cint, (Ref{Cuchar}, Cuint), data, bufferSize)
 end
 
 function GetSysNIDAQMajorVersion(data::Ref{Cuint})
