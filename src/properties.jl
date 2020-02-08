@@ -14,7 +14,6 @@ end
 
 function Base.convert( ::Type{Vector{String}},
                       x::DAQStringBuffer)
-    
     x.str[end] = 0
     strvec = split(unsafe_string(pointer(x.str)), ", "; keepempty=false)
     return String.(strvec)
@@ -58,55 +57,52 @@ const chantype_names = ["Analog Input",
                         "Counter Input",
                         "Counter Output"]
 
-const getchanfun = LittleDict([ (AI, DAQmx.GetDevAIPhysicalChans),
-                                (AO, DAQmx.GetDevAOPhysicalChans),
-                                (DI, DAQmx.GetDevDILines),
-                                (DO, DAQmx.GetDevDOLines),
-                                (CI, DAQmx.GetDevCIPhysicalChans),
-                                (CO, DAQmx.GetDevCOPhysicalChans)
-                               ])
+const getchanfun = LittleDict(AI => DAQmx.GetDevAIPhysicalChans,
+                              AO => DAQmx.GetDevAOPhysicalChans,
+                              DI => DAQmx.GetDevDILines,
+                              DO => DAQmx.GetDevDOLines,
+                              CI => DAQmx.GetDevCIPhysicalChans,
+                              CO => DAQmx.GetDevCOPhysicalChans)
 
 function lschan(chantype::ChannelTypes = ALL,
                      dev::DAQDevice    = DefaultDev();
                     show::Bool         = true)
-    
     numtypes = length(chantype_names)
     if chantype == ALL
-        
         chans = Vector{Vector{String}}(undef, numtypes)
         for (i, key) in enumerate(keys(getchanfun))
-            
             buf = DAQStringBuffer()
-
             if getchanfun[key](dev.name, buf.str, buf.size) < 0
                 chans[i] = [""]
             else
                 chans[i] = convert(Vector{String}, buf)
             end
         end
-
         show || return chans
-        
         chandata = fill("", maximum(length.(chans)), numtypes)
-        
         for (j, chan) in enumerate(chans)
             chandata[1:length(chan), j] = chan
         end
-        
         return pretty_table(chandata, chantype_names)
     else
-
         buf = DAQStringBuffer()
-        
         if getchanfun[chantype](dev.name, buf.str, buf.size) < 0
             return nothing
         else
             chans = convert(Vector{String}, buf)
         end
-        
         show || return chans
-
         return pretty_table(chans, [chantype_names[Int(chantype)]])
+    end
+end
+
+function ranges(chantype::ChannelTypes)
+    chantype ∉ [AI, AO] && throw("Channel type must be AI or AO.")
+
+    if chantype == AI
+        # foo
+    else
+        #chan type AO
     end
 end
 
@@ -122,25 +118,13 @@ for (jfunction, cfunction) in (
         reshape(data,(2,length(data)>>1))'
     end
 
-    @eval function $jfunction()
-        d = devices()
-        length(d)!=1 && error("NIDAQmx: more than one device")
-        $jfunction(d[1])
-    end
-
-    @eval @doc $(string("`", jfunction, """() -> Matrix`
-
-    `""", jfunction, """(device) -> Matrix`
-
-    get a list of available ranges for either the only available NIDAQ device or for the specified NIDAQ device
-    """)) $jfunction
-end
-
 """
 `channel_type(task,channel) -> channel_type, measurement/output_type`
 
 get the type of the specified NIDAQ channel
 """
+
+
 function channel_type(t::Task, channel::String)
     val1 = Cint[0]
     catch_error(

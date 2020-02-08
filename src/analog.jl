@@ -74,10 +74,10 @@ end
 
 read_analog_cfunctions = Dict{Type,Function}(
     Float64 => ReadAnalogF64,
-    Int16 => ReadBinaryI16,
-    Int32 => ReadBinaryI32,
-    UInt16 => ReadBinaryU16,
-    UInt32 => ReadBinaryU32 )
+    Int16   => ReadBinaryI16,
+    Int32   => ReadBinaryI32,
+    UInt16  => ReadBinaryU16,
+    UInt32  => ReadBinaryU32)
 
 function read(t::AITask, num_samples_per_chan::Integer = -1, precision::DataType = Float64)
     outdata_ref = Ref{Cuint}()
