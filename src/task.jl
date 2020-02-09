@@ -7,11 +7,15 @@ abstract type DigitalIn      <: TaskType end
 abstract type DigitalOut     <: TaskType end
 =#
 
+
+
 #TODO: add real error checking/message retrieval
 
-struct DAQTask #TODO: create type hierarchy later
+mutable struct DAQTask #TODO: create type hierarchy later
     name::String
     handle::TaskHandle
+    channels::LittleDict{String, TaskChannel{T<:ChannelType}}
+    devices::LittleDict{String, DAQDevice}
 
         function DAQTask(name::String)
             handleptr = Ref{TaskHandle}()

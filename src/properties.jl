@@ -1,5 +1,6 @@
 using PrettyTables, OrderedCollections
 export DAQDevice, lsdev, DefaultDev, ChannelTypes, lschan
+export ranges
 export AI, AO, DI, DO, CI, CO
 
 struct DAQStringBuffer
@@ -23,18 +24,27 @@ struct DAQDevice
     name::String
 end
 
+
+struct PhysicalChannel{T<:ChannelType}
+    name::String
+    parent::DAQDevice
+    ranges::Union{Vector{Tuple{Float64,Float64}},Nothing}
+end
+
+struct TaskChannel{T<:ChannelType}
+    name::String
+    port::PhysicalChannel
+    attr::OrderedDict
+end
+
 function lsdev(; show::Bool=true)
     buf = DAQStringBuffer()
     if DAQmx.GetSysDevNames(buf.str, buf.size) < 0 
         throw("something wrong.")
     else
         out = convert(Vector{String}, buf)
-        if show
-            println.(out)
-            return
-        else 
-            return out
-        end
+        show && (println.(out); return)
+        return out
     end
 end
 
@@ -96,35 +106,45 @@ function lschan(chantype::ChannelTypes = ALL,
     end
 end
 
-function ranges(chantype::ChannelTypes)
-    chantype ∉ [AI, AO] && throw("Channel type must be AI or AO.")
+function ranges(chantype::ChannelTypes,
+                     dev::DAQDevice = DefaultDev())
 
+    chantype ∉ [AI, AO] && throw("Channel type must be AI or AO.")
+    
     if chantype == AI
-        # foo
-    else
-        #chan type AO
+        sz = DAQmx.GetDevAIVoltageRngs(dev.name, Vector{Float64}(), UInt32(0))
+        result = Vector{Float64}(undef, sz)
+        if DAQmx.GetDevAIVoltageRngs(dev.name, result, UInt32(sz)) < 0 
+            throw("Something wrong.")
+        end
+        pairs = Vector{Tuple{Float64,Float64}}(undef, sz>>1)
+        for i in 1:length(pairs) 
+            pairs[i] = (popfirst!(result),popfirst!(result))
+        end
+        return pairs
+    elseif chantype == AO
+        sz = DAQmx.GetDevAOVoltageRngs(dev.name, Vector{Float64}(), UInt32(0))
+        result = Vector{Float64}(undef, sz)
+        if DAQmx.GetDevAOVoltageRngs(dev.name, result, UInt32(sz)) < 0
+            throw("Somthing wrong.")
+        end
+        pairs = Vector{Tuple{Float64,Float64}}(undef, sz>>1)
+        for i in 1:length(pairs) 
+            pairs[i] = (popfirst!(result),popfirst!(result))
+        end
+        return pairs
     end
 end
 
-#=
-for (jfunction, cfunction) in (
-        (:analog_input_ranges, GetDevAIVoltageRngs),
-        (:analog_output_ranges, GetDevAOVoltageRngs))
-    @eval function $jfunction(device::String)
-        sz = $cfunction(Ref(codeunits(device),1), convert(Ptr{Float64},C_NULL), UInt32(0))
-        data=zeros(sz)
-        catch_error( $cfunction(Ref(codeunits(device),1), Ref(data,1),
-                UInt32(sz)) )
-        reshape(data,(2,length(data)>>1))'
-    end
+#function info(channel::TaskChannel)
+#end
 
+#=
 """
 `channel_type(task,channel) -> channel_type, measurement/output_type`
 
 get the type of the specified NIDAQ channel
 """
-
-
 function channel_type(t::Task, channel::String)
     val1 = Cint[0]
     catch_error(

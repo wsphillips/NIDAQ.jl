@@ -8374,8 +8374,8 @@ function GetDevAITrigUsage(device::Ref{UInt8}, data::Ref{Cint})
     ccall((:DAQmxGetDevAITrigUsage, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}), device, data)
 end
 
-function GetDevAIVoltageRngs(device::Ref{UInt8}, data::Ref{Cdouble}, arraySizeInElements::Cuint)
-    ccall((:DAQmxGetDevAIVoltageRngs, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
+function GetDevAIVoltageRngs(device::String, data::Vector{Float64}, arraySizeInElements::UInt32)
+    ccall((:DAQmxGetDevAIVoltageRngs, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
 end
 
 function GetDevAIVoltageIntExcitDiscreteVals(device::Ref{UInt8}, data::Ref{Cdouble}, arraySizeInElements::Cuint)
@@ -8474,8 +8474,8 @@ function GetDevAOTrigUsage(device::Ref{UInt8}, data::Ref{Cint})
     ccall((:DAQmxGetDevAOTrigUsage, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}), device, data)
 end
 
-function GetDevAOVoltageRngs(device::Ref{UInt8}, data::Ref{Cdouble}, arraySizeInElements::Cuint)
-    ccall((:DAQmxGetDevAOVoltageRngs, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
+function GetDevAOVoltageRngs(device::String, data::Vector{Float64}, arraySizeInElements::UInt32)
+    ccall((:DAQmxGetDevAOVoltageRngs, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
 end
 
 function GetDevAOCurrentRngs(device::Ref{UInt8}, data::Ref{Cdouble}, arraySizeInElements::Cuint)
