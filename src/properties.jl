@@ -7,7 +7,7 @@ function Base.convert( ::Type{Vector{String}},
 end
 
 function lsdev(; show::Bool=true)    
-    buf = DAQStringBuffer()
+    buf = DAQStringBuffer(DAQmx.GetSysDevNames(Vector{UInt8}(), UInt32(0)))
     if DAQmx.GetSysDevNames(buf.str, buf.size) < 0 
         throw("something wrong.")
     else
@@ -26,10 +26,13 @@ const getchanfun = freeze(LittleDict(AI => DAQmx.GetDevAIPhysicalChans,
                                      CI => DAQmx.GetDevCIPhysicalChans,
                                      CO => DAQmx.GetDevCOPhysicalChans))
 
-function lschan(chantype::Union{DataType{<:DAQChannel},Nothing} = nothing,
+function lschan(chantype::Union{Type{<:DAQChannel},Nothing} = nothing,
                      dev::DAQDevice = DefaultDev();
                     show::Bool = true)
+    
     numtypes = length(subtypes(DAQChannel))
+    chantype_names = String.(Symbol.(subtypes(DAQChannel)))
+    
     if chantype == nothing
         chans = Vector{Vector{String}}(undef, numtypes)
         for (i, key) in enumerate(keys(getchanfun))
@@ -55,12 +58,13 @@ function lschan(chantype::Union{DataType{<:DAQChannel},Nothing} = nothing,
             chans = convert(Vector{String}, buf)
         end
         show || return chans
-        return pretty_table(chans, [chantype_names[Int(chantype)]])
+        header = chantype_names[chantype .== subtypes(DAQChannel)]
+        return pretty_table(chans, [header])
     end
 end
 
-function ranges(chantype::DAQChannel,
-                     dev::DAQDevice = DefaultDev())
+function ranges(chantype::T,
+                     dev::DAQDevice = DefaultDev()) where T <: DAQChannel
 
     chantype ∉ [AI, AO] && throw("Channel type must be AI or AO.")
     

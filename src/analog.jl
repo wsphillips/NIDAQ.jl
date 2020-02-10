@@ -1,12 +1,5 @@
 @enum TerminalConfig::Cuint RSE=Val_RSE NRSE=Val_NRSE Differential=Val_Diff PseudoDifferential=Val_PseudoDiff
 
-analog_input_configs = Dict{AbstractString,TerminalConfig}(  # deprecate
-    "referenced single-ended" => RSE,
-    "non-referenced single-ended" => NRSE,
-    "pseudo-differential" => PseudoDifferential,
-    "differential" => Differential)
-
-
 """
 `analog_input(channel, config, range) -> task`
 
@@ -15,22 +8,14 @@ analog_input_configs = Dict{AbstractString,TerminalConfig}(  # deprecate
 create an analog input channel, and a new task if one is not specified
 """
 function analog_input(channel::String;
-                      terminal_config::Union{String,TerminalConfig}=Differential, range=nothing)
-    if typeof(terminal_config) == String  # deprecate
-      Base.depwarn("specifying terminal configurations with Strings is deprecated.  Use the TerminalConfig Enum instead.", :analog_input)
-      terminal_config = analog_input_configs[terminal_config]
-    end
+                      terminal_config::TerminalConfig=Differential, range=nothing)
     t = AITask()
     analog_input(t, channel, terminal_config=terminal_config, range=range)
     t
 end
 
 function analog_input(t::AITask, channel::String;
-                      terminal_config::Union{String,TerminalConfig}=Differential, range=nothing)
-    if typeof(terminal_config) == String  # deprecate
-      Base.depwarn("specifying terminal configurations with Strings is deprecated.  Use the TerminalConfig Enum instead.", :analog_input)
-      terminal_config = analog_input_configs[terminal_config]
-    end
+                      terminal_config::TerminalConfig=Differential, range=nothing)
     if range==nothing
         device::String = split(channel,'/')[1]
         range=float(analog_input_ranges(device)[end,:])
