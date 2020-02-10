@@ -1,41 +1,18 @@
 
-#= eventually a task type hierarchy
-abstract type TaskType end
-abstract type AnalogIn       <: TaskType end
-abstract type AnalogOut      <: TaskType end
-abstract type DigitalIn      <: TaskType end
-abstract type DigitalOut     <: TaskType end
-=#
-
-
-
-#TODO: add real error checking/message retrieval
-
-mutable struct DAQTask #TODO: create type hierarchy later
-    name::String
-    handle::TaskHandle
-    channels::LittleDict{String, TaskChannel{T<:ChannelType}}
-    devices::LittleDict{String, DAQDevice}
-
-        function DAQTask(name::String)
-            handleptr = Ref{TaskHandle}()
-            if DAQmx.CreateTask(name, handleptr) !== DAQmx.Success
-                throw("Something wrong.")
-            else
-                new(name, handleptr[])
-            end
-        end
+function update!(t::DAQtask)
 end
 
-DAQTask() = DAQTask("")
+function push!(t::DAQTask, chan::DAQChannel; kwargs...)
+end
 
-# start, stop, & clear task
+function push!(t::DAQTask, dev::DAQDevice; kwargs...)
+end
 
 function start(t::DAQTask)
     if DAQmx.StartTask(t.handle) !== DAQmx.Success
         throw("something wrong.")
     else
-        return nothing
+        return println("Running $(t.name)...")
     end
 end
 
@@ -51,7 +28,8 @@ function clear(t::DAQTask)
     if DAQmx.ClearTask(t.handle) !== DAQmx.Success
         throw("something wrong.")
     else
-        return nothing
+        t = nothing
+        return
     end
 end
 

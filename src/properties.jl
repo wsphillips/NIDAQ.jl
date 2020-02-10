@@ -1,17 +1,3 @@
-using PrettyTables, OrderedCollections
-export DAQDevice, lsdev, DefaultDev, ChannelTypes, lschan
-export ranges
-export AI, AO, DI, DO, CI, CO
-
-struct DAQStringBuffer
-    str::Vector{UInt8}
-    size::UInt32
-        function DAQStringBuffer(size::Int = 256)
-            str = Vector{UInt8}(undef, size)
-            size = UInt32(size)
-            new(str,size)
-        end
-end
 
 function Base.convert( ::Type{Vector{String}},
                       x::DAQStringBuffer)
@@ -20,24 +6,7 @@ function Base.convert( ::Type{Vector{String}},
     return String.(strvec)
 end
 
-struct DAQDevice
-    name::String
-end
-
-
-struct PhysicalChannel{T<:ChannelType}
-    name::String
-    parent::DAQDevice
-    ranges::Union{Vector{Tuple{Float64,Float64}},Nothing}
-end
-
-struct TaskChannel{T<:ChannelType}
-    name::String
-    port::PhysicalChannel
-    attr::OrderedDict
-end
-
-function lsdev(; show::Bool=true)
+function lsdev(; show::Bool=true)    
     buf = DAQStringBuffer()
     if DAQmx.GetSysDevNames(buf.str, buf.size) < 0 
         throw("something wrong.")
@@ -50,40 +19,24 @@ end
 
 DefaultDev() = DAQDevice(lsdev(show=false)[1])
 
-@enum ChannelTypes begin
-    ALL = 0
-    AI  = 1
-    AO  = 2
-    DI  = 3
-    DO  = 4
-    CI  = 5
-    CO  = 6
-end
+const getchanfun = freeze(LittleDict(AI => DAQmx.GetDevAIPhysicalChans,
+                                     AO => DAQmx.GetDevAOPhysicalChans,
+                                     DI => DAQmx.GetDevDILines,
+                                     DO => DAQmx.GetDevDOLines,
+                                     CI => DAQmx.GetDevCIPhysicalChans,
+                                     CO => DAQmx.GetDevCOPhysicalChans))
 
-const chantype_names = ["Analog Input",
-                        "Analog Output",
-                        "Digital Input",
-                        "Digital Output",
-                        "Counter Input",
-                        "Counter Output"]
-
-const getchanfun = LittleDict(AI => DAQmx.GetDevAIPhysicalChans,
-                              AO => DAQmx.GetDevAOPhysicalChans,
-                              DI => DAQmx.GetDevDILines,
-                              DO => DAQmx.GetDevDOLines,
-                              CI => DAQmx.GetDevCIPhysicalChans,
-                              CO => DAQmx.GetDevCOPhysicalChans)
-
-function lschan(chantype::ChannelTypes = ALL,
-                     dev::DAQDevice    = DefaultDev();
-                    show::Bool         = true)
-    numtypes = length(chantype_names)
-    if chantype == ALL
+function lschan(chantype::Union{DataType{<:DAQChannel},Nothing} = nothing,
+                     dev::DAQDevice = DefaultDev();
+                    show::Bool = true)
+    numtypes = length(subtypes(DAQChannel))
+    if chantype == nothing
         chans = Vector{Vector{String}}(undef, numtypes)
         for (i, key) in enumerate(keys(getchanfun))
-            buf = DAQStringBuffer()
+            # Calling with null values returns buffer/string length
+            buf = DAQStringBuffer(getchanfun[key](dev.name, Vector{UInt8}(), UInt32(0)))
             if getchanfun[key](dev.name, buf.str, buf.size) < 0
-                chans[i] = [""]
+                throw("Something wrong.")
             else
                 chans[i] = convert(Vector{String}, buf)
             end
@@ -95,9 +48,9 @@ function lschan(chantype::ChannelTypes = ALL,
         end
         return pretty_table(chandata, chantype_names)
     else
-        buf = DAQStringBuffer()
+        buf = DAQStringBuffer(getchanfun[chantype](dev.name, Vector{UInt8}(), UInt32(0)))
         if getchanfun[chantype](dev.name, buf.str, buf.size) < 0
-            return nothing
+            throw("Something wrong.")
         else
             chans = convert(Vector{String}, buf)
         end
@@ -106,7 +59,7 @@ function lschan(chantype::ChannelTypes = ALL,
     end
 end
 
-function ranges(chantype::ChannelTypes,
+function ranges(chantype::DAQChannel,
                      dev::DAQDevice = DefaultDev())
 
     chantype ∉ [AI, AO] && throw("Channel type must be AI or AO.")
@@ -136,7 +89,7 @@ function ranges(chantype::ChannelTypes,
     end
 end
 
-#function info(channel::TaskChannel)
+#function info(channel::T) where T <: DAQChannel 
 #end
 
 #=
