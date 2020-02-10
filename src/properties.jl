@@ -19,21 +19,21 @@ end
 
 DefaultDev() = DAQDevice(lsdev(show=false)[1])
 
-const getchanfun = freeze(LittleDict(AI => DAQmx.GetDevAIPhysicalChans,
+const getchanfun = LittleDict(AI => DAQmx.GetDevAIPhysicalChans,
                                      AO => DAQmx.GetDevAOPhysicalChans,
                                      DI => DAQmx.GetDevDILines,
                                      DO => DAQmx.GetDevDOLines,
                                      CI => DAQmx.GetDevCIPhysicalChans,
-                                     CO => DAQmx.GetDevCOPhysicalChans))
+                                     CO => DAQmx.GetDevCOPhysicalChans)
 
-function lschan(chantype::Union{Type{<:DAQChannel},Nothing} = nothing,
+function lschan(iotype::Union{Type{<:AbstractIO},Nothing} = nothing,
                      dev::DAQDevice = DefaultDev();
                     show::Bool = true)
     
-    numtypes = length(subtypes(DAQChannel))
-    chantype_names = String.(Symbol.(subtypes(DAQChannel)))
+    numtypes = length(subtypes(AbstractIO))
+    iotype_names = String.(Symbol.(subtypes(AbstractIO)))
     
-    if chantype == nothing
+    if iotype == nothing
         chans = Vector{Vector{String}}(undef, numtypes)
         for (i, key) in enumerate(keys(getchanfun))
             # Calling with null values returns buffer/string length
@@ -49,26 +49,26 @@ function lschan(chantype::Union{Type{<:DAQChannel},Nothing} = nothing,
         for (j, chan) in enumerate(chans)
             chandata[1:length(chan), j] = chan
         end
-        return pretty_table(chandata, chantype_names)
+        return pretty_table(chandata, iotype_names)
     else
-        buf = DAQStringBuffer(getchanfun[chantype](dev.name, Vector{UInt8}(), UInt32(0)))
-        if getchanfun[chantype](dev.name, buf.str, buf.size) < 0
+        buf = DAQStringBuffer(getchanfun[iotype](dev.name, Vector{UInt8}(), UInt32(0)))
+        if getchanfun[iotype](dev.name, buf.str, buf.size) < 0
             throw("Something wrong.")
         else
             chans = convert(Vector{String}, buf)
         end
         show || return chans
-        header = chantype_names[chantype .== subtypes(DAQChannel)]
-        return pretty_table(chans, [header])
+        header = iotype_names[iotype .== subtypes(AbstractIO)]
+        return pretty_table(chans, header)
     end
 end
 
-function ranges(chantype::T,
-                     dev::DAQDevice = DefaultDev()) where T <: DAQChannel
+function ranges(iotype::T,
+                     dev::DAQDevice = DefaultDev()) where T <: AbstractIO
 
-    chantype ∉ [AI, AO] && throw("Channel type must be AI or AO.")
+    iotype ∉ [AI, AO] && throw("Channel type must be AI or AO.")
     
-    if chantype == AI
+    if iotype == AI
         sz = DAQmx.GetDevAIVoltageRngs(dev.name, Vector{Float64}(), UInt32(0))
         result = Vector{Float64}(undef, sz)
         if DAQmx.GetDevAIVoltageRngs(dev.name, result, UInt32(sz)) < 0 
@@ -79,7 +79,7 @@ function ranges(chantype::T,
             pairs[i] = (popfirst!(result),popfirst!(result))
         end
         return pairs
-    elseif chantype == AO
+    elseif iotype == AO
         sz = DAQmx.GetDevAOVoltageRngs(dev.name, Vector{Float64}(), UInt32(0))
         result = Vector{Float64}(undef, sz)
         if DAQmx.GetDevAOVoltageRngs(dev.name, result, UInt32(sz)) < 0
@@ -93,8 +93,9 @@ function ranges(chantype::T,
     end
 end
 
-#function info(channel::T) where T <: DAQChannel 
-#end
+function info(channel::TaskChannel{T}) where T
+
+end
 
 #=
 """
@@ -102,12 +103,8 @@ end
 
 get the type of the specified NIDAQ channel
 """
-function channel_type(t::Task, channel::String)
-    val1 = Cint[0]
-    catch_error(
         GetChanType(t.th, Ref(codeunits(channel),1), Ref(val1,1)) )
 
-    val2 = Cint[0]
     if val1[1] == Val_AI
         ret = GetAIMeasType(t.th, Ref(codeunits(channel),1), Ref(val2,1))
     elseif val1[1] == Val_AO
@@ -123,7 +120,12 @@ function channel_type(t::Task, channel::String)
 
     val1[1], val2[1]
 end
-
+=#
+function properties()
+    # allsymbols = names(DAQmx, all=true)
+    # propfuns = allsymbols[startswith.(String.(allsymbols), "Get")]
+    # syspropfuns = propfuns[startswith.(String.(propfuns), "GetSys")]
+#=
 function _getproperties(args, suffix::String, warning::Bool)
     ret_val = Dict{String,Tuple{Any,Bool}}()
     local settable

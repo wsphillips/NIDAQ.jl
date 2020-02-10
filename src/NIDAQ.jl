@@ -3,7 +3,7 @@ module NIDAQ
 include("DAQmx/DAQmx.jl")
 
 using .DAQmx
-using PrettyTables, OrderedCollections
+using PrettyTables, OrderedCollections, InteractiveUtils
 import Base.write, Base.read
 
 export DAQmx

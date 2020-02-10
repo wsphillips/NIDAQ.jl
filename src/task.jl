@@ -1,5 +1,5 @@
 
-function update!(t::DAQtask)
+function update!(t::DAQTask)
 end
 
 function push!(t::DAQTask, chan::DAQChannel; kwargs...)
