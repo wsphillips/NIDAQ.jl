@@ -19,12 +19,14 @@ end
 
 DefaultDev() = DAQDevice(lsdev(show=false)[1])
 
-const getchanfun = LittleDict(AI => DAQmx.GetDevAIPhysicalChans,
-                                     AO => DAQmx.GetDevAOPhysicalChans,
-                                     DI => DAQmx.GetDevDILines,
-                                     DO => DAQmx.GetDevDOLines,
-                                     CI => DAQmx.GetDevCIPhysicalChans,
-                                     CO => DAQmx.GetDevCOPhysicalChans)
+const getchanfun = LittleDict(
+    AI => DAQmx.GetDevAIPhysicalChans,
+    AO => DAQmx.GetDevAOPhysicalChans,
+    DI => DAQmx.GetDevDILines,
+    DO => DAQmx.GetDevDOLines,
+    CI => DAQmx.GetDevCIPhysicalChans,
+    CO => DAQmx.GetDevCOPhysicalChans
+)
 
 function lschan(iotype::Union{Type{<:AbstractIO},Nothing} = nothing,
                      dev::DAQDevice = DefaultDev();
@@ -93,11 +95,62 @@ function ranges(iotype::T,
     end
 end
 
+# Sort the property functions first
+#
+#
+
+function Base.startswith(sym::Symbol, x)
+    return startswith(String(sym), x)
+end
+
+function parse_symbols()
+    
+    prefixes = ["AI","AO","DI","DO","CI","CO"]
+
+    all_symbols = names(DAQmx, all=true)
+
+    get_functions = all_symbols[startswith.(all_symbols, "Get")]
+    set_functions = all_symbols[startswith.(all_symbols, "Set")]
+
+    get_function_map = Dict( x => Vector{Function}() for x in prefixes )
+    set_function_map = Dict( x => Vector{Function}() for x in prefixes )
+    
+    get_sysdev_map = Dict( "Sys" => Vector{Function}(),
+                           "Dev" => Vector{Function}())
+
+    #set_sysdev_map = Dict( "Sys" => Vector{Function}(),
+    #                       "Dev" => Vector{Function}())
+    
+    sysget = getfield.([DAQmx], get_functions[startswith.(get_functions, "GetSys")])
+    devget = getfield.([DAQmx], get_functions[startswith.(get_functions, "GetDev")])
+
+    #sysset = getfield.([DAQmx], get_functions[startswith.(set_functions, "SetSys")])
+    #devset = getfield.([DAQmx], get_functions[startswith.(set_fucntions, "SetDev")])
+
+    get_sysdev_map["Sys"] = sysget
+    get_sysdev_map["Dev"] = devget
+    #push!(set_sysdev_map["Sys"], sysset)
+    #push!(set_sysdev_map["Dev"], devset)
+
+    for key in prefixes
+        get_subset = getfield.([DAQmx], get_functions[startswith.(get_functions, "Get$key")])
+        set_subset = getfield.([DAQmx], set_functions[startswith.(set_functions, "Set$key")])
+
+        get_function_map[key] = get_subset
+        set_function_map[key] = set_subset
+    end
+    
+    return (get_function_map, set_function_map, get_sysdev_map) # set_sysdev_map)
+end
+
+const (get_function_map, set_function_map, get_sysdev_map) = parse_symbols()
+
+#=
 function info(channel::TaskChannel{T}) where T
 
 end
 
-#=
+
 """
 `channel_type(task,channel) -> channel_type, measurement/output_type`
 
@@ -120,12 +173,12 @@ get the type of the specified NIDAQ channel
 
     val1[1], val2[1]
 end
-=#
+
 function properties()
     # allsymbols = names(DAQmx, all=true)
     # propfuns = allsymbols[startswith.(String.(allsymbols), "Get")]
     # syspropfuns = propfuns[startswith.(String.(propfuns), "GetSys")]
-#=
+
 function _getproperties(args, suffix::String, warning::Bool)
     ret_val = Dict{String,Tuple{Any,Bool}}()
     local settable
@@ -236,8 +289,6 @@ end
 
 """
 `setproperty!(task,channel,property,value)`
-
-set the specified NIDAQ property to value
 """
 function setproperty!(t::Task, channel::String, property::String, value)
     kind = channel_types[ findall(channel_type(t, channel)[1] .==
@@ -245,7 +296,6 @@ function setproperty!(t::Task, channel::String, property::String, value)
 
     @eval ret = $(Symbol("DAQmxSet"*kind*property))($t.th, Ref(codeunits($channel),1), $value)
     catch_error(ret, "DAQmxSet$kind$property: ")
-    nothing
 end
 
 =#
