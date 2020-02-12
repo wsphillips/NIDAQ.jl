@@ -96,8 +96,6 @@ function ranges(iotype::T,
 end
 
 # Sort the property functions first
-#
-#
 
 function Base.startswith(sym::Symbol, x)
     return startswith(String(sym), x)
@@ -105,141 +103,124 @@ end
 
 function parse_symbols()
     
-    prefixes = ["AI","AO","DI","DO","CI","CO"]
+    get_prefixes = ["AI","AO","DI","DO","CI","CO","Sys","Dev","Task"]
+    set_prefixes = get_prefixes[1:end-3]
 
     all_symbols = names(DAQmx, all=true)
 
-    get_functions = all_symbols[startswith.(all_symbols, "Get")]
-    set_functions = all_symbols[startswith.(all_symbols, "Set")]
+    get_functions = all_symbols[startswith.(all_symbols,"Get")]
+    set_functions = all_symbols[startswith.(all_symbols,"Set")]
 
-    get_function_map = Dict( x => Vector{Function}() for x in prefixes )
-    set_function_map = Dict( x => Vector{Function}() for x in prefixes )
+    get_function_map = Dict(x => Vector{Function}() for x in get_prefixes)
+    set_function_map = Dict(x => Vector{Function}() for x in set_prefixes)
     
-    get_sysdev_map = Dict( "Sys" => Vector{Function}(),
-                           "Dev" => Vector{Function}())
+    for getkey in get_prefixes
+        get_subset = getfield.([DAQmx], get_functions[startswith.(get_functions,"Get$getkey")])
+        get_function_map[getkey] = get_subset
+    end
 
-    #set_sysdev_map = Dict( "Sys" => Vector{Function}(),
-    #                       "Dev" => Vector{Function}())
-    
-    sysget = getfield.([DAQmx], get_functions[startswith.(get_functions, "GetSys")])
-    devget = getfield.([DAQmx], get_functions[startswith.(get_functions, "GetDev")])
-
-    #sysset = getfield.([DAQmx], get_functions[startswith.(set_functions, "SetSys")])
-    #devset = getfield.([DAQmx], get_functions[startswith.(set_fucntions, "SetDev")])
-
-    get_sysdev_map["Sys"] = sysget
-    get_sysdev_map["Dev"] = devget
-    #push!(set_sysdev_map["Sys"], sysset)
-    #push!(set_sysdev_map["Dev"], devset)
-
-    for key in prefixes
-        get_subset = getfield.([DAQmx], get_functions[startswith.(get_functions, "Get$key")])
-        set_subset = getfield.([DAQmx], set_functions[startswith.(set_functions, "Set$key")])
-
-        get_function_map[key] = get_subset
-        set_function_map[key] = set_subset
+    for setkey in set_prefixes
+        set_subset = getfield.([DAQmx], set_functions[startswith.(set_functions,"Set$setkey")])
+        set_function_map[setkey] = set_subset
     end
     
-    return (get_function_map, set_function_map, get_sysdev_map) # set_sysdev_map)
+    return (get_function_map, set_function_map)
 end
 
-const (get_function_map, set_function_map, get_sysdev_map) = parse_symbols()
-
-#=
-function info(channel::TaskChannel{T}) where T
-
-end
+const (get_function_map, set_function_map) = parse_symbols()
 
 
 """
 `channel_type(task,channel) -> channel_type, measurement/output_type`
 
+    GetChanType(channel.parent, channel.name, val1)
 get the type of the specified NIDAQ channel
 """
-        GetChanType(t.th, Ref(codeunits(channel),1), Ref(val1,1)) )
-
-    if val1[1] == Val_AI
-        ret = GetAIMeasType(t.th, Ref(codeunits(channel),1), Ref(val2,1))
-    elseif val1[1] == Val_AO
-        ret = GetAOOutputType(t.th, Ref(codeunits(channel),1), Ref(val2,1))
-    elseif val1[1] == Val_DI || val1[1] == Val_DO
-        return val1[1], nothing
-    elseif val1[1] == Val_CI
-        ret = GetCIMeasType(t.th, Ref(codeunits(channel),1), Ref(val2,1))
-    elseif val1[1] == Val_CO
-        ret = GetCOOutputType(t.th, Ref(codeunits(channel),1), Ref(val2,1))
+function info(channel::TaskChannel{T}) where T
+    
+    val = Int32(0)
+    if T == AI
+        GetAIMeasType(channel.parent, channel.name, val)
+    elseif T == AO
+        GetAOOutputType(channel.parent, channel.name, val)
+    elseif T ∈ [DI, DO]
+        return (T, nothing)
+    elseif T == CI
+        GetCIMeasType(channel.parent, channel.name, val)
+    elseif T == CO
+        GetCOOutputType(channel.parent, channel.name, val)
     end
-    catch_error(ret)
 
-    val1[1], val2[1]
+    return (T, val)
 end
 
-function properties()
-    # allsymbols = names(DAQmx, all=true)
-    # propfuns = allsymbols[startswith.(String.(allsymbols), "Get")]
-    # syspropfuns = propfuns[startswith.(String.(propfuns), "GetSys")]
+function argtypes(fun::Function)
+    a = methods(fun).ms[1] # DAQmx wrappers have only one method
+    return fieldtypes(a.sig)[2:end] # and at least one argument!
+end
+
+#=
 
 function _getproperties(args, suffix::String, warning::Bool)
-    ret_val = Dict{String,Tuple{Any,Bool}}()
-    local settable
-    local data
-    local ret
-    for sym in names(NIDAQ, all=true)
-        eval(:(!(typeof(NIDAQ.$sym) <:Function))) && continue
-        if string(sym)[1:min(end,8+length(suffix))]=="DAQmxGet"*suffix
-            cfunction = getfield(NIDAQ, sym)
-	    ccall_args = code_lowered(cfunction)[1].code[end-1].args[3]
-            try
-                basetype = eltype(ccall_args[1+length(args)])
-                if length(ccall_args)==1+length(args)
-                    data = Ref{basetype}(0)
-                    ret = cfunction(args..., data)
-                    data = data[]
-                else
-                    sz = cfunction(args..., convert(Ptr{basetype},C_NULL), convert(UInt32,0))
-                    if sz<0
-                      ret=sz
-                      throw()
-                    end
-                    data = zeros(basetype,sz)
-                    ret = cfunction(args..., Ref(data,1), convert(UInt32,sz))
-                end
-                if ret!=0
-                    throw()
-                elseif basetype == Bool32
-                    data = reinterpret(UInt32, data) != 0
-                elseif basetype == Int32
-                    try
-                        data = map((x)->signed_constants[x], data)
-                    catch
-                    end
-                elseif basetype == UInt32
-                    try
-                        data = map((x)->unsigned_constants[x], data)
-                    catch
-                    end
-                elseif basetype == UInt8
-                    data = split(safechop(ascii(String(data))),", ")
 
-                end
-            catch
-                if warning
-                    if ret!=0
-                        catch_error(ret, string(cfunction)*": ", err_fcn=x->@warn(x))
-                    else
-                        @warn("can't handle function signature for $cfunction: $ccall_args")
-                    end
-                end
-                continue
-            end
-            try
-                getfield(NIDAQ, Symbol(replace(string(cfunction),"Get"*suffix =>"Set"*suffix)))
-                settable=true
-            catch
-                settable=false
-            end
-            ret_val[string(cfunction)[15+length(suffix):end]] = (data, settable)
+    for f in get_function_map[suffix]
+        fun_argtypes = argtypes(f)
+
+        try
+        basetype = eltype(ccall_args[1+length(args)])
+
+        if length(ccall_args)==1+length(args)
+            data = Ref{basetype}(0)
+            ret = cfunction(args..., data)
+            data = data[]
+        else
+            sz = cfunction(args...)
         end
+
+        if sz<0
+            ret=sz
+            throw()
+        end
+        data = zeros(basetype,sz)
+        ret = cfunction(args..., Ref(data,1), convert(UInt32,sz))
+        end
+
+if ret!=0
+        throw()
+    elseif basetype == Bool32
+        data = reinterpret(UInt32, data) != 0
+    elseif basetype == Int32
+        try
+            data = map((x)->signed_constants[x], data)
+        catch
+        end
+    elseif basetype == UInt32
+        try
+            data = map((x)->unsigned_constants[x], data)
+        catch
+        end
+    elseif basetype == UInt8
+        data = split(safechop(ascii(String(data))),", ")
+
+    end
+   catch
+       if warning
+           if ret!=0
+               catch_error(ret, string(cfunction)*": ", err_fcn=x->@warn(x))
+           else
+               @warn("can't handle function signature for $cfunction: $ccall_args")
+           end
+       end
+       continue
+   end
+   try
+       getfield(NIDAQ, Symbol(replace(string(cfunction),"Get"*suffix =>"Set"*suffix)))
+       settable=true
+   catch
+       settable=false
+   end
+   ret_val[string(cfunction)[15+length(suffix):end]] = (data, settable)
+   end
     end
     ret_val
 end
