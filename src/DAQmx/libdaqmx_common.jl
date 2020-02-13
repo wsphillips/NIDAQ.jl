@@ -838,7 +838,7 @@ end
     ScaledUnits = 6427
     TablePreScaledVals = 4663
     TableScaledVals = 4662
-    Type = 6441
+    _Type = 6441
 end
 
 @cenum Write::Int32 begin

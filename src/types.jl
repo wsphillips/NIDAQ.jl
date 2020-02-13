@@ -40,7 +40,6 @@ end
 mutable struct DAQDevice
     name::String
     channels::Union{LittleDict,Nothing}
-    
     function DAQDevice(name::String)
         x = new(name)
         chanobjs = lschan(x; asobjects=true)
@@ -56,26 +55,33 @@ struct PhysicalChannel{T<:AbstractIO} <: DAQChannel
     ranges::Union{Vector{Tuple{Float64,Float64}},Nothing}
 end
 
-mutable struct TaskChannel{T<:AbstractIO} <: DAQChannel
-    name::String
-    phys::PhysicalChannel
-    attr::OrderedDict
-end
-
 mutable struct DAQTask
         name::String
       handle::TaskHandle
-     devices::Union{Vector{DAQDevice},Nothing}
-    channels::Union{LittleDict,Nothing}
+      device::Union{DAQDevice,Nothing}
+      channels::Union{Vector{PhysicalChannel},Nothing}
 
-        function DAQTask(name::String)
-            handleptr = Ref{TaskHandle}()
-            if DAQmx.CreateTask(name, handleptr) !== DAQmx.Success
-                throw("Something wrong.")
-            else
-                new(name, handleptr[], nothing, nothing)
-            end
+    function DAQTask(name::String)
+        handleptr = Ref{TaskHandle}()
+        if DAQmx.CreateTask(name, handleptr) !== DAQmx.Success
+            throw("Something wrong.")
+        else
+            new(name, handleptr[], nothing, nothing)
         end
+    end
+end
+
+mutable struct TaskChannel{T<:AbstractIO} <: DAQChannel
+      name::String
+    parent::DAQTask
+      phys::PhysicalChannel
+      attr::OrderedDict
+
+    function TaskChannel{<:AbstractIO}(  name::String, 
+                                       parent::DAQTask,
+                                        pchan::PhysicalChannel)
+        new(name, parent, pchan, OrderedDict())
+    end
 end
 
 DAQTask() = DAQTask("")

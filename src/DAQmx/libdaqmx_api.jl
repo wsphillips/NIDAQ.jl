@@ -68,8 +68,8 @@ end
 #### Channel functions ####
 # Channel creation
 
-function CreateAIVoltageChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Int32, minVal::Float64, maxVal::Float64, units::Int32, customScaleName::String)
-    ccall((:DAQmxCreateAIVoltageChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cdouble, Cdouble, Cint, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, terminalConfig, minVal, maxVal, units, customScaleName)
+function CreateAIVoltageChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::DAQmxConstant, minVal::Float64, maxVal::Float64, units::DAQmxConstant, customScaleName::String)
+    ccall((:DAQmxCreateAIVoltageChan, :libnidaqmx), Cint, (TaskHandle, Cstring, Cstring, Cint, Cdouble, Cdouble, Cint, Cstring), taskHandle, physicalChannel, nameToAssignToChannel, terminalConfig, minVal, maxVal, units, customScaleName)
 end
 
 function CreateAICurrentChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Int32, minVal::Float64, maxVal::Float64, units::Int32, shuntResistorLoc::Int32, extShuntResistorVal::Float64, customScaleName::String)
