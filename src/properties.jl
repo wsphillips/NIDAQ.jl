@@ -19,15 +19,6 @@ end
 
 DefaultDev() = DAQDevice(lsdev(show=false)[1])
 
-const getchanfun = LittleDict(
-    AI => DAQmx.GetDevAIPhysicalChans,
-    AO => DAQmx.GetDevAOPhysicalChans,
-    DI => DAQmx.GetDevDILines,
-    DO => DAQmx.GetDevDOLines,
-    CI => DAQmx.GetDevCIPhysicalChans,
-    CO => DAQmx.GetDevCOPhysicalChans
-)
-
 function lschan(iotype::Union{Type{<:AbstractIO},Nothing} = nothing,
                      dev::DAQDevice = DefaultDev();
                     show::Bool = true)
@@ -65,10 +56,10 @@ function lschan(iotype::Union{Type{<:AbstractIO},Nothing} = nothing,
     end
 end
 
-function ranges(iotype::T,
+function ranges(iotype::Type{T},
                      dev::DAQDevice = DefaultDev()) where T <: AbstractIO
 
-    iotype ∉ [AI, AO] && throw("Channel type must be AI or AO.")
+    iotype ∉ [AI, AO] && return nothing
     
     if iotype == AI
         sz = DAQmx.GetDevAIVoltageRngs(dev.name, Vector{Float64}(), UInt32(0))
@@ -93,6 +84,17 @@ function ranges(iotype::T,
         end
         return pairs
     end
+end
+
+function lschan(dev::DAQDevice; asobjects = true)
+    allchans = lschan(nothing, dev; show = false)
+    chanobjs = Vector{Vector{PhysicalChannel{<:AbstractIO}}}(undef, length(keys(getchanfun)))
+    alltypes = collect(keys(getchanfun))
+    for (i, chanvec) in enumerate(allchans)
+        t  = alltypes[i]      
+        chanobjs[i] = [PhysicalChannel{t}(x,dev,ranges(t,dev)) for x in chanvec]
+    end
+    return chanobjs
 end
 
 # Sort the property functions first
@@ -129,12 +131,9 @@ end
 
 const (get_function_map, set_function_map) = parse_symbols()
 
-
 """
 `channel_type(task,channel) -> channel_type, measurement/output_type`
-
     GetChanType(channel.parent, channel.name, val1)
-get the type of the specified NIDAQ channel
 """
 function info(channel::TaskChannel{T}) where T
     
@@ -159,124 +158,50 @@ function argtypes(fun::Function)
     return fieldtypes(a.sig)[2:end] # and at least one argument!
 end
 
-#=
+# Get function for dev, sys, task, channel
+# channel properties
+function getproperties(channel::TaskChannel{T}; warning=false) where T
 
-function _getproperties(args, suffix::String, warning::Bool)
-
-    for f in get_function_map[suffix]
+    for f in get_function_map[string(T)]
         fun_argtypes = argtypes(f)
-
-        try
-        basetype = eltype(ccall_args[1+length(args)])
-
-        if length(ccall_args)==1+length(args)
-            data = Ref{basetype}(0)
-            ret = cfunction(args..., data)
-            data = data[]
-        else
-            sz = cfunction(args...)
-        end
-
-        if sz<0
-            ret=sz
-            throw()
-        end
-        data = zeros(basetype,sz)
-        ret = cfunction(args..., Ref(data,1), convert(UInt32,sz))
-        end
-
-if ret!=0
-        throw()
-    elseif basetype == Bool32
-        data = reinterpret(UInt32, data) != 0
-    elseif basetype == Int32
-        try
-            data = map((x)->signed_constants[x], data)
-        catch
-        end
-    elseif basetype == UInt32
-        try
-            data = map((x)->unsigned_constants[x], data)
-        catch
-        end
-    elseif basetype == UInt8
-        data = split(safechop(ascii(String(data))),", ")
-
     end
-   catch
-       if warning
-           if ret!=0
-               catch_error(ret, string(cfunction)*": ", err_fcn=x->@warn(x))
-           else
-               @warn("can't handle function signature for $cfunction: $ccall_args")
-           end
-       end
-       continue
-   end
-   try
-       getfield(NIDAQ, Symbol(replace(string(cfunction),"Get"*suffix =>"Set"*suffix)))
-       settable=true
-   catch
-       settable=false
-   end
-   ret_val[string(cfunction)[15+length(suffix):end]] = (data, settable)
-   end
-    end
-    ret_val
+
+    return
 end
 
-"""
-`getproperties(warning=false) -> Dict`
-
-get the NIDAQ system properties
-"""
+# system properties
 function getproperties(; warning=false)
-    _getproperties((), "Sys", warning)
+
+    for f in get_function_map["Sys"]
+    end
+
+    return
 end
 
-"""
-`getproperties(device; warning=false) -> Dict`
+# device properties
+function getproperties(dev::DAQDevice; warning=false)
 
-get the properties of the specified NIDAQ device
-"""
-function getproperties(device::String; warning=false)
-    _getproperties((Ref(codeunits(device),1),), "Dev", warning)
+    for f in get_function_map["Dev"]
+    end
+
+    return
 end
 
-"""
-`getproperties(task; warning=false) -> Dict`
+# task properties
+function getproperties(task::DAQTask; warning=false)
 
-get the properties of the specified NIDAQ task
-"""
-function getproperties(t::Task; warning=false)
-    _getproperties((t.th,), "Task", warning)
+    for f in get_function_map["Task"]
+    end
+
+    return
 end
 
-channel_types = ["Val_AI", "Val_AO",
-                 "Val_DI", "Val_DO",
-                 "Val_CI", "Val_CO"]
+# set properties (maybe split this up)
+function setproperty!(t::DAQTask, channel::T, property::String, value) where T <: DAQChannel
+    for f in set_function_map[]
+    end
 
-"""
-`getproperties(task,channel; warning=false) -> Dict`
-
-get the properties of the specified NIDAQ channel
-"""
-function getproperties(t::Task, channel::String; warning=false)
-    kind = channel_types[ findall(channel_type(t, channel)[1] .==
-            map((x)->getfield(NIDAQ,Symbol(x)), channel_types))[1]][end-1:end]
-
-    _getproperties((t.th, Ref(codeunits(channel),1)), kind, warning)
+    return
 end
 
-"""
-`setproperty!(task,channel,property,value)`
-"""
-function setproperty!(t::Task, channel::String, property::String, value)
-    kind = channel_types[ findall(channel_type(t, channel)[1] .==
-            map((x)->getfield(NIDAQ,Symbol(x)), channel_types))[1]][end-1:end]
 
-    @eval ret = $(Symbol("DAQmxSet"*kind*property))($t.th, Ref(codeunits($channel),1), $value)
-    catch_error(ret, "DAQmxSet$kind$property: ")
-end
-
-=#

@@ -2,33 +2,33 @@
 function update!(t::DAQTask)
 end
 
-function push!(t::DAQTask, chan::DAQChannel; kwargs...)
+function Base.push!(t::DAQTask, chan::DAQChannel; kwargs...)
 end
 
-function push!(t::DAQTask, dev::DAQDevice; kwargs...)
+function Base.push!(t::DAQTask, dev::DAQDevice; kwargs...)
 end
 
-function start(t::DAQTask)
-    if DAQmx.StartTask(t.handle) !== DAQmx.Success
+function start(task::DAQTask)
+    if DAQmx.StartTask(task.handle) !== DAQmx.Success
         throw("something wrong.")
     else
         return println("Running $(t.name)...")
     end
 end
 
-function stop(t::DAQTask)
-    if DAQmx.StopTask(t.handle) !== DAQmx.Success
+function stop(task::DAQTask)
+    if DAQmx.StopTask(task.handle) !== DAQmx.Success
         throw("something wrong.")
     else
-        return nothing
+        return println("Stopped $(task.name)...")
     end
 end
 
-function clear(t::DAQTask)
-    if DAQmx.ClearTask(t.handle) !== DAQmx.Success
+function clear(task::DAQTask)
+    if DAQmx.ClearTask(task.handle) !== DAQmx.Success
         throw("something wrong.")
     else
-        t = nothing
+        task = nothing
         return
     end
 end

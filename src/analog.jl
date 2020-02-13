@@ -1,4 +1,3 @@
-@enum TerminalConfig::Cuint RSE=Val_RSE NRSE=Val_NRSE Differential=Val_Diff PseudoDifferential=Val_PseudoDiff
 
 """
 `analog_input(channel, config, range) -> task`
@@ -45,7 +44,6 @@ end
 
 function analog_output(t::AOTask, channel::String; range=nothing)
     if range==nothing
-        device::String = split(channel,'/')[1]
         range=float(analog_output_ranges(device)[end,:])
     end
     catch_error( CreateAOVoltageChan(t.th,
