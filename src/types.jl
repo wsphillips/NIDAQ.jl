@@ -1,4 +1,6 @@
 
+# Types #
+
 abstract type AbstractIO end
 abstract type AnalogIn   <: AbstractIO end
 abstract type AnalogOut  <: AbstractIO end
@@ -23,8 +25,7 @@ const getchanfun = LittleDict(
     DI => DAQmx.GetDevDILines,
     DO => DAQmx.GetDevDOLines,
     CI => DAQmx.GetDevCIPhysicalChans,
-    CO => DAQmx.GetDevCOPhysicalChans
-)
+    CO => DAQmx.GetDevCOPhysicalChans)
 
 struct DAQStringBuffer
      str::Vector{UInt8}
@@ -49,33 +50,13 @@ mutable struct DAQDevice
     end
 end
 
-#FIXME: atm we just return nothing
-function Base.show(io::IO, dev::DAQDevice)
-    #TODO: make a reasonable display of
-    # DAQDevice so it doesn't look like garbagio
-    return nothing
-end
-
-
 struct PhysicalChannel{T<:AbstractIO} <: DAQChannel
       name::String
     parent::DAQDevice
     ranges::Union{Vector{Tuple{Float64,Float64}},Nothing}
 end
 
-function Base.show(io::IO, chan::PhysicalChannel{T}) where T <: AbstractIO 
-    println(io, "Channel name: ", chan.name)
-    println(io, "Channel type: ", "$T")
-    println(io, "Parent device: ", chan.parent.name)
-    if chan.ranges !== nothing
-        print(io, "Available ranges: ")
-        for x in chan.ranges
-            print(io, x, ", ")
-        end
-    end
-end
-
-struct TaskChannel{T<:AbstractIO} <: DAQChannel
+mutable struct TaskChannel{T<:AbstractIO} <: DAQChannel
     name::String
     phys::PhysicalChannel
     attr::OrderedDict
@@ -84,7 +65,7 @@ end
 mutable struct DAQTask
         name::String
       handle::TaskHandle
-     devices::Union{LittleDict,Nothing}
+     devices::Union{Vector{DAQDevice},Nothing}
     channels::Union{LittleDict,Nothing}
 
         function DAQTask(name::String)
