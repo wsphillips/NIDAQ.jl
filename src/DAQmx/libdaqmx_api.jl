@@ -518,8 +518,8 @@ function ResetTrigAttribute(taskHandle::TaskHandle, attribute::Int32)
     ccall((:DAQmxResetTrigAttribute, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, attribute)
 end
 
-function ReadAnalogF64(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, fillMode::UInt32, readArray::Ref{Cdouble}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxReadAnalogF64, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cdouble}, Cuint, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
+function ReadAnalogF64(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, fillMode::UInt32, readArray::Vector{Float64}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32})
+    ccall((:DAQmxReadAnalogF64, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cdouble}, Cuint, Ref{Cint}, Ptr{Cuint}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, C_NULL)
 end
 
 function ReadAnalogScalarF64(taskHandle::TaskHandle, timeout::Float64, value::Ref{Cdouble}, reserved::Ref{UInt32})
@@ -1990,7 +1990,7 @@ function RemoveCDAQSyncConnection(portList::String)
     ccall((:DAQmxRemoveCDAQSyncConnection, :libnidaqmx), Cint, (Ref{UInt8},), portList)
 end
 
-function GetErrorString(errorCode::Int32, errorString::String, bufferSize::UInt32)
+function GetErrorString(errorCode::Int32, errorString::Vector{UInt8}, bufferSize::UInt32)
     ccall((:DAQmxGetErrorString, :libnidaqmx), Cint, (Cint, Ref{UInt8}, Cuint), errorCode, errorString, bufferSize)
 end
 
@@ -10134,7 +10134,7 @@ function GetTaskChannels(taskHandle::TaskHandle, data::Vector{UInt8}, bufferSize
     ccall((:DAQmxGetTaskChannels, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, data, bufferSize)
 end
 
-function GetTaskNumChans(taskHandle::TaskHandle, data::UInt32)
+function GetTaskNumChans(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetTaskNumChans, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 

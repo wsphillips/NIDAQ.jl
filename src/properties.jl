@@ -1,89 +1,60 @@
-
-function Base.convert( ::Type{Vector{String}},
-                      x::DAQStringBuffer)
-    x.str[end] = 0
-    strvec = split(unsafe_string(pointer(x.str)), ", "; keepempty=false)
-    return String.(strvec)
-end
-
 function lsdev(; show::Bool=true)    
     buf = DAQStringBuffer(DAQmx.GetSysDevNames(Vector{UInt8}(), UInt32(0)))
-    if DAQmx.GetSysDevNames(buf.str, buf.size) < 0 
-        throw("something wrong.")
-    else
-        out = convert(Vector{String}, buf)
-        show && (println.(out); return)
-        return out
-    end
+    DAQmx.GetSysDevNames(buf.str, buf.size) |> catch_error 
+    out = convert(Vector{String}, buf)
+    show && (println.(out); return)
+    return out
 end
 
 DefaultDev() = DAQDevice(lsdev(show=false)[1])
 
 function lschan(iotype::Union{Type{<:AbstractIO},Nothing} = nothing,
-                     dev::DAQDevice = DefaultDev();
-                    show::Bool = true)
+                   dev::DAQDevice = DefaultDev();
+                  show::Bool = true)
     
-    numtypes = length(subtypes(AbstractIO))
-    iotype_names = String.(Symbol.(subtypes(AbstractIO)))
-    
+    types = collect(keys(getchanfun))
+    names = string.(types)
+    numtypes = length(names)
+
     if iotype == nothing
         chans = Vector{Vector{String}}(undef, numtypes)
-        for (i, key) in enumerate(keys(getchanfun))
-            # Calling with null values returns buffer/string length
+        for (i, key) in enumerate(types)
             buf = DAQStringBuffer(getchanfun[key](dev.name, Vector{UInt8}(), UInt32(0)))
-            if getchanfun[key](dev.name, buf.str, buf.size) < 0
-                throw("Something wrong.")
-            else
-                chans[i] = convert(Vector{String}, buf)
-            end
+            getchanfun[key](dev.name, buf.str, buf.size) |> catch_error
+            chans[i] = convert(Vector{String}, buf)
         end
         show || return chans
         chandata = fill("", maximum(length.(chans)), numtypes)
         for (j, chan) in enumerate(chans)
             chandata[1:length(chan), j] = chan
         end
-        return pretty_table(chandata, iotype_names)
+        return pretty_table(chandata, names)
     else
         buf = DAQStringBuffer(getchanfun[iotype](dev.name, Vector{UInt8}(), UInt32(0)))
-        if getchanfun[iotype](dev.name, buf.str, buf.size) < 0
-            throw("Something wrong.")
-        else
-            chans = convert(Vector{String}, buf)
-        end
+        getchanfun[iotype](dev.name, buf.str, buf.size) |> catch_error
+        chans = convert(Vector{String}, buf)
         show || return chans
-        header = iotype_names[iotype .== subtypes(AbstractIO)]
+        header = names[iotype .== types]
         return pretty_table(chans, header)
     end
 end
 
 function ranges(iotype::Type{T},
-                     dev::DAQDevice = DefaultDev()) where T <: AbstractIO
+                dev::DAQDevice = DefaultDev()) where {T<:Union{AnalogIn,AnalogOut}}
 
-    iotype ∉ [AI, AO] && return nothing
+    getfun = LittleDict(AI => DAQmx.GetDevAIVoltageRngs,
+                        AO => DAQmx.GetDevAOVoltageRngs)    
+        
+    sz = getfun[iotype](dev.name, Vector{Float64}(), UInt32(0))
+    result = Vector{Float64}(undef, sz)
+    getfun[iotype](dev.name, result, UInt32(sz)) |> catch_error 
+    pairs = Vector{Tuple{Float64,Float64}}(undef, sz>>1)
     
-    if iotype == AI
-        sz = DAQmx.GetDevAIVoltageRngs(dev.name, Vector{Float64}(), UInt32(0))
-        result = Vector{Float64}(undef, sz)
-        if DAQmx.GetDevAIVoltageRngs(dev.name, result, UInt32(sz)) < 0 
-            throw("Something wrong.")
-        end
-        pairs = Vector{Tuple{Float64,Float64}}(undef, sz>>1)
-        for i in 1:length(pairs) 
-            pairs[i] = (popfirst!(result),popfirst!(result))
-        end
-        return pairs
-    elseif iotype == AO
-        sz = DAQmx.GetDevAOVoltageRngs(dev.name, Vector{Float64}(), UInt32(0))
-        result = Vector{Float64}(undef, sz)
-        if DAQmx.GetDevAOVoltageRngs(dev.name, result, UInt32(sz)) < 0
-            throw("Somthing wrong.")
-        end
-        pairs = Vector{Tuple{Float64,Float64}}(undef, sz>>1)
-        for i in 1:length(pairs) 
-            pairs[i] = (popfirst!(result),popfirst!(result))
-        end
-        return pairs
+    for i in 1:length(pairs) 
+        pairs[i] = (popfirst!(result),popfirst!(result))
     end
+    
+    return pairs
 end
 
 function lschan(dev::DAQDevice; asobjects = true)
@@ -91,8 +62,9 @@ function lschan(dev::DAQDevice; asobjects = true)
     chanobjs = Vector{Vector{PhysicalChannel{<:AbstractIO}}}(undef, length(keys(getchanfun)))
     alltypes = collect(keys(getchanfun))
     for (i, chanvec) in enumerate(allchans)
-        t  = alltypes[i]      
-        chanobjs[i] = [PhysicalChannel{t}(x,dev,ranges(t,dev)) for x in chanvec]
+        t  = alltypes[i]
+        rng = t <: Union{AI,AO} ? ranges(t,dev) : nothing
+        chanobjs[i] = [PhysicalChannel{t}(x,dev,rng) for x in chanvec]
     end
     return chanobjs
 end
@@ -142,7 +114,7 @@ function info(channel::TaskChannel{T}) where T
         GetAIMeasType(channel.parent, channel.name, val)
     elseif T == AO
         GetAOOutputType(channel.parent, channel.name, val)
-    elseif T ∈ [DI, DO]
+    elseif T <: Union{DI,DO}
         return (T, nothing)
     elseif T == CI
         GetCIMeasType(channel.parent, channel.name, val)
@@ -197,7 +169,7 @@ function getproperties(task::DAQTask; warning=false)
 end
 
 # set properties (maybe split this up)
-function setproperty!(t::DAQTask, channel::T, property::String, value) where T <: DAQChannel
+function setproperty!(t::DAQTask, channel::Type{T}, property::String, value) where {T <: DAQChannel}
     for f in set_function_map[]
     end
 

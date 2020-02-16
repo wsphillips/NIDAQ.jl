@@ -9,27 +9,18 @@ function Base.push!(t::DAQTask, dev::DAQDevice; kwargs...)
 end
 
 function start(task::DAQTask)
-    if DAQmx.StartTask(task.handle) !== DAQmx.Success
-        throw("something wrong.")
-    else
-        return println("Running $(t.name)...")
-    end
+    DAQmx.StartTask(task.handle) |> catch_error
+    return println("Running $(task.name)...")
 end
 
 function stop(task::DAQTask)
-    if DAQmx.StopTask(task.handle) !== DAQmx.Success
-        throw("something wrong.")
-    else
-        return println("Stopped $(task.name)...")
-    end
+    DAQmx.StopTask(task.handle) |> catch_error
+    return println("Stopped $(task.name)...")
 end
 
 function clear(task::DAQTask)
-    if DAQmx.ClearTask(task.handle) !== DAQmx.Success
-        throw("something wrong.")
-    else
-        task = nothing
-        return
-    end
+    DAQmx.ClearTask(task.handle) |> catch_error
+    task = nothing
+    return
 end
 
