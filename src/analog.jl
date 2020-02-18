@@ -12,7 +12,7 @@ function taskalloc(::Type{T},
                    task::DAQTask,
                    samples::Int = 1024) where T <: ai_read_types
 
-    data = Vector{T}(undef, samples*length(task.channels))
+    return Vector{T}(undef, samples*length(task.channels))
 end
 
 taskalloc(task::DAQTask, samples::Int=1024) = taskalloc(Float64, task, samples)
@@ -30,6 +30,14 @@ function Base.read!(dst::Vector{T}, task::DAQTask,
     end
 
     return 
+end
+
+function Base.read(task, samples::Int = 1024, precision::Type{T}=Float64) where T <: ai_read_types
+
+    data = taskalloc(precision, task, samples)
+    read!(data, task, samples)
+
+    return data
 end
 
 #=

@@ -29,7 +29,7 @@ function Base.show(io::IO, chan::PhysicalChannel{T}) where T <: AbstractIO
     if chan.ranges !== nothing
         print(io, "Available ranges: ")
         for x in chan.ranges
-            print(io, x, ", ")
+            print(io, x, " ")
         end
     end
 end
@@ -40,25 +40,39 @@ function Base.show(io::IO, dev::DAQDevice)
     return nothing
 end
 
-function Base.append!(task::DAQTask, chan::TaskChannel{T}) where T <: AbstractIO
-end
-
-function Base.append!(task::DAQTask,
-                      chan::PhysicalChannel{T};
+function Base.append!(task::DAQTask{AI},
+                      chan::PhysicalChannel{AI};
                       name::String                  = "",
                       tcfg::DAQmx.DAQmxConstant     = DAQmx.Diff,
                      range::Tuple{Float64,Float64}  = (-10.0,10.0),
                      units::DAQmx.DAQmxConstant     = DAQmx.Volts,
-                 scalename::String                  = "") where T <: Union{AnalogIn,AnalogOut}
-
+                 scalename::String                  = "")
+    
+    #FIXME: auto/default virtual channel naming scheme needed
     DAQmx.CreateAIVoltageChan(task.handle, chan.name, "",
                               tcfg, range[1], range[2],
                               units, scalename) |> catch_error
-    task.device = chan.parent
-    if task.channels == nothing
-        task.channels = [chan]
-    else
-        append!(task.channels, chan)
+    
+    task.device == nothing && (task.device = chan.parent)
+    task.channels == nothing && (task.channels = [chan]; return)
+    chan ∉ task.channels && (append!(task.channels, chan); return)
+    #TODO: solve for revising chans
+    return @warn "Channel $(chan.name) already appended to task."
+end
+
+function Base.append!(task::DAQTask{AI}, index::ChannelIndex, dev::DAQDevice=DefaultDev())
+   
+    if any(index .< 1)
+        @error "Channel index not in valid range"
+        return nothing
+    end
+
+    new_channels = dev.channels[AI][index]
+    
+    !isa(new_channels, Vector) && (append!(task,new_channels); return)
+    
+    for chan in new_channels
+        append!(task, chan)
     end
 end
 
