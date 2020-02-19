@@ -518,100 +518,100 @@ function ResetTrigAttribute(taskHandle::TaskHandle, attribute::Int32)
     ccall((:DAQmxResetTrigAttribute, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, attribute)
 end
 
-function ReadAnalogF64(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, fillMode::UInt32, readArray::Vector{Float64}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32})
-    ccall((:DAQmxReadAnalogF64, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cdouble}, Cuint, Ref{Cint}, Ptr{Cuint}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, C_NULL)
+function ReadAnalogF64(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Float64, fillMode::DAQmxConstant, readArray::Vector{Float64}, arraySizeInSamps::Integer, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxReadAnalogF64, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cdouble}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadAnalogScalarF64(taskHandle::TaskHandle, timeout::Float64, value::Ref{Cdouble}, reserved::Ref{UInt32})
-    ccall((:DAQmxReadAnalogScalarF64, :libnidaqmx), Cint, (TaskHandle, Cdouble, Ref{Cdouble}, Ref{Cuint}), taskHandle, timeout, value, reserved)
+function ReadAnalogScalarF64(taskHandle::TaskHandle, timeout::Float64, value::Float64, reserved=C_NULL)
+    ccall((:DAQmxReadAnalogScalarF64, :libnidaqmx), Cint, (TaskHandle, Cdouble, Ref{Cdouble}, Ref{Cvoid}), taskHandle, timeout, value, reserved)
 end
 
-function ReadBinaryI16(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, fillMode::UInt32, readArray::Ref{Cshort}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxReadBinaryI16, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cshort}, Cuint, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
+function ReadBinaryI16(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Float64, fillMode::DAQmxConstant, readArray::Vector{Int16}, arraySizeInSamps::Integer, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxReadBinaryI16, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cshort}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadBinaryU16(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, fillMode::UInt32, readArray::Ref{Cushort}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxReadBinaryU16, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cushort}, Cuint, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
+function ReadBinaryU16(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Float64, fillMode::DAQmxConstant, readArray::Vector{UInt16}, arraySizeInSamps::Integer, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxReadBinaryU16, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cushort}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadBinaryI32(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, fillMode::UInt32, readArray::Ref{Int32}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxReadBinaryI32, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cint}, Cuint, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
+function ReadBinaryI32(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Float64, fillMode::DAQmxConstant, readArray::Vector{Int32}, arraySizeInSamps::Integer, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxReadBinaryI32, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cint}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadBinaryU32(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, fillMode::UInt32, readArray::Ref{UInt32}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxReadBinaryU32, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cuint}, Cuint, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
+function ReadBinaryU32(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Float64, fillMode::DAQmxConstant, readArray::Vector{UInt32}, arraySizeInSamps::Integer, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxReadBinaryU32, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cuint}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadDigitalU8(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, fillMode::UInt32, readArray::Ref{Cuchar}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxReadDigitalU8, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cuchar}, Cuint, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
+function ReadDigitalU8(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, fillMode::DAQmxConstant, readArray::Vector{Cuchar}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxReadDigitalU8, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cuchar}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadDigitalU16(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, fillMode::UInt32, readArray::Ref{Cushort}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxReadDigitalU16, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cushort}, Cuint, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
+function ReadDigitalU16(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, fillMode::DAQmxConstant, readArray::Vector{Cushort}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxReadDigitalU16, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cushort}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadDigitalU32(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, fillMode::UInt32, readArray::Ref{UInt32}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxReadDigitalU32, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cuint}, Cuint, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
+function ReadDigitalU32(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, fillMode::DAQmxConstant, readArray::Vector{UInt32}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxReadDigitalU32, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cuint}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadDigitalScalarU32(taskHandle::TaskHandle, timeout::Float64, value::Ref{UInt32}, reserved::Ref{UInt32})
-    ccall((:DAQmxReadDigitalScalarU32, :libnidaqmx), Cint, (TaskHandle, Cdouble, Ref{Cuint}, Ref{Cuint}), taskHandle, timeout, value, reserved)
+function ReadDigitalScalarU32(taskHandle::TaskHandle, timeout::Float64, value::Ref{UInt32}, reserved=C_NULL)
+    ccall((:DAQmxReadDigitalScalarU32, :libnidaqmx), Cint, (TaskHandle, Cdouble, Ref{Cuint}, Ref{Cvoid}), taskHandle, timeout, value, reserved)
 end
 
-function ReadDigitalLines(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, fillMode::UInt32, readArray::Ref{Cuchar}, arraySizeInBytes::UInt32, sampsPerChanRead::Ref{Int32}, numBytesPerSamp::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxReadDigitalLines, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cuchar}, Cuint, Ref{Cint}, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInBytes, sampsPerChanRead, numBytesPerSamp, reserved)
+function ReadDigitalLines(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, fillMode::DAQmxConstant, readArray::Vector{Cuchar}, arraySizeInBytes::UInt32, sampsPerChanRead::Ref{Int32}, numBytesPerSamp::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxReadDigitalLines, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cuchar}, Cuint, Ref{Cint}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInBytes, sampsPerChanRead, numBytesPerSamp, reserved)
 end
 
-function ReadCounterF64(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, readArray::Ref{Cdouble}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxReadCounterF64, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Ref{Cdouble}, Cuint, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, timeout, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
+function ReadCounterF64(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, readArray::Vector{Cdouble}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxReadCounterF64, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Ref{Cdouble}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadCounterU32(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, readArray::Ref{UInt32}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxReadCounterU32, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Ref{Cuint}, Cuint, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, timeout, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
+function ReadCounterU32(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, readArray::Vector{UInt32}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxReadCounterU32, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Ref{Cuint}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadCounterF64Ex(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, fillMode::UInt32, readArray::Ref{Cdouble}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxReadCounterF64Ex, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cdouble}, Cuint, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
+function ReadCounterF64Ex(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, fillMode::DAQmxConstant, readArray::Vector{Cdouble}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxReadCounterF64Ex, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cdouble}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadCounterU32Ex(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, fillMode::UInt32, readArray::Ref{UInt32}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxReadCounterU32Ex, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cuint}, Cuint, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
+function ReadCounterU32Ex(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, fillMode::DAQmxConstant, readArray::Vector{UInt32}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxReadCounterU32Ex, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cuint}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadCounterScalarF64(taskHandle::TaskHandle, timeout::Float64, value::Ref{Cdouble}, reserved::Ref{UInt32})
-    ccall((:DAQmxReadCounterScalarF64, :libnidaqmx), Cint, (TaskHandle, Cdouble, Ref{Cdouble}, Ref{Cuint}), taskHandle, timeout, value, reserved)
+function ReadCounterScalarF64(taskHandle::TaskHandle, timeout::Float64, value::Ref{Cdouble}, reserved=C_NULL)
+    ccall((:DAQmxReadCounterScalarF64, :libnidaqmx), Cint, (TaskHandle, Cdouble, Ref{Cdouble}, Ref{Cvoid}), taskHandle, timeout, value, reserved)
 end
 
-function ReadCounterScalarU32(taskHandle::TaskHandle, timeout::Float64, value::Ref{UInt32}, reserved::Ref{UInt32})
-    ccall((:DAQmxReadCounterScalarU32, :libnidaqmx), Cint, (TaskHandle, Cdouble, Ref{Cuint}, Ref{Cuint}), taskHandle, timeout, value, reserved)
+function ReadCounterScalarU32(taskHandle::TaskHandle, timeout::Float64, value::Ref{UInt32}, reserved=C_NULL)
+    ccall((:DAQmxReadCounterScalarU32, :libnidaqmx), Cint, (TaskHandle, Cdouble, Ref{Cuint}, Ref{Cvoid}), taskHandle, timeout, value, reserved)
 end
 
-function ReadCtrFreq(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, interleaved::UInt32, readArrayFrequency::Ref{Cdouble}, readArrayDutyCycle::Ref{Cdouble}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxReadCtrFreq, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cdouble}, Ref{Cdouble}, Cuint, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, timeout, interleaved, readArrayFrequency, readArrayDutyCycle, arraySizeInSamps, sampsPerChanRead, reserved)
+function ReadCtrFreq(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, interleaved::UInt32, readArrayFrequency::Ref{Cdouble}, readArrayDutyCycle::Ref{Cdouble}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxReadCtrFreq, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cdouble}, Ref{Cdouble}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, interleaved, readArrayFrequency, readArrayDutyCycle, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadCtrTime(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, interleaved::UInt32, readArrayHighTime::Ref{Cdouble}, readArrayLowTime::Ref{Cdouble}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxReadCtrTime, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cdouble}, Ref{Cdouble}, Cuint, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, timeout, interleaved, readArrayHighTime, readArrayLowTime, arraySizeInSamps, sampsPerChanRead, reserved)
+function ReadCtrTime(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, interleaved::UInt32, readArrayHighTime::Ref{Cdouble}, readArrayLowTime::Ref{Cdouble}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxReadCtrTime, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cdouble}, Ref{Cdouble}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, interleaved, readArrayHighTime, readArrayLowTime, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadCtrTicks(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, interleaved::UInt32, readArrayHighTicks::Ref{UInt32}, readArrayLowTicks::Ref{UInt32}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxReadCtrTicks, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cuint}, Ref{Cuint}, Cuint, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, timeout, interleaved, readArrayHighTicks, readArrayLowTicks, arraySizeInSamps, sampsPerChanRead, reserved)
+function ReadCtrTicks(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, interleaved::UInt32, readArrayHighTicks::Ref{UInt32}, readArrayLowTicks::Ref{UInt32}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxReadCtrTicks, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cuint}, Ref{Cuint}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, interleaved, readArrayHighTicks, readArrayLowTicks, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadCtrFreqScalar(taskHandle::TaskHandle, timeout::Float64, frequency::Ref{Cdouble}, dutyCycle::Ref{Cdouble}, reserved::Ref{UInt32})
-    ccall((:DAQmxReadCtrFreqScalar, :libnidaqmx), Cint, (TaskHandle, Cdouble, Ref{Cdouble}, Ref{Cdouble}, Ref{Cuint}), taskHandle, timeout, frequency, dutyCycle, reserved)
+function ReadCtrFreqScalar(taskHandle::TaskHandle, timeout::Float64, frequency::Ref{Cdouble}, dutyCycle::Ref{Cdouble}, reserved=C_NULL)
+    ccall((:DAQmxReadCtrFreqScalar, :libnidaqmx), Cint, (TaskHandle, Cdouble, Ref{Cdouble}, Ref{Cdouble}, Ref{Cvoid}), taskHandle, timeout, frequency, dutyCycle, reserved)
 end
 
-function ReadCtrTimeScalar(taskHandle::TaskHandle, timeout::Float64, highTime::Ref{Cdouble}, lowTime::Ref{Cdouble}, reserved::Ref{UInt32})
-    ccall((:DAQmxReadCtrTimeScalar, :libnidaqmx), Cint, (TaskHandle, Cdouble, Ref{Cdouble}, Ref{Cdouble}, Ref{Cuint}), taskHandle, timeout, highTime, lowTime, reserved)
+function ReadCtrTimeScalar(taskHandle::TaskHandle, timeout::Float64, highTime::Ref{Cdouble}, lowTime::Ref{Cdouble}, reserved=C_NULL)
+    ccall((:DAQmxReadCtrTimeScalar, :libnidaqmx), Cint, (TaskHandle, Cdouble, Ref{Cdouble}, Ref{Cdouble}, Ref{Cvoid}), taskHandle, timeout, highTime, lowTime, reserved)
 end
 
-function ReadCtrTicksScalar(taskHandle::TaskHandle, timeout::Float64, highTicks::Ref{UInt32}, lowTicks::Ref{UInt32}, reserved::Ref{UInt32})
-    ccall((:DAQmxReadCtrTicksScalar, :libnidaqmx), Cint, (TaskHandle, Cdouble, Ref{Cuint}, Ref{Cuint}, Ref{Cuint}), taskHandle, timeout, highTicks, lowTicks, reserved)
+function ReadCtrTicksScalar(taskHandle::TaskHandle, timeout::Float64, highTicks::Ref{UInt32}, lowTicks::Ref{UInt32}, reserved=C_NULL)
+    ccall((:DAQmxReadCtrTicksScalar, :libnidaqmx), Cint, (TaskHandle, Cdouble, Ref{Cuint}, Ref{Cuint}, Ref{Cvoid}), taskHandle, timeout, highTicks, lowTicks, reserved)
 end
 
-function ReadRaw(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, readArray::Ref{Cvoid}, arraySizeInBytes::UInt32, sampsRead::Ref{Int32}, numBytesPerSamp::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxReadRaw, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Ref{Cvoid}, Cuint, Ref{Cint}, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, timeout, readArray, arraySizeInBytes, sampsRead, numBytesPerSamp, reserved)
+function ReadRaw(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, readArray::Vector{Cvoid}, arraySizeInBytes::UInt32, sampsRead::Ref{Int32}, numBytesPerSamp::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxReadRaw, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Ref{Cvoid}, Cuint, Ref{Cint}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, readArray, arraySizeInBytes, sampsRead, numBytesPerSamp, reserved)
 end
 
 function GetNthTaskReadChannel(taskHandle::TaskHandle, index::UInt32, buffer::Vector{UInt8}, bufferSize::Int32)
@@ -638,76 +638,76 @@ function StartNewFile(taskHandle::TaskHandle, filePath::String)
     ccall((:DAQmxStartNewFile, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}), taskHandle, filePath)
 end
 
-function WriteAnalogF64(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, writeArray::Ref{Cdouble}, sampsPerChanWritten::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxWriteAnalogF64, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cdouble}, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
+function WriteAnalogF64(taskHandle::TaskHandle, numSampsPerChan::Integer, autoStart::Bool, timeout::Float64, dataLayout::DAQmxConstant, writeArray::Vector{Float64}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL=Ref{UInt32}())
+    ccall((:DAQmxWriteAnalogF64, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cdouble}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
 end
 
-function WriteAnalogScalarF64(taskHandle::TaskHandle, autoStart::UInt32, timeout::Float64, value::Float64, reserved::Ref{UInt32})
-    ccall((:DAQmxWriteAnalogScalarF64, :libnidaqmx), Cint, (TaskHandle, Cuint, Cdouble, Cdouble, Ref{Cuint}), taskHandle, autoStart, timeout, value, reserved)
+function WriteAnalogScalarF64(taskHandle::TaskHandle, autoStart::Bool, timeout::Float64, value::Float64, reserved=C_NULL)
+    ccall((:DAQmxWriteAnalogScalarF64, :libnidaqmx), Cint, (TaskHandle, Cuint, Cdouble, Cdouble, Ref{Cvoid}), taskHandle, autoStart, timeout, value, reserved)
 end
 
-function WriteBinaryI16(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, writeArray::Ref{Cshort}, sampsPerChanWritten::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxWriteBinaryI16, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cshort}, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
+function WriteBinaryI16(taskHandle::TaskHandle, numSampsPerChan::Integer, autoStart::Bool, timeout::Float64, dataLayout::DAQmxConstant, writeArray::Vector{Int16}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxWriteBinaryI16, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cshort}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
 end
 
-function WriteBinaryU16(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, writeArray::Ref{Cushort}, sampsPerChanWritten::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxWriteBinaryU16, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cushort}, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
+function WriteBinaryU16(taskHandle::TaskHandle, numSampsPerChan::Integer, autoStart::Bool, timeout::Float64, dataLayout::DAQmxConstant, writeArray::Vector{UInt16}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxWriteBinaryU16, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cushort}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
 end
 
-function WriteBinaryI32(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, writeArray::Ref{Int32}, sampsPerChanWritten::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxWriteBinaryI32, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cint}, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
+function WriteBinaryI32(taskHandle::TaskHandle, numSampsPerChan::Integer, autoStart::Bool, timeout::Float64, dataLayout::DAQmxConstant, writeArray::Vector{Int32}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxWriteBinaryI32, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cint}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
 end
 
-function WriteBinaryU32(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, writeArray::Ref{UInt32}, sampsPerChanWritten::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxWriteBinaryU32, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cuint}, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
+function WriteBinaryU32(taskHandle::TaskHandle, numSampsPerChan::Integer, autoStart::Bool, timeout::Float64, dataLayout::DAQmxConstant, writeArray::Vector{UInt32}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxWriteBinaryU32, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cuint}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
 end
 
-function WriteDigitalU8(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, writeArray::Ref{Cuchar}, sampsPerChanWritten::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxWriteDigitalU8, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cuchar}, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
+function WriteDigitalU8(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, writeArray::Vector{Cuchar}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxWriteDigitalU8, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cuchar}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
 end
 
-function WriteDigitalU16(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, writeArray::Ref{Cushort}, sampsPerChanWritten::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxWriteDigitalU16, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cushort}, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
+function WriteDigitalU16(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, writeArray::Vector{Cushort}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxWriteDigitalU16, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cushort}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
 end
 
-function WriteDigitalU32(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, writeArray::Ref{UInt32}, sampsPerChanWritten::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxWriteDigitalU32, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cuint}, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
+function WriteDigitalU32(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, writeArray::Vector{UInt32}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxWriteDigitalU32, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cuint}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
 end
 
-function WriteDigitalScalarU32(taskHandle::TaskHandle, autoStart::UInt32, timeout::Float64, value::UInt32, reserved::Ref{UInt32})
-    ccall((:DAQmxWriteDigitalScalarU32, :libnidaqmx), Cint, (TaskHandle, Cuint, Cdouble, Cuint, Ref{Cuint}), taskHandle, autoStart, timeout, value, reserved)
+function WriteDigitalScalarU32(taskHandle::TaskHandle, autoStart::UInt32, timeout::Float64, value::UInt32, reserved=C_NULL)
+    ccall((:DAQmxWriteDigitalScalarU32, :libnidaqmx), Cint, (TaskHandle, Cuint, Cdouble, Cuint, Ref{Cvoid}), taskHandle, autoStart, timeout, value, reserved)
 end
 
-function WriteDigitalLines(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, writeArray::Ref{Cuchar}, sampsPerChanWritten::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxWriteDigitalLines, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cuchar}, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
+function WriteDigitalLines(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, writeArray::Vector{Cuchar}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxWriteDigitalLines, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cuchar}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
 end
 
-function WriteCtrFreq(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, frequency::Ref{Cdouble}, dutyCycle::Ref{Cdouble}, numSampsPerChanWritten::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxWriteCtrFreq, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cdouble}, Ref{Cdouble}, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, frequency, dutyCycle, numSampsPerChanWritten, reserved)
+function WriteCtrFreq(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, frequency::Ref{Cdouble}, dutyCycle::Ref{Cdouble}, numSampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxWriteCtrFreq, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cdouble}, Ref{Cdouble}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, frequency, dutyCycle, numSampsPerChanWritten, reserved)
 end
 
-function WriteCtrFreqScalar(taskHandle::TaskHandle, autoStart::UInt32, timeout::Float64, frequency::Float64, dutyCycle::Float64, reserved::Ref{UInt32})
-    ccall((:DAQmxWriteCtrFreqScalar, :libnidaqmx), Cint, (TaskHandle, Cuint, Cdouble, Cdouble, Cdouble, Ref{Cuint}), taskHandle, autoStart, timeout, frequency, dutyCycle, reserved)
+function WriteCtrFreqScalar(taskHandle::TaskHandle, autoStart::UInt32, timeout::Float64, frequency::Float64, dutyCycle::Float64, reserved=C_NULL)
+    ccall((:DAQmxWriteCtrFreqScalar, :libnidaqmx), Cint, (TaskHandle, Cuint, Cdouble, Cdouble, Cdouble, Ref{Cvoid}), taskHandle, autoStart, timeout, frequency, dutyCycle, reserved)
 end
 
-function WriteCtrTime(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, highTime::Ref{Cdouble}, lowTime::Ref{Cdouble}, numSampsPerChanWritten::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxWriteCtrTime, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cdouble}, Ref{Cdouble}, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, highTime, lowTime, numSampsPerChanWritten, reserved)
+function WriteCtrTime(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, highTime::Ref{Cdouble}, lowTime::Ref{Cdouble}, numSampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxWriteCtrTime, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cdouble}, Ref{Cdouble}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, highTime, lowTime, numSampsPerChanWritten, reserved)
 end
 
-function WriteCtrTimeScalar(taskHandle::TaskHandle, autoStart::UInt32, timeout::Float64, highTime::Float64, lowTime::Float64, reserved::Ref{UInt32})
-    ccall((:DAQmxWriteCtrTimeScalar, :libnidaqmx), Cint, (TaskHandle, Cuint, Cdouble, Cdouble, Cdouble, Ref{Cuint}), taskHandle, autoStart, timeout, highTime, lowTime, reserved)
+function WriteCtrTimeScalar(taskHandle::TaskHandle, autoStart::UInt32, timeout::Float64, highTime::Float64, lowTime::Float64, reserved=C_NULL)
+    ccall((:DAQmxWriteCtrTimeScalar, :libnidaqmx), Cint, (TaskHandle, Cuint, Cdouble, Cdouble, Cdouble, Ref{Cvoid}), taskHandle, autoStart, timeout, highTime, lowTime, reserved)
 end
 
-function WriteCtrTicks(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, highTicks::Ref{UInt32}, lowTicks::Ref{UInt32}, numSampsPerChanWritten::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxWriteCtrTicks, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cuint}, Ref{Cuint}, Ref{Cint}, Ref{Cuint}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, highTicks, lowTicks, numSampsPerChanWritten, reserved)
+function WriteCtrTicks(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, highTicks::Ref{UInt32}, lowTicks::Ref{UInt32}, numSampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxWriteCtrTicks, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cuint}, Ref{Cuint}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, highTicks, lowTicks, numSampsPerChanWritten, reserved)
 end
 
-function WriteCtrTicksScalar(taskHandle::TaskHandle, autoStart::UInt32, timeout::Float64, highTicks::UInt32, lowTicks::UInt32, reserved::Ref{UInt32})
-    ccall((:DAQmxWriteCtrTicksScalar, :libnidaqmx), Cint, (TaskHandle, Cuint, Cdouble, Cuint, Cuint, Ref{Cuint}), taskHandle, autoStart, timeout, highTicks, lowTicks, reserved)
+function WriteCtrTicksScalar(taskHandle::TaskHandle, autoStart::UInt32, timeout::Float64, highTicks::UInt32, lowTicks::UInt32, reserved=C_NULL)
+    ccall((:DAQmxWriteCtrTicksScalar, :libnidaqmx), Cint, (TaskHandle, Cuint, Cdouble, Cuint, Cuint, Ref{Cvoid}), taskHandle, autoStart, timeout, highTicks, lowTicks, reserved)
 end
 
-function WriteRaw(taskHandle::TaskHandle, numSamps::Int32, autoStart::UInt32, timeout::Float64, writeArray::Ref{Cvoid}, sampsPerChanWritten::Ref{Int32}, reserved::Ref{UInt32})
-    ccall((:DAQmxWriteRaw, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Ref{Cvoid}, Ref{Cint}, Ref{Cuint}), taskHandle, numSamps, autoStart, timeout, writeArray, sampsPerChanWritten, reserved)
+function WriteRaw(taskHandle::TaskHandle, numSamps::Int32, autoStart::UInt32, timeout::Float64, writeArray::Vector{Cvoid}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
+    ccall((:DAQmxWriteRaw, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Ref{Cvoid}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSamps, autoStart, timeout, writeArray, sampsPerChanWritten, reserved)
 end
 
 function GetWriteAttribute(taskHandle::TaskHandle, attribute::Int32, value::Ref{Cvoid})
