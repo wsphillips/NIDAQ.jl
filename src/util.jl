@@ -42,22 +42,27 @@ end
 
 function Base.append!(task::DAQTask{AI},
                       chan::PhysicalChannel{AI};
-                      name::String                  = "",
+                     alias::String                  = "",
                       tcfg::DAQmx.DAQmxConstant     = DAQmx.Diff,
                      range::Tuple{Float64,Float64}  = (-10.0,10.0),
                      units::DAQmx.DAQmxConstant     = DAQmx.Volts,
                  scalename::String                  = "")
     
-    #FIXME: auto/default virtual channel naming scheme needed
-    DAQmx.CreateAIVoltageChan(task.handle, chan.name, "",
+    #NOTE: TaskChannel not implemented yet--will simplify this...
+    if (task.channels !== nothing && chan ∈ task.channels)
+        return @warn "Channel $(chan.name) already appended to task."
+    end
+
+    alias == "" && (alias = string(split(chan.name,"/")[2]))
+
+    DAQmx.CreateAIVoltageChan(task.handle, chan.name, alias,
                               tcfg, range[1], range[2],
                               units, scalename) |> catch_error
     
     task.device == nothing && (task.device = chan.parent)
     task.channels == nothing && (task.channels = [chan]; return)
-    chan ∉ task.channels && (append!(task.channels, chan); return)
-    #TODO: solve for revising chans
-    return @warn "Channel $(chan.name) already appended to task."
+    push!(task.channels, chan)
+    return 
 end
 
 function Base.append!(task::DAQTask{AI}, index::ChannelIndex, dev::DAQDevice=DefaultDev())
