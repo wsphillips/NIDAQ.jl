@@ -21,4 +21,11 @@ include("analog.jl")
 #include("digital.jl")
 #include("counter.jl")
 
+const supported_version = v"19.5.0"
+
+const hostver = version()
+
+supported_version == hostver || @warn("Installed NIDAQmx version: v$hostver" *
+                                      "is not officially supported. This may" *
+                                      " result in undefined behavior/errors.")
 end

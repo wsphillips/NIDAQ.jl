@@ -46,7 +46,7 @@ function Base.read(task::DAQTask{AI}, samples::Int = 1024, precision::Type{T}=Fl
     data = readalloc(precision, task, samples)
     read!(data, task, samples)
 
-    return data
+    return reshape(data, samples, :)
 end
 
 function Base.write(task::DAQTask{AO}, wave::Vector{T}) where T <: RWTypes

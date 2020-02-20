@@ -107,32 +107,34 @@ const (get_function_map, set_function_map) = parse_symbols()
 `channel_type(task,channel) -> channel_type, measurement/output_type`
     GetChanType(channel.parent, channel.name, val1)
 """
-function info(channel::TaskChannel{T}) where T
+function info(channel::TaskChannel{T}) where T <: AbstractIO
     
     val = Int32(0)
+
     if T == AI
-        GetAIMeasType(channel.parent, channel.name, val)
+        GetAIMeasType(channel.parent, channel.alias, val) |> catch_error
     elseif T == AO
-        GetAOOutputType(channel.parent, channel.name, val)
+        GetAOOutputType(channel.parent, channel.alias, val) |> catch_error
     elseif T <: Union{DI,DO}
         return (T, nothing)
     elseif T == CI
-        GetCIMeasType(channel.parent, channel.name, val)
+        GetCIMeasType(channel.parent, channel.alias, val) |> catch_error
     elseif T == CO
-        GetCOOutputType(channel.parent, channel.name, val)
+        GetCOOutputType(channel.parent, channel.alias, val) |> catch_error
     end
-
-    return (T, val)
+         
+    return (T, string(DAQmx.DAQmxConstant(val)))
 end
 
 function argtypes(fun::Function)
     a = methods(fun).ms[1] # DAQmx wrappers have only one method
-    return fieldtypes(a.sig)[2:end] # and at least one argument!
+    return fieldtypes(a.sig)[2:end] # ignore first field (sym) 
 end
 
 # Get function for dev, sys, task, channel
+
 # channel properties
-function getproperties(channel::TaskChannel{T}; warning=false) where T
+function getproperties(channel::TaskChannel{T}; warning=false) where T <: AbstractIO
 
     for f in get_function_map[string(T)]
         fun_argtypes = argtypes(f)
@@ -142,24 +144,45 @@ function getproperties(channel::TaskChannel{T}; warning=false) where T
 end
 
 # system properties
-function getproperties(; warning=false)
+function getproperties(; warning=false, show=true)
+    
+    result = Dict()
+    ver = version()
+    push!(result, "NIDAQmx Version" => ver)
+    prefix = length("GetSys") + 1
 
     for f in get_function_map["Sys"]
+        fname = string(f)[prefix:end]
+        occursin("Attribute", fname) && continue
+        occursin("Version", fname) && continue 
+        
+        buf = DAQStringBuffer(f(Vector{UInt8}(),UInt32(0)))
+        f(buf.str, buf.size) |> catch_error
+        out = convert(Vector{String}, buf)
+        out == nothing && (out = "--") 
+        push!(result, fname => out) 
     end
 
-    return
+    show && return pretty_table(result)
+    return result
 end
 
 # device properties
 function getproperties(dev::DAQDevice; warning=false)
-
+    result = Dict()
+    prefix = length("GetDev") + 1
     for f in get_function_map["Dev"]
+        fname = string(f)[prefix:end]
+        occursin("Attribute", fname) && continue
+        # WIP -- argtypes() -> parse by whether 
+        # argument types include Vector/Ref
+        
     end
 
     return
 end
 
-# task properties
+# task properties -- will follow example of dev prop
 function getproperties(task::DAQTask; warning=false)
 
     for f in get_function_map["Task"]

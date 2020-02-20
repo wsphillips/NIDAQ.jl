@@ -1,6 +1,6 @@
 
 # Types #
-
+# daq io types
 abstract type AbstractIO end
 abstract type AnalogIn   <: AbstractIO end
 abstract type AnalogOut  <: AbstractIO end
@@ -9,9 +9,10 @@ abstract type DigitalOut <: AbstractIO end
 abstract type CounterIn  <: AbstractIO end
 abstract type CounterOut <: AbstractIO end
 
+# node for channels, perhaps unneeded...
 abstract type DAQChannel end
 
-# Type aliasing for convenience
+# type aliasing for convenience
 const AI = AnalogIn
 const AO = AnalogOut
 const DI = DigitalIn
@@ -80,17 +81,19 @@ mutable struct DAQTask{T<:AbstractIO}
     end
 end
 
+# This hasn't been implemented yet, but will act as a
+# wrapper for a virtual channel that holds the underlying
+# physical channel information, named alias of the virtual
+# channel, and an in-memory dictionary of its attributes.
 mutable struct TaskChannel{T<:AbstractIO} <: DAQChannel
-      name::String
-    parent::DAQTask
+     alias::String
       phys::PhysicalChannel
       attr::OrderedDict
 
-    function TaskChannel{<:AbstractIO}(  name::String, 
-                                       parent::DAQTask,
-                                        pchan::PhysicalChannel)
+    function TaskChannel{<:AbstractIO}(alias::String, 
+                                       pchan::PhysicalChannel)
         
-        return new(name, parent, pchan, OrderedDict())
+        return new(alias, pchan, OrderedDict())
     end
 end
 

@@ -1998,11 +1998,11 @@ function GetExtendedErrorInfo(errorString::String, bufferSize::UInt32)
     ccall((:DAQmxGetExtendedErrorInfo, :libnidaqmx), Cint, (Ref{UInt8}, Cuint), errorString, bufferSize)
 end
 
-function GetBufInputBufSize(taskHandle::TaskHandle, data::UInt32)
+function GetBufInputBufSize(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetBufInputBufSize, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetBufInputBufSize(taskHandle::TaskHandle, data::UInt32)
+function SetBufInputBufSize(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetBufInputBufSize, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -2010,15 +2010,15 @@ function ResetBufInputBufSize(taskHandle::TaskHandle)
     ccall((:DAQmxResetBufInputBufSize, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetBufInputOnbrdBufSize(taskHandle::TaskHandle, data::UInt32)
+function GetBufInputOnbrdBufSize(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetBufInputOnbrdBufSize, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function GetBufOutputBufSize(taskHandle::TaskHandle, data::UInt32)
+function GetBufOutputBufSize(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetBufOutputBufSize, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetBufOutputBufSize(taskHandle::TaskHandle, data::UInt32)
+function SetBufOutputBufSize(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetBufOutputBufSize, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -2026,11 +2026,11 @@ function ResetBufOutputBufSize(taskHandle::TaskHandle)
     ccall((:DAQmxResetBufOutputBufSize, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetBufOutputOnbrdBufSize(taskHandle::TaskHandle, data::UInt32)
+function GetBufOutputOnbrdBufSize(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetBufOutputOnbrdBufSize, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetBufOutputOnbrdBufSize(taskHandle::TaskHandle, data::UInt32)
+function SetBufOutputOnbrdBufSize(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetBufOutputOnbrdBufSize, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -2038,7 +2038,7 @@ function ResetBufOutputOnbrdBufSize(taskHandle::TaskHandle)
     ccall((:DAQmxResetBufOutputOnbrdBufSize, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetSelfCalSupported(deviceName::String, data::UInt32)
+function GetSelfCalSupported(deviceName::String, data::Ref{UInt32})
     ccall((:DAQmxGetSelfCalSupported, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), deviceName, data)
 end
 
@@ -2046,7 +2046,7 @@ function GetSelfCalLastTemp(deviceName::String, data::Float64)
     ccall((:DAQmxGetSelfCalLastTemp, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), deviceName, data)
 end
 
-function GetExtCalRecommendedInterval(deviceName::String, data::UInt32)
+function GetExtCalRecommendedInterval(deviceName::String, data::Ref{UInt32})
     ccall((:DAQmxGetExtCalRecommendedInterval, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), deviceName, data)
 end
 
@@ -2062,7 +2062,7 @@ function SetCalUserDefinedInfo(deviceName::String, data)
     ccall((:DAQmxSetCalUserDefinedInfo, :libnidaqmx), Cint, (Ref{UInt8}, Cstring), deviceName, data)
 end
 
-function GetCalUserDefinedInfoMaxSize(deviceName::String, data::UInt32)
+function GetCalUserDefinedInfoMaxSize(deviceName::String, data::Ref{UInt32})
     ccall((:DAQmxGetCalUserDefinedInfoMaxSize, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), deviceName, data)
 end
 
@@ -2070,15 +2070,15 @@ function GetCalDevTemp(deviceName::String, data::Float64)
     ccall((:DAQmxGetCalDevTemp, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), deviceName, data)
 end
 
-function GetCalAccConnectionCount(deviceName::String, data::UInt32)
+function GetCalAccConnectionCount(deviceName::String, data::Ref{UInt32})
     ccall((:DAQmxGetCalAccConnectionCount, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), deviceName, data)
 end
 
-function SetCalAccConnectionCount(deviceName::String, data::UInt32)
+function SetCalAccConnectionCount(deviceName::String, data::Ref{UInt32})
     ccall((:DAQmxSetCalAccConnectionCount, :libnidaqmx), Cint, (Ref{UInt8}, Cuint), deviceName, data)
 end
 
-function GetCalRecommendedAccConnectionCountLimit(deviceName::String, data::UInt32)
+function GetCalRecommendedAccConnectionCountLimit(deviceName::String, data::Ref{UInt32})
     ccall((:DAQmxGetCalRecommendedAccConnectionCountLimit, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), deviceName, data)
 end
 
@@ -2118,7 +2118,7 @@ function ResetAICustomScaleName(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAICustomScaleName, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIMeasType(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIMeasType(taskHandle::TaskHandle, channel::String, data::Ref{Int32})
     ccall((:DAQmxGetAIMeasType, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
@@ -2322,11 +2322,11 @@ function ResetAIThrmstrR1(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIThrmstrR1, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIForceReadFromChan(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIForceReadFromChan(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIForceReadFromChan, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAIForceReadFromChan(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAIForceReadFromChan(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIForceReadFromChan, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -2370,11 +2370,11 @@ function ResetAIStrainUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIStrainUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIStrainGageForceReadFromChan(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIStrainGageForceReadFromChan(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIStrainGageForceReadFromChan, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAIStrainGageForceReadFromChan(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAIStrainGageForceReadFromChan(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIStrainGageForceReadFromChan, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -3014,7 +3014,7 @@ function ResetAIChargeUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIChargeUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIIsTEDS(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIIsTEDS(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIIsTEDS, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
@@ -3142,11 +3142,11 @@ function ResetAIBridgeInitialRatio(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIBridgeInitialRatio, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIBridgeShuntCalEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIBridgeShuntCalEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIBridgeShuntCalEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAIBridgeShuntCalEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAIBridgeShuntCalEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIBridgeShuntCalEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -3322,11 +3322,11 @@ function ResetAIExcitVal(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIExcitVal, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIExcitUseForScaling(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIExcitUseForScaling(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIExcitUseForScaling, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAIExcitUseForScaling(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAIExcitUseForScaling(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIExcitUseForScaling, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -3334,11 +3334,11 @@ function ResetAIExcitUseForScaling(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIExcitUseForScaling, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIExcitUseMultiplexed(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIExcitUseMultiplexed(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIExcitUseMultiplexed, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAIExcitUseMultiplexed(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAIExcitUseMultiplexed(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIExcitUseMultiplexed, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -3406,11 +3406,11 @@ function ResetAIACExcitFreq(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIACExcitFreq, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIACExcitSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIACExcitSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIACExcitSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAIACExcitSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAIACExcitSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIACExcitSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -3466,11 +3466,11 @@ function ResetAISensorPowerType(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAISensorPowerType, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIOpenThrmcplDetectEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIOpenThrmcplDetectEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIOpenThrmcplDetectEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAIOpenThrmcplDetectEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAIOpenThrmcplDetectEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIOpenThrmcplDetectEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -3514,11 +3514,11 @@ function ResetAIProbeAtten(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIProbeAtten, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAILowpassEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAILowpassEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAILowpassEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAILowpassEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAILowpassEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAILowpassEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -3562,11 +3562,11 @@ function ResetAILowpassSwitchCapExtClkFreq(taskHandle::TaskHandle, channel::Stri
     ccall((:DAQmxResetAILowpassSwitchCapExtClkFreq, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAILowpassSwitchCapExtClkDiv(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAILowpassSwitchCapExtClkDiv(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAILowpassSwitchCapExtClkDiv, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAILowpassSwitchCapExtClkDiv(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAILowpassSwitchCapExtClkDiv(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAILowpassSwitchCapExtClkDiv, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -3574,11 +3574,11 @@ function ResetAILowpassSwitchCapExtClkDiv(taskHandle::TaskHandle, channel::Strin
     ccall((:DAQmxResetAILowpassSwitchCapExtClkDiv, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAILowpassSwitchCapOutClkDiv(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAILowpassSwitchCapOutClkDiv(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAILowpassSwitchCapOutClkDiv, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAILowpassSwitchCapOutClkDiv(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAILowpassSwitchCapOutClkDiv(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAILowpassSwitchCapOutClkDiv, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -3586,11 +3586,11 @@ function ResetAILowpassSwitchCapOutClkDiv(taskHandle::TaskHandle, channel::Strin
     ccall((:DAQmxResetAILowpassSwitchCapOutClkDiv, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAIDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAIDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -3622,11 +3622,11 @@ function ResetAIDigFltrResponse(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIDigFltrResponse, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIDigFltrOrder(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIDigFltrOrder(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIDigFltrOrder, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAIDigFltrOrder(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAIDigFltrOrder(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIDigFltrOrder, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -3718,11 +3718,11 @@ function ResetAIDigFltrCoeff(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIDigFltrCoeff, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIFilterEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIFilterEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIFilterEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAIFilterEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAIFilterEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIFilterEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -3754,11 +3754,11 @@ function ResetAIFilterResponse(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIFilterResponse, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIFilterOrder(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIFilterOrder(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIFilterOrder, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAIFilterOrder(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAIFilterOrder(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIFilterOrder, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -3782,11 +3782,11 @@ function ResetAIFilterDelayUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIFilterDelayUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIRemoveFilterDelay(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIRemoveFilterDelay(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIRemoveFilterDelay, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAIRemoveFilterDelay(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAIRemoveFilterDelay(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIRemoveFilterDelay, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -3806,11 +3806,11 @@ function ResetAIFilterDelayAdjustment(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIFilterDelayAdjustment, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIAveragingWinSize(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIAveragingWinSize(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIAveragingWinSize, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAIAveragingWinSize(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAIAveragingWinSize(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIAveragingWinSize, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -3826,7 +3826,7 @@ function GetAIResolution(taskHandle::TaskHandle, channel::String, data::Float64)
     ccall((:DAQmxGetAIResolution, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function GetAIRawSampSize(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIRawSampSize(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIRawSampSize, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
@@ -3846,11 +3846,11 @@ function ResetAIADCTimingMode(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIADCTimingMode, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIADCCustomTimingMode(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIADCCustomTimingMode(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIADCCustomTimingMode, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAIADCCustomTimingMode(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAIADCCustomTimingMode(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIADCCustomTimingMode, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -3858,11 +3858,11 @@ function ResetAIADCCustomTimingMode(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIADCCustomTimingMode, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIDitherEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIDitherEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIDitherEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAIDitherEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAIDitherEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIDitherEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -3870,15 +3870,15 @@ function ResetAIDitherEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIDitherEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIChanCalHasValidCalInfo(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIChanCalHasValidCalInfo(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIChanCalHasValidCalInfo, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function GetAIChanCalEnableCal(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIChanCalEnableCal(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIChanCalEnableCal, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAIChanCalEnableCal(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAIChanCalEnableCal(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIChanCalEnableCal, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -3886,11 +3886,11 @@ function ResetAIChanCalEnableCal(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIChanCalEnableCal, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIChanCalApplyCalIfExp(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIChanCalApplyCalIfExp(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIChanCalApplyCalIfExp, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAIChanCalApplyCalIfExp(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAIChanCalApplyCalIfExp(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIChanCalApplyCalIfExp, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4054,11 +4054,11 @@ function ResetAIGain(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIGain, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAISampAndHoldEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAISampAndHoldEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAISampAndHoldEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAISampAndHoldEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAISampAndHoldEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAISampAndHoldEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4078,11 +4078,11 @@ function ResetAIAutoZeroMode(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIAutoZeroMode, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIChopEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIChopEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIChopEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAIChopEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAIChopEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIChopEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4126,11 +4126,11 @@ function ResetAIDataXferReqCond(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIDataXferReqCond, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIDataXferCustomThreshold(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIDataXferCustomThreshold(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIDataXferCustomThreshold, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAIDataXferCustomThreshold(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAIDataXferCustomThreshold(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIDataXferCustomThreshold, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4138,11 +4138,11 @@ function ResetAIDataXferCustomThreshold(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIDataXferCustomThreshold, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIUsbXferReqSize(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIUsbXferReqSize(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIUsbXferReqSize, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAIUsbXferReqSize(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAIUsbXferReqSize(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIUsbXferReqSize, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4150,11 +4150,11 @@ function ResetAIUsbXferReqSize(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIUsbXferReqSize, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIUsbXferReqCount(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIUsbXferReqCount(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIUsbXferReqCount, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAIUsbXferReqCount(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAIUsbXferReqCount(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIUsbXferReqCount, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4162,11 +4162,11 @@ function ResetAIUsbXferReqCount(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIUsbXferReqCount, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIMemMapEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIMemMapEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIMemMapEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAIMemMapEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAIMemMapEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIMemMapEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4186,11 +4186,11 @@ function ResetAIRawDataCompressionType(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIRawDataCompressionType, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAILossyLSBRemovalCompressedSampSize(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAILossyLSBRemovalCompressedSampSize(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAILossyLSBRemovalCompressedSampSize, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAILossyLSBRemovalCompressedSampSize(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAILossyLSBRemovalCompressedSampSize(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAILossyLSBRemovalCompressedSampSize, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4202,11 +4202,11 @@ function GetAIDevScalingCoeff(taskHandle::TaskHandle, channel::String, data::Vec
     ccall((:DAQmxGetAIDevScalingCoeff, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}, Cuint), taskHandle, channel, data, arraySizeInElements)
 end
 
-function GetAIEnhancedAliasRejectionEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIEnhancedAliasRejectionEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIEnhancedAliasRejectionEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAIEnhancedAliasRejectionEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAIEnhancedAliasRejectionEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIEnhancedAliasRejectionEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4214,11 +4214,11 @@ function ResetAIEnhancedAliasRejectionEnable(taskHandle::TaskHandle, channel::St
     ccall((:DAQmxResetAIEnhancedAliasRejectionEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIOpenChanDetectEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAIOpenChanDetectEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIOpenChanDetectEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAIOpenChanDetectEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAIOpenChanDetectEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIOpenChanDetectEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4262,7 +4262,7 @@ function ResetAOCustomScaleName(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAOCustomScaleName, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOOutputType(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAOOutputType(taskHandle::TaskHandle, channel::String, data::Ref{Int32})
     ccall((:DAQmxGetAOOutputType, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
@@ -4474,11 +4474,11 @@ function ResetAODACRngLow(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAODACRngLow, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAODACRefConnToGnd(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAODACRefConnToGnd(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAODACRefConnToGnd, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAODACRefConnToGnd(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAODACRefConnToGnd(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAODACRefConnToGnd, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4486,11 +4486,11 @@ function ResetAODACRefConnToGnd(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAODACRefConnToGnd, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAODACRefAllowConnToGnd(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAODACRefAllowConnToGnd(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAODACRefAllowConnToGnd, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAODACRefAllowConnToGnd(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAODACRefAllowConnToGnd(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAODACRefAllowConnToGnd, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4570,11 +4570,11 @@ function ResetAODACOffsetVal(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAODACOffsetVal, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOReglitchEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAOReglitchEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAOReglitchEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAOReglitchEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAOReglitchEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAOReglitchEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4630,11 +4630,11 @@ function ResetAOGain(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAOGain, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOUseOnlyOnBrdMem(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAOUseOnlyOnBrdMem(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAOUseOnlyOnBrdMem, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAOUseOnlyOnBrdMem(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAOUseOnlyOnBrdMem(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAOUseOnlyOnBrdMem, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4666,11 +4666,11 @@ function ResetAODataXferReqCond(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAODataXferReqCond, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOUsbXferReqSize(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAOUsbXferReqSize(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAOUsbXferReqSize, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAOUsbXferReqSize(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAOUsbXferReqSize(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAOUsbXferReqSize, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4678,11 +4678,11 @@ function ResetAOUsbXferReqSize(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAOUsbXferReqSize, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOUsbXferReqCount(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAOUsbXferReqCount(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAOUsbXferReqCount, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAOUsbXferReqCount(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAOUsbXferReqCount(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAOUsbXferReqCount, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4690,11 +4690,11 @@ function ResetAOUsbXferReqCount(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAOUsbXferReqCount, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOMemMapEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAOMemMapEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAOMemMapEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAOMemMapEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAOMemMapEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAOMemMapEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4706,11 +4706,11 @@ function GetAODevScalingCoeff(taskHandle::TaskHandle, channel::String, data::Vec
     ccall((:DAQmxGetAODevScalingCoeff, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}, Cuint), taskHandle, channel, data, arraySizeInElements)
 end
 
-function GetAOEnhancedImageRejectionEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetAOEnhancedImageRejectionEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAOEnhancedImageRejectionEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetAOEnhancedImageRejectionEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetAOEnhancedImageRejectionEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAOEnhancedImageRejectionEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4718,11 +4718,11 @@ function ResetAOEnhancedImageRejectionEnable(taskHandle::TaskHandle, channel::St
     ccall((:DAQmxResetAOEnhancedImageRejectionEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDIInvertLines(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetDIInvertLines(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetDIInvertLines, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetDIInvertLines(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetDIInvertLines(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetDIInvertLines, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4730,15 +4730,15 @@ function ResetDIInvertLines(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDIInvertLines, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDINumLines(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetDINumLines(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetDINumLines, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function GetDIDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetDIDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetDIDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetDIDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetDIDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetDIDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4758,11 +4758,11 @@ function ResetDIDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDIDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDIDigFltrEnableBusMode(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetDIDigFltrEnableBusMode(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetDIDigFltrEnableBusMode, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetDIDigFltrEnableBusMode(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetDIDigFltrEnableBusMode(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetDIDigFltrEnableBusMode, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4794,11 +4794,11 @@ function ResetDIDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDIDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDIDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetDIDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetDIDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetDIDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetDIDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetDIDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4806,11 +4806,11 @@ function ResetDIDigSyncEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDIDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDITristate(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetDITristate(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetDITristate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetDITristate(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetDITristate(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetDITristate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4854,11 +4854,11 @@ function ResetDIDataXferReqCond(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDIDataXferReqCond, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDIUsbXferReqSize(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetDIUsbXferReqSize(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetDIUsbXferReqSize, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetDIUsbXferReqSize(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetDIUsbXferReqSize(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetDIUsbXferReqSize, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4866,11 +4866,11 @@ function ResetDIUsbXferReqSize(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDIUsbXferReqSize, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDIUsbXferReqCount(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetDIUsbXferReqCount(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetDIUsbXferReqCount, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetDIUsbXferReqCount(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetDIUsbXferReqCount(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetDIUsbXferReqCount, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4878,11 +4878,11 @@ function ResetDIUsbXferReqCount(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDIUsbXferReqCount, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDIMemMapEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetDIMemMapEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetDIMemMapEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetDIMemMapEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetDIMemMapEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetDIMemMapEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4914,11 +4914,11 @@ function ResetDOOutputDriveType(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDOOutputDriveType, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDOInvertLines(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetDOInvertLines(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetDOInvertLines, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetDOInvertLines(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetDOInvertLines(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetDOInvertLines, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -4926,15 +4926,15 @@ function ResetDOInvertLines(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDOInvertLines, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDONumLines(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetDONumLines(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetDONumLines, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function GetDOTristate(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetDOTristate(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetDOTristate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetDOTristate(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetDOTristate(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetDOTristate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -5002,11 +5002,11 @@ function ResetDOOvercurrentLimit(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDOOvercurrentLimit, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDOOvercurrentAutoReenable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetDOOvercurrentAutoReenable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetDOOvercurrentAutoReenable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetDOOvercurrentAutoReenable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetDOOvercurrentAutoReenable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetDOOvercurrentAutoReenable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -5026,11 +5026,11 @@ function ResetDOOvercurrentReenablePeriod(taskHandle::TaskHandle, channel::Strin
     ccall((:DAQmxResetDOOvercurrentReenablePeriod, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDOUseOnlyOnBrdMem(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetDOUseOnlyOnBrdMem(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetDOUseOnlyOnBrdMem, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetDOUseOnlyOnBrdMem(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetDOUseOnlyOnBrdMem(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetDOUseOnlyOnBrdMem, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -5062,11 +5062,11 @@ function ResetDODataXferReqCond(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDODataXferReqCond, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDOUsbXferReqSize(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetDOUsbXferReqSize(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetDOUsbXferReqSize, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetDOUsbXferReqSize(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetDOUsbXferReqSize(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetDOUsbXferReqSize, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -5074,11 +5074,11 @@ function ResetDOUsbXferReqSize(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDOUsbXferReqSize, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDOUsbXferReqCount(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetDOUsbXferReqCount(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetDOUsbXferReqCount, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetDOUsbXferReqCount(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetDOUsbXferReqCount(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetDOUsbXferReqCount, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -5086,11 +5086,11 @@ function ResetDOUsbXferReqCount(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDOUsbXferReqCount, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDOMemMapEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetDOMemMapEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetDOMemMapEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetDOMemMapEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetDOMemMapEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetDOMemMapEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -5146,7 +5146,7 @@ function ResetCICustomScaleName(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCICustomScaleName, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIMeasType(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIMeasType(taskHandle::TaskHandle, channel::String, data::Ref{Int32})
     ccall((:DAQmxGetCIMeasType, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
@@ -5198,11 +5198,11 @@ function ResetCIFreqLogicLvlBehavior(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIFreqLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIFreqDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIFreqDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIFreqDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIFreqDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIFreqDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIFreqDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -5246,11 +5246,11 @@ function ResetCIFreqDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIFreqDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIFreqDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIFreqDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIFreqDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIFreqDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIFreqDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIFreqDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -5282,11 +5282,11 @@ function ResetCIFreqMeasMeth(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIFreqMeasMeth, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIFreqEnableAveraging(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIFreqEnableAveraging(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIFreqEnableAveraging, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIFreqEnableAveraging(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIFreqEnableAveraging(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIFreqEnableAveraging, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -5306,11 +5306,11 @@ function ResetCIFreqMeasTime(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIFreqMeasTime, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIFreqDiv(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIFreqDiv(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIFreqDiv, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIFreqDiv(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIFreqDiv(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIFreqDiv, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -5366,11 +5366,11 @@ function ResetCIPeriodLogicLvlBehavior(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPeriodLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPeriodDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIPeriodDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIPeriodDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIPeriodDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIPeriodDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIPeriodDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -5414,11 +5414,11 @@ function ResetCIPeriodDigFltrTimebaseRate(taskHandle::TaskHandle, channel::Strin
     ccall((:DAQmxResetCIPeriodDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPeriodDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIPeriodDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIPeriodDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIPeriodDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIPeriodDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIPeriodDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -5450,11 +5450,11 @@ function ResetCIPeriodMeasMeth(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPeriodMeasMeth, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPeriodEnableAveraging(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIPeriodEnableAveraging(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIPeriodEnableAveraging, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIPeriodEnableAveraging(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIPeriodEnableAveraging(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIPeriodEnableAveraging, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -5474,11 +5474,11 @@ function ResetCIPeriodMeasTime(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPeriodMeasTime, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPeriodDiv(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIPeriodDiv(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIPeriodDiv, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIPeriodDiv(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIPeriodDiv(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIPeriodDiv, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -5522,11 +5522,11 @@ function ResetCICountEdgesLogicLvlBehavior(taskHandle::TaskHandle, channel::Stri
     ccall((:DAQmxResetCICountEdgesLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCICountEdgesDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCICountEdgesDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCICountEdgesDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCICountEdgesDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -5570,11 +5570,11 @@ function ResetCICountEdgesDigFltrTimebaseRate(taskHandle::TaskHandle, channel::S
     ccall((:DAQmxResetCICountEdgesDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCICountEdgesDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCICountEdgesDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCICountEdgesDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCICountEdgesDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -5630,11 +5630,11 @@ function ResetCICountEdgesCountDirLogicLvlBehavior(taskHandle::TaskHandle, chann
     ccall((:DAQmxResetCICountEdgesCountDirLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesCountDirDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCICountEdgesCountDirDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCICountEdgesCountDirDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesCountDirDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCICountEdgesCountDirDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCICountEdgesCountDirDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -5678,11 +5678,11 @@ function ResetCICountEdgesCountDirDigFltrTimebaseRate(taskHandle::TaskHandle, ch
     ccall((:DAQmxResetCICountEdgesCountDirDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesCountDirDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCICountEdgesCountDirDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCICountEdgesCountDirDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesCountDirDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCICountEdgesCountDirDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCICountEdgesCountDirDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -5690,11 +5690,11 @@ function ResetCICountEdgesCountDirDigSyncEnable(taskHandle::TaskHandle, channel:
     ccall((:DAQmxResetCICountEdgesCountDirDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesInitialCnt(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCICountEdgesInitialCnt(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCICountEdgesInitialCnt, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesInitialCnt(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCICountEdgesInitialCnt(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCICountEdgesInitialCnt, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -5714,11 +5714,11 @@ function ResetCICountEdgesActiveEdge(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCICountEdgesActiveEdge, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesCountResetEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCICountEdgesCountResetEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCICountEdgesCountResetEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesCountResetEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCICountEdgesCountResetEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCICountEdgesCountResetEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -5726,11 +5726,11 @@ function ResetCICountEdgesCountResetEnable(taskHandle::TaskHandle, channel::Stri
     ccall((:DAQmxResetCICountEdgesCountResetEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesCountResetResetCount(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCICountEdgesCountResetResetCount(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCICountEdgesCountResetResetCount, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesCountResetResetCount(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCICountEdgesCountResetResetCount(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCICountEdgesCountResetResetCount, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -5774,11 +5774,11 @@ function ResetCICountEdgesCountResetLogicLvlBehavior(taskHandle::TaskHandle, cha
     ccall((:DAQmxResetCICountEdgesCountResetLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesCountResetDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCICountEdgesCountResetDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCICountEdgesCountResetDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesCountResetDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCICountEdgesCountResetDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCICountEdgesCountResetDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -5822,11 +5822,11 @@ function ResetCICountEdgesCountResetDigFltrTimebaseRate(taskHandle::TaskHandle, 
     ccall((:DAQmxResetCICountEdgesCountResetDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesCountResetDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCICountEdgesCountResetDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCICountEdgesCountResetDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesCountResetDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCICountEdgesCountResetDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCICountEdgesCountResetDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -5846,11 +5846,11 @@ function ResetCICountEdgesCountResetActiveEdge(taskHandle::TaskHandle, channel::
     ccall((:DAQmxResetCICountEdgesCountResetActiveEdge, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesGateEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCICountEdgesGateEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCICountEdgesGateEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesGateEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCICountEdgesGateEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCICountEdgesGateEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -5894,11 +5894,11 @@ function ResetCICountEdgesGateLogicLvlBehavior(taskHandle::TaskHandle, channel::
     ccall((:DAQmxResetCICountEdgesGateLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesGateDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCICountEdgesGateDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCICountEdgesGateDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesGateDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCICountEdgesGateDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCICountEdgesGateDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -5990,11 +5990,11 @@ function ResetCIDutyCycleLogicLvlBehavior(taskHandle::TaskHandle, channel::Strin
     ccall((:DAQmxResetCIDutyCycleLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIDutyCycleDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIDutyCycleDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIDutyCycleDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIDutyCycleDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIDutyCycleDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIDutyCycleDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -6062,11 +6062,11 @@ function ResetCIAngEncoderUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIAngEncoderUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIAngEncoderPulsesPerRev(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIAngEncoderPulsesPerRev(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIAngEncoderPulsesPerRev, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIAngEncoderPulsesPerRev(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIAngEncoderPulsesPerRev(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIAngEncoderPulsesPerRev, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -6170,11 +6170,11 @@ function ResetCIEncoderAInputLogicLvlBehavior(taskHandle::TaskHandle, channel::S
     ccall((:DAQmxResetCIEncoderAInputLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIEncoderAInputDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIEncoderAInputDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIEncoderAInputDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIEncoderAInputDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIEncoderAInputDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIEncoderAInputDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -6218,11 +6218,11 @@ function ResetCIEncoderAInputDigFltrTimebaseRate(taskHandle::TaskHandle, channel
     ccall((:DAQmxResetCIEncoderAInputDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIEncoderAInputDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIEncoderAInputDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIEncoderAInputDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIEncoderAInputDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIEncoderAInputDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIEncoderAInputDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -6266,11 +6266,11 @@ function ResetCIEncoderBInputLogicLvlBehavior(taskHandle::TaskHandle, channel::S
     ccall((:DAQmxResetCIEncoderBInputLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIEncoderBInputDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIEncoderBInputDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIEncoderBInputDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIEncoderBInputDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIEncoderBInputDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIEncoderBInputDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -6314,11 +6314,11 @@ function ResetCIEncoderBInputDigFltrTimebaseRate(taskHandle::TaskHandle, channel
     ccall((:DAQmxResetCIEncoderBInputDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIEncoderBInputDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIEncoderBInputDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIEncoderBInputDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIEncoderBInputDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIEncoderBInputDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIEncoderBInputDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -6362,11 +6362,11 @@ function ResetCIEncoderZInputLogicLvlBehavior(taskHandle::TaskHandle, channel::S
     ccall((:DAQmxResetCIEncoderZInputLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIEncoderZInputDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIEncoderZInputDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIEncoderZInputDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIEncoderZInputDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIEncoderZInputDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIEncoderZInputDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -6410,11 +6410,11 @@ function ResetCIEncoderZInputDigFltrTimebaseRate(taskHandle::TaskHandle, channel
     ccall((:DAQmxResetCIEncoderZInputDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIEncoderZInputDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIEncoderZInputDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIEncoderZInputDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIEncoderZInputDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIEncoderZInputDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIEncoderZInputDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -6422,11 +6422,11 @@ function ResetCIEncoderZInputDigSyncEnable(taskHandle::TaskHandle, channel::Stri
     ccall((:DAQmxResetCIEncoderZInputDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIEncoderZIndexEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIEncoderZIndexEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIEncoderZIndexEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIEncoderZIndexEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIEncoderZIndexEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIEncoderZIndexEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -6506,11 +6506,11 @@ function ResetCIPulseWidthLogicLvlBehavior(taskHandle::TaskHandle, channel::Stri
     ccall((:DAQmxResetCIPulseWidthLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseWidthDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIPulseWidthDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIPulseWidthDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIPulseWidthDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIPulseWidthDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIPulseWidthDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -6554,11 +6554,11 @@ function ResetCIPulseWidthDigFltrTimebaseRate(taskHandle::TaskHandle, channel::S
     ccall((:DAQmxResetCIPulseWidthDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseWidthDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIPulseWidthDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIPulseWidthDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIPulseWidthDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIPulseWidthDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIPulseWidthDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -6590,11 +6590,11 @@ function ResetCITimestampUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCITimestampUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCITimestampInitialSeconds(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCITimestampInitialSeconds(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCITimestampInitialSeconds, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCITimestampInitialSeconds(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCITimestampInitialSeconds(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCITimestampInitialSeconds, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -6638,11 +6638,11 @@ function ResetCIVelocityAngEncoderUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIVelocityAngEncoderUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIVelocityAngEncoderPulsesPerRev(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIVelocityAngEncoderPulsesPerRev(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIVelocityAngEncoderPulsesPerRev, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIVelocityAngEncoderPulsesPerRev(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIVelocityAngEncoderPulsesPerRev(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIVelocityAngEncoderPulsesPerRev, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -6722,11 +6722,11 @@ function ResetCIVelocityEncoderAInputLogicLvlBehavior(taskHandle::TaskHandle, ch
     ccall((:DAQmxResetCIVelocityEncoderAInputLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIVelocityEncoderAInputDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIVelocityEncoderAInputDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIVelocityEncoderAInputDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIVelocityEncoderAInputDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIVelocityEncoderAInputDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIVelocityEncoderAInputDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -6806,11 +6806,11 @@ function ResetCIVelocityEncoderBInputLogicLvlBehavior(taskHandle::TaskHandle, ch
     ccall((:DAQmxResetCIVelocityEncoderBInputLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIVelocityEncoderBInputDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIVelocityEncoderBInputDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIVelocityEncoderBInputDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIVelocityEncoderBInputDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIVelocityEncoderBInputDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIVelocityEncoderBInputDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -6866,11 +6866,11 @@ function ResetCIVelocityMeasTime(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIVelocityMeasTime, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIVelocityDiv(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIVelocityDiv(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIVelocityDiv, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIVelocityDiv(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIVelocityDiv(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIVelocityDiv, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -6926,11 +6926,11 @@ function ResetCITwoEdgeSepFirstLogicLvlBehavior(taskHandle::TaskHandle, channel:
     ccall((:DAQmxResetCITwoEdgeSepFirstLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCITwoEdgeSepFirstDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCITwoEdgeSepFirstDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCITwoEdgeSepFirstDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCITwoEdgeSepFirstDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCITwoEdgeSepFirstDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCITwoEdgeSepFirstDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -6974,11 +6974,11 @@ function ResetCITwoEdgeSepFirstDigFltrTimebaseRate(taskHandle::TaskHandle, chann
     ccall((:DAQmxResetCITwoEdgeSepFirstDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCITwoEdgeSepFirstDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCITwoEdgeSepFirstDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCITwoEdgeSepFirstDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCITwoEdgeSepFirstDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCITwoEdgeSepFirstDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCITwoEdgeSepFirstDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -7034,11 +7034,11 @@ function ResetCITwoEdgeSepSecondLogicLvlBehavior(taskHandle::TaskHandle, channel
     ccall((:DAQmxResetCITwoEdgeSepSecondLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCITwoEdgeSepSecondDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCITwoEdgeSepSecondDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCITwoEdgeSepSecondDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCITwoEdgeSepSecondDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCITwoEdgeSepSecondDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCITwoEdgeSepSecondDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -7082,11 +7082,11 @@ function ResetCITwoEdgeSepSecondDigFltrTimebaseRate(taskHandle::TaskHandle, chan
     ccall((:DAQmxResetCITwoEdgeSepSecondDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCITwoEdgeSepSecondDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCITwoEdgeSepSecondDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCITwoEdgeSepSecondDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCITwoEdgeSepSecondDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCITwoEdgeSepSecondDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCITwoEdgeSepSecondDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -7154,11 +7154,11 @@ function ResetCISemiPeriodLogicLvlBehavior(taskHandle::TaskHandle, channel::Stri
     ccall((:DAQmxResetCISemiPeriodLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCISemiPeriodDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCISemiPeriodDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCISemiPeriodDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCISemiPeriodDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCISemiPeriodDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCISemiPeriodDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -7202,11 +7202,11 @@ function ResetCISemiPeriodDigFltrTimebaseRate(taskHandle::TaskHandle, channel::S
     ccall((:DAQmxResetCISemiPeriodDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCISemiPeriodDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCISemiPeriodDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCISemiPeriodDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCISemiPeriodDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCISemiPeriodDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCISemiPeriodDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -7274,11 +7274,11 @@ function ResetCIPulseFreqLogicLvlBehavior(taskHandle::TaskHandle, channel::Strin
     ccall((:DAQmxResetCIPulseFreqLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseFreqDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIPulseFreqDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIPulseFreqDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIPulseFreqDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIPulseFreqDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIPulseFreqDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -7322,11 +7322,11 @@ function ResetCIPulseFreqDigFltrTimebaseRate(taskHandle::TaskHandle, channel::St
     ccall((:DAQmxResetCIPulseFreqDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseFreqDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIPulseFreqDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIPulseFreqDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIPulseFreqDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIPulseFreqDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIPulseFreqDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -7394,11 +7394,11 @@ function ResetCIPulseTimeLogicLvlBehavior(taskHandle::TaskHandle, channel::Strin
     ccall((:DAQmxResetCIPulseTimeLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseTimeDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIPulseTimeDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIPulseTimeDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIPulseTimeDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIPulseTimeDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIPulseTimeDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -7442,11 +7442,11 @@ function ResetCIPulseTimeDigFltrTimebaseRate(taskHandle::TaskHandle, channel::St
     ccall((:DAQmxResetCIPulseTimeDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseTimeDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIPulseTimeDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIPulseTimeDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIPulseTimeDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIPulseTimeDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIPulseTimeDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -7502,11 +7502,11 @@ function ResetCIPulseTicksLogicLvlBehavior(taskHandle::TaskHandle, channel::Stri
     ccall((:DAQmxResetCIPulseTicksLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseTicksDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIPulseTicksDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIPulseTicksDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIPulseTicksDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIPulseTicksDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIPulseTicksDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -7550,11 +7550,11 @@ function ResetCIPulseTicksDigFltrTimebaseRate(taskHandle::TaskHandle, channel::S
     ccall((:DAQmxResetCIPulseTicksDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseTicksDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIPulseTicksDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIPulseTicksDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIPulseTicksDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIPulseTicksDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIPulseTicksDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -7610,11 +7610,11 @@ function ResetCICtrTimebaseActiveEdge(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCICtrTimebaseActiveEdge, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICtrTimebaseDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCICtrTimebaseDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCICtrTimebaseDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCICtrTimebaseDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCICtrTimebaseDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCICtrTimebaseDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -7658,11 +7658,11 @@ function ResetCICtrTimebaseDigFltrTimebaseRate(taskHandle::TaskHandle, channel::
     ccall((:DAQmxResetCICtrTimebaseDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICtrTimebaseDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCICtrTimebaseDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCICtrTimebaseDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCICtrTimebaseDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCICtrTimebaseDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCICtrTimebaseDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -7682,7 +7682,7 @@ function ResetCIThreshVoltage(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIThreshVoltage, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICount(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCICount(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCICount, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
@@ -7690,15 +7690,15 @@ function GetCIOutputState(taskHandle::TaskHandle, channel::String, data::Int32)
     ccall((:DAQmxGetCIOutputState, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function GetCITCReached(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCITCReached(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCITCReached, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function GetCICtrTimebaseMasterTimebaseDiv(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCICtrTimebaseMasterTimebaseDiv(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCICtrTimebaseMasterTimebaseDiv, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCICtrTimebaseMasterTimebaseDiv(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCICtrTimebaseMasterTimebaseDiv(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCICtrTimebaseMasterTimebaseDiv, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -7754,11 +7754,11 @@ function ResetCIDataXferReqCond(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIDataXferReqCond, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIUsbXferReqSize(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIUsbXferReqSize(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIUsbXferReqSize, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIUsbXferReqSize(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIUsbXferReqSize(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIUsbXferReqSize, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -7766,11 +7766,11 @@ function ResetCIUsbXferReqSize(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIUsbXferReqSize, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIUsbXferReqCount(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIUsbXferReqCount(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIUsbXferReqCount, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIUsbXferReqCount(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIUsbXferReqCount(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIUsbXferReqCount, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -7778,11 +7778,11 @@ function ResetCIUsbXferReqCount(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIUsbXferReqCount, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIMemMapEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIMemMapEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIMemMapEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIMemMapEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIMemMapEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIMemMapEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -7790,15 +7790,15 @@ function ResetCIMemMapEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIMemMapEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCINumPossiblyInvalidSamps(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCINumPossiblyInvalidSamps(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCINumPossiblyInvalidSamps, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function GetCIDupCountPrevent(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIDupCountPrevent(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIDupCountPrevent, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIDupCountPrevent(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIDupCountPrevent(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIDupCountPrevent, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -7806,11 +7806,11 @@ function ResetCIDupCountPrevent(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIDupCountPrevent, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPrescaler(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCIPrescaler(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCIPrescaler, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCIPrescaler(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCIPrescaler(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCIPrescaler, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -7830,7 +7830,7 @@ function ResetCIMaxMeasPeriod(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIMaxMeasPeriod, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOOutputType(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCOOutputType(taskHandle::TaskHandle, channel::String, data::Ref{Int32})
     ccall((:DAQmxGetCOOutputType, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
@@ -7954,11 +7954,11 @@ function ResetCOPulseFreqInitialDelay(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCOPulseFreqInitialDelay, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOPulseHighTicks(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCOPulseHighTicks(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCOPulseHighTicks, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCOPulseHighTicks(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCOPulseHighTicks(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCOPulseHighTicks, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -7966,11 +7966,11 @@ function ResetCOPulseHighTicks(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCOPulseHighTicks, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOPulseLowTicks(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCOPulseLowTicks(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCOPulseLowTicks, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCOPulseLowTicks(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCOPulseLowTicks(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCOPulseLowTicks, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -7978,11 +7978,11 @@ function ResetCOPulseLowTicks(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCOPulseLowTicks, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOPulseTicksInitialDelay(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCOPulseTicksInitialDelay(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCOPulseTicksInitialDelay, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCOPulseTicksInitialDelay(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCOPulseTicksInitialDelay(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCOPulseTicksInitialDelay, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -8026,11 +8026,11 @@ function ResetCOCtrTimebaseActiveEdge(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCOCtrTimebaseActiveEdge, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOCtrTimebaseDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCOCtrTimebaseDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCOCtrTimebaseDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCOCtrTimebaseDigFltrEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCOCtrTimebaseDigFltrEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCOCtrTimebaseDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -8074,11 +8074,11 @@ function ResetCOCtrTimebaseDigFltrTimebaseRate(taskHandle::TaskHandle, channel::
     ccall((:DAQmxResetCOCtrTimebaseDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOCtrTimebaseDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCOCtrTimebaseDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCOCtrTimebaseDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCOCtrTimebaseDigSyncEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCOCtrTimebaseDigSyncEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCOCtrTimebaseDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -8086,7 +8086,7 @@ function ResetCOCtrTimebaseDigSyncEnable(taskHandle::TaskHandle, channel::String
     ccall((:DAQmxResetCOCtrTimebaseDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOCount(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCOCount(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCOCount, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
@@ -8094,11 +8094,11 @@ function GetCOOutputState(taskHandle::TaskHandle, channel::String, data::Int32)
     ccall((:DAQmxGetCOOutputState, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function GetCOAutoIncrCnt(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCOAutoIncrCnt(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCOAutoIncrCnt, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCOAutoIncrCnt(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCOAutoIncrCnt(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCOAutoIncrCnt, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -8106,11 +8106,11 @@ function ResetCOAutoIncrCnt(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCOAutoIncrCnt, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOCtrTimebaseMasterTimebaseDiv(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCOCtrTimebaseMasterTimebaseDiv(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCOCtrTimebaseMasterTimebaseDiv, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCOCtrTimebaseMasterTimebaseDiv(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCOCtrTimebaseMasterTimebaseDiv(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCOCtrTimebaseMasterTimebaseDiv, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -8118,15 +8118,15 @@ function ResetCOCtrTimebaseMasterTimebaseDiv(taskHandle::TaskHandle, channel::St
     ccall((:DAQmxResetCOCtrTimebaseMasterTimebaseDiv, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOPulseDone(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCOPulseDone(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCOPulseDone, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function GetCOEnableInitialDelayOnRetrigger(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCOEnableInitialDelayOnRetrigger(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCOEnableInitialDelayOnRetrigger, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCOEnableInitialDelayOnRetrigger(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCOEnableInitialDelayOnRetrigger(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCOEnableInitialDelayOnRetrigger, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -8146,11 +8146,11 @@ function ResetCOConstrainedGenMode(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCOConstrainedGenMode, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOUseOnlyOnBrdMem(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCOUseOnlyOnBrdMem(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCOUseOnlyOnBrdMem, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCOUseOnlyOnBrdMem(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCOUseOnlyOnBrdMem(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCOUseOnlyOnBrdMem, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -8182,11 +8182,11 @@ function ResetCODataXferReqCond(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCODataXferReqCond, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOUsbXferReqSize(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCOUsbXferReqSize(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCOUsbXferReqSize, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCOUsbXferReqSize(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCOUsbXferReqSize(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCOUsbXferReqSize, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -8194,11 +8194,11 @@ function ResetCOUsbXferReqSize(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCOUsbXferReqSize, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOUsbXferReqCount(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCOUsbXferReqCount(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCOUsbXferReqCount, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCOUsbXferReqCount(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCOUsbXferReqCount(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCOUsbXferReqCount, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -8206,11 +8206,11 @@ function ResetCOUsbXferReqCount(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCOUsbXferReqCount, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOMemMapEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCOMemMapEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCOMemMapEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCOMemMapEnable(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCOMemMapEnable(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCOMemMapEnable, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -8218,11 +8218,11 @@ function ResetCOMemMapEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCOMemMapEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOPrescaler(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCOPrescaler(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCOPrescaler, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function SetCOPrescaler(taskHandle::TaskHandle, channel::String, data::UInt32)
+function SetCOPrescaler(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxSetCOPrescaler, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, data)
 end
 
@@ -8230,7 +8230,7 @@ function ResetCOPrescaler(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCOPrescaler, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCORdyForNewVal(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetCORdyForNewVal(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCORdyForNewVal, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
@@ -8258,7 +8258,7 @@ function ResetChanDescr(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetChanDescr, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetChanIsGlobal(taskHandle::TaskHandle, channel::String, data::UInt32)
+function GetChanIsGlobal(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetChanIsGlobal, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
@@ -8274,24 +8274,24 @@ function ResetChanSyncUnlockBehavior(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetChanSyncUnlockBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDevIsSimulated(device::String, data::UInt32)
-    ccall((:DAQmxGetDevIsSimulated, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevIsSimulated(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevIsSimulated, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
-function GetDevProductCategory(device::String, data::Int32)
-    ccall((:DAQmxGetDevProductCategory, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}), device, data)
+function GetDevProductCategory(device::String, data::Ref{Int32})
+    ccall((:DAQmxGetDevProductCategory, :libnidaqmx), Cint, (Cstring, Ref{Cint}), device, data)
 end
 
 function GetDevProductType(device::String, data::Vector{UInt8}, bufferSize::UInt32)
     ccall((:DAQmxGetDevProductType, :libnidaqmx), Cint, (Cstring, Ref{UInt8}, Cuint), device, data, bufferSize)
 end
 
-function GetDevProductNum(device::String, data::UInt32)
-    ccall((:DAQmxGetDevProductNum, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevProductNum(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevProductNum, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
-function GetDevSerialNum(device::String, data::UInt32)
-    ccall((:DAQmxGetDevSerialNum, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevSerialNum(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevSerialNum, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
 function GetDevAccessoryProductTypes(device::String, data::Vector{UInt8}, bufferSize::UInt32)
@@ -8299,15 +8299,15 @@ function GetDevAccessoryProductTypes(device::String, data::Vector{UInt8}, buffer
 end
 
 function GetDevAccessoryProductNums(device::String, data::Vector{UInt32}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetDevAccessoryProductNums, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetDevAccessoryProductNums, :libnidaqmx), Cint, (Cstring, Ref{Cuint}, Cuint), device, data, arraySizeInElements)
 end
 
 function GetDevAccessorySerialNums(device::String, data::Vector{UInt32}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetDevAccessorySerialNums, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetDevAccessorySerialNums, :libnidaqmx), Cint, (Cstring, Ref{Cuint}, Cuint), device, data, arraySizeInElements)
 end
 
-function GetCarrierSerialNum(device::String, data::UInt32)
-    ccall((:DAQmxGetCarrierSerialNum, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetCarrierSerialNum(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetCarrierSerialNum, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
 function GetFieldDAQDevName(device::String, data::Vector{UInt8}, bufferSize::UInt32)
@@ -8322,16 +8322,16 @@ function GetDevChassisModuleDevNames(device::String, data::Vector{UInt8}, buffer
     ccall((:DAQmxGetDevChassisModuleDevNames, :libnidaqmx), Cint, (Cstring, Ref{UInt8}, Cuint), device, data, bufferSize)
 end
 
-function GetDevAnlgTrigSupported(device::String, data::UInt32)
-    ccall((:DAQmxGetDevAnlgTrigSupported, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevAnlgTrigSupported(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevAnlgTrigSupported, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
-function GetDevDigTrigSupported(device::String, data::UInt32)
-    ccall((:DAQmxGetDevDigTrigSupported, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevDigTrigSupported(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevDigTrigSupported, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
-function GetDevTimeTrigSupported(device::String, data::UInt32)
-    ccall((:DAQmxGetDevTimeTrigSupported, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevTimeTrigSupported(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevTimeTrigSupported, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
 function GetDevAIPhysicalChans(device::String, data::Vector{UInt8}, bufferSize::UInt32)
@@ -8339,39 +8339,39 @@ function GetDevAIPhysicalChans(device::String, data::Vector{UInt8}, bufferSize::
 end
 
 function GetDevAISupportedMeasTypes(device::String, data::Vector{Int32}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetDevAISupportedMeasTypes, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetDevAISupportedMeasTypes, :libnidaqmx), Cint, (Cstring, Ref{Cint}, Cuint), device, data, arraySizeInElements)
 end
 
 function GetDevAIMaxSingleChanRate(device::String, data::Float64)
-    ccall((:DAQmxGetDevAIMaxSingleChanRate, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), device, data)
+    ccall((:DAQmxGetDevAIMaxSingleChanRate, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}), device, data)
 end
 
 function GetDevAIMaxMultiChanRate(device::String, data::Float64)
-    ccall((:DAQmxGetDevAIMaxMultiChanRate, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), device, data)
+    ccall((:DAQmxGetDevAIMaxMultiChanRate, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}), device, data)
 end
 
 function GetDevAIMinRate(device::String, data::Float64)
-    ccall((:DAQmxGetDevAIMinRate, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), device, data)
+    ccall((:DAQmxGetDevAIMinRate, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}), device, data)
 end
 
-function GetDevAISimultaneousSamplingSupported(device::String, data::UInt32)
-    ccall((:DAQmxGetDevAISimultaneousSamplingSupported, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevAISimultaneousSamplingSupported(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevAISimultaneousSamplingSupported, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
-function GetDevAINumSampTimingEngines(device::String, data::UInt32)
-    ccall((:DAQmxGetDevAINumSampTimingEngines, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevAINumSampTimingEngines(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevAINumSampTimingEngines, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
 function GetDevAISampModes(device::String, data::Vector{Int32}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetDevAISampModes, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetDevAISampModes, :libnidaqmx), Cint, (Cstring, Ref{Cint}, Cuint), device, data, arraySizeInElements)
 end
 
-function GetDevAINumSyncPulseSrcs(device::String, data::UInt32)
-    ccall((:DAQmxGetDevAINumSyncPulseSrcs, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevAINumSyncPulseSrcs(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevAINumSyncPulseSrcs, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
 function GetDevAITrigUsage(device::String, data::Int32)
-    ccall((:DAQmxGetDevAITrigUsage, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}), device, data)
+    ccall((:DAQmxGetDevAITrigUsage, :libnidaqmx), Cint, (Cstring, Ref{Cint}), device, data)
 end
 
 function GetDevAIVoltageRngs(device::String, data::Vector{Float64}, arraySizeInElements::UInt32)
@@ -8379,63 +8379,63 @@ function GetDevAIVoltageRngs(device::String, data::Vector{Float64}, arraySizeInE
 end
 
 function GetDevAIVoltageIntExcitDiscreteVals(device::String, data::Vector{Float64}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetDevAIVoltageIntExcitDiscreteVals, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetDevAIVoltageIntExcitDiscreteVals, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
 end
 
 function GetDevAIVoltageIntExcitRangeVals(device::String, data::Vector{Float64}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetDevAIVoltageIntExcitRangeVals, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetDevAIVoltageIntExcitRangeVals, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
 end
 
 function GetDevAIChargeRngs(device::String, data::Vector{Float64}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetDevAIChargeRngs, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetDevAIChargeRngs, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
 end
 
 function GetDevAICurrentRngs(device::String, data::Vector{Float64}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetDevAICurrentRngs, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetDevAICurrentRngs, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
 end
 
 function GetDevAICurrentIntExcitDiscreteVals(device::String, data::Vector{Float64}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetDevAICurrentIntExcitDiscreteVals, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetDevAICurrentIntExcitDiscreteVals, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
 end
 
 function GetDevAIBridgeRngs(device::String, data::Vector{Float64}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetDevAIBridgeRngs, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetDevAIBridgeRngs, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
 end
 
 function GetDevAIResistanceRngs(device::String, data::Vector{Float64}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetDevAIResistanceRngs, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetDevAIResistanceRngs, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
 end
 
 function GetDevAIFreqRngs(device::String, data::Vector{Float64}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetDevAIFreqRngs, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetDevAIFreqRngs, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
 end
 
 function GetDevAIGains(device::String, data::Vector{Float64}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetDevAIGains, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetDevAIGains, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
 end
 
 function GetDevAICouplings(device::String, data::Int32)
-    ccall((:DAQmxGetDevAICouplings, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}), device, data)
+    ccall((:DAQmxGetDevAICouplings, :libnidaqmx), Cint, (Cstring, Ref{Cint}), device, data)
 end
 
 function GetDevAILowpassCutoffFreqDiscreteVals(device::String, data::Vector{Float64}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetDevAILowpassCutoffFreqDiscreteVals, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetDevAILowpassCutoffFreqDiscreteVals, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
 end
 
 function GetDevAILowpassCutoffFreqRangeVals(device::String, data::Vector{Float64}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetDevAILowpassCutoffFreqRangeVals, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetDevAILowpassCutoffFreqRangeVals, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
 end
 
 function GetAIDigFltrTypes(device::String, data::Vector{Int32}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetAIDigFltrTypes, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetAIDigFltrTypes, :libnidaqmx), Cint, (Cstring, Ref{Cint}, Cuint), device, data, arraySizeInElements)
 end
 
 function GetDevAIDigFltrLowpassCutoffFreqDiscreteVals(device::String, data::Vector{Float64}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetDevAIDigFltrLowpassCutoffFreqDiscreteVals, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetDevAIDigFltrLowpassCutoffFreqDiscreteVals, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
 end
 
 function GetDevAIDigFltrLowpassCutoffFreqRangeVals(device::String, data::Vector{Float64}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetDevAIDigFltrLowpassCutoffFreqRangeVals, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetDevAIDigFltrLowpassCutoffFreqRangeVals, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
 end
 
 function GetDevAOPhysicalChans(device::String, data::Vector{UInt8}, bufferSize::UInt32)
@@ -8443,35 +8443,35 @@ function GetDevAOPhysicalChans(device::String, data::Vector{UInt8}, bufferSize::
 end
 
 function GetDevAOSupportedOutputTypes(device::String, data::Vector{Int32}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetDevAOSupportedOutputTypes, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetDevAOSupportedOutputTypes, :libnidaqmx), Cint, (Cstring, Ref{Cint}, Cuint), device, data, arraySizeInElements)
 end
 
 function GetDevAOMaxRate(device::String, data::Float64)
-    ccall((:DAQmxGetDevAOMaxRate, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), device, data)
+    ccall((:DAQmxGetDevAOMaxRate, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}), device, data)
 end
 
 function GetDevAOMinRate(device::String, data::Float64)
-    ccall((:DAQmxGetDevAOMinRate, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), device, data)
+    ccall((:DAQmxGetDevAOMinRate, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}), device, data)
 end
 
-function GetDevAOSampClkSupported(device::String, data::UInt32)
-    ccall((:DAQmxGetDevAOSampClkSupported, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevAOSampClkSupported(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevAOSampClkSupported, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
-function GetDevAONumSampTimingEngines(device::String, data::UInt32)
-    ccall((:DAQmxGetDevAONumSampTimingEngines, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevAONumSampTimingEngines(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevAONumSampTimingEngines, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
 function GetDevAOSampModes(device::String, data::Vector{Int32}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetDevAOSampModes, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetDevAOSampModes, :libnidaqmx), Cint, (Cstring, Ref{Cint}, Cuint), device, data, arraySizeInElements)
 end
 
-function GetDevAONumSyncPulseSrcs(device::String, data::UInt32)
-    ccall((:DAQmxGetDevAONumSyncPulseSrcs, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevAONumSyncPulseSrcs(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevAONumSyncPulseSrcs, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
 function GetDevAOTrigUsage(device::String, data::Int32)
-    ccall((:DAQmxGetDevAOTrigUsage, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}), device, data)
+    ccall((:DAQmxGetDevAOTrigUsage, :libnidaqmx), Cint, (Cstring, Ref{Cint}), device, data)
 end
 
 function GetDevAOVoltageRngs(device::String, data::Vector{Float64}, arraySizeInElements::UInt32)
@@ -8479,11 +8479,11 @@ function GetDevAOVoltageRngs(device::String, data::Vector{Float64}, arraySizeInE
 end
 
 function GetDevAOCurrentRngs(device::String, data::Vector{Float64}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetDevAOCurrentRngs, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetDevAOCurrentRngs, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
 end
 
 function GetDevAOGains(device::String, data::Vector{Float64}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetDevAOGains, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetDevAOGains, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
 end
 
 function GetDevDILines(device::String, data::Vector{UInt8}, bufferSize::UInt32)
@@ -8495,15 +8495,15 @@ function GetDevDIPorts(device::String, data::Vector{UInt8}, bufferSize::UInt32)
 end
 
 function GetDevDIMaxRate(device::String, data::Float64)
-    ccall((:DAQmxGetDevDIMaxRate, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), device, data)
+    ccall((:DAQmxGetDevDIMaxRate, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}), device, data)
 end
 
-function GetDevDINumSampTimingEngines(device::String, data::UInt32)
-    ccall((:DAQmxGetDevDINumSampTimingEngines, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevDINumSampTimingEngines(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevDINumSampTimingEngines, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
 function GetDevDITrigUsage(device::String, data::Int32)
-    ccall((:DAQmxGetDevDITrigUsage, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}), device, data)
+    ccall((:DAQmxGetDevDITrigUsage, :libnidaqmx), Cint, (Cstring, Ref{Cint}), device, data)
 end
 
 function GetDevDOLines(device::String, data::Vector{UInt8}, bufferSize::UInt32)
@@ -8515,15 +8515,15 @@ function GetDevDOPorts(device::String, data::Vector{UInt8}, bufferSize::UInt32)
 end
 
 function GetDevDOMaxRate(device::String, data::Float64)
-    ccall((:DAQmxGetDevDOMaxRate, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), device, data)
+    ccall((:DAQmxGetDevDOMaxRate, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}), device, data)
 end
 
-function GetDevDONumSampTimingEngines(device::String, data::UInt32)
-    ccall((:DAQmxGetDevDONumSampTimingEngines, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevDONumSampTimingEngines(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevDONumSampTimingEngines, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
 function GetDevDOTrigUsage(device::String, data::Int32)
-    ccall((:DAQmxGetDevDOTrigUsage, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}), device, data)
+    ccall((:DAQmxGetDevDOTrigUsage, :libnidaqmx), Cint, (Cstring, Ref{Cint}), device, data)
 end
 
 function GetDevCIPhysicalChans(device::String, data::Vector{UInt8}, bufferSize::UInt32)
@@ -8531,27 +8531,27 @@ function GetDevCIPhysicalChans(device::String, data::Vector{UInt8}, bufferSize::
 end
 
 function GetDevCISupportedMeasTypes(device::String, data::Vector{Int32}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetDevCISupportedMeasTypes, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetDevCISupportedMeasTypes, :libnidaqmx), Cint, (Cstring, Ref{Cint}, Cuint), device, data, arraySizeInElements)
 end
 
 function GetDevCITrigUsage(device::String, data::Int32)
-    ccall((:DAQmxGetDevCITrigUsage, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}), device, data)
+    ccall((:DAQmxGetDevCITrigUsage, :libnidaqmx), Cint, (Cstring, Ref{Cint}), device, data)
 end
 
-function GetDevCISampClkSupported(device::String, data::UInt32)
-    ccall((:DAQmxGetDevCISampClkSupported, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevCISampClkSupported(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevCISampClkSupported, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
 function GetDevCISampModes(device::String, data::Vector{Int32}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetDevCISampModes, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetDevCISampModes, :libnidaqmx), Cint, (Cstring, Ref{Cint}, Cuint), device, data, arraySizeInElements)
 end
 
-function GetDevCIMaxSize(device::String, data::UInt32)
-    ccall((:DAQmxGetDevCIMaxSize, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevCIMaxSize(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevCIMaxSize, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
 function GetDevCIMaxTimebase(device::String, data::Float64)
-    ccall((:DAQmxGetDevCIMaxTimebase, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), device, data)
+    ccall((:DAQmxGetDevCIMaxTimebase, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}), device, data)
 end
 
 function GetDevCOPhysicalChans(device::String, data::Vector{UInt8}, bufferSize::UInt32)
@@ -8559,71 +8559,71 @@ function GetDevCOPhysicalChans(device::String, data::Vector{UInt8}, bufferSize::
 end
 
 function GetDevCOSupportedOutputTypes(device::String, data::Vector{Int32}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetDevCOSupportedOutputTypes, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetDevCOSupportedOutputTypes, :libnidaqmx), Cint, (Cstring, Ref{Cint}, Cuint), device, data, arraySizeInElements)
 end
 
-function GetDevCOSampClkSupported(device::String, data::UInt32)
-    ccall((:DAQmxGetDevCOSampClkSupported, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevCOSampClkSupported(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevCOSampClkSupported, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
 function GetDevCOSampModes(device::String, data::Vector{Int32}, arraySizeInElements::UInt32)
-    ccall((:DAQmxGetDevCOSampModes, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}, Cuint), device, data, arraySizeInElements)
+    ccall((:DAQmxGetDevCOSampModes, :libnidaqmx), Cint, (Cstring, Ref{Cint}, Cuint), device, data, arraySizeInElements)
 end
 
 function GetDevCOTrigUsage(device::String, data::Int32)
-    ccall((:DAQmxGetDevCOTrigUsage, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}), device, data)
+    ccall((:DAQmxGetDevCOTrigUsage, :libnidaqmx), Cint, (Cstring, Ref{Cint}), device, data)
 end
 
-function GetDevCOMaxSize(device::String, data::UInt32)
-    ccall((:DAQmxGetDevCOMaxSize, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevCOMaxSize(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevCOMaxSize, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
 function GetDevCOMaxTimebase(device::String, data::Float64)
-    ccall((:DAQmxGetDevCOMaxTimebase, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), device, data)
+    ccall((:DAQmxGetDevCOMaxTimebase, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}), device, data)
 end
 
-function GetDevTEDSHWTEDSSupported(device::String, data::UInt32)
-    ccall((:DAQmxGetDevTEDSHWTEDSSupported, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevTEDSHWTEDSSupported(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevTEDSHWTEDSSupported, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
-function GetDevNumDMAChans(device::String, data::UInt32)
-    ccall((:DAQmxGetDevNumDMAChans, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevNumDMAChans(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevNumDMAChans, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
 function GetDevBusType(device::String, data::Int32)
-    ccall((:DAQmxGetDevBusType, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}), device, data)
+    ccall((:DAQmxGetDevBusType, :libnidaqmx), Cint, (Cstring, Ref{Cint}), device, data)
 end
 
-function GetDevPCIBusNum(device::String, data::UInt32)
-    ccall((:DAQmxGetDevPCIBusNum, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevPCIBusNum(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevPCIBusNum, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
-function GetDevPCIDevNum(device::String, data::UInt32)
-    ccall((:DAQmxGetDevPCIDevNum, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevPCIDevNum(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevPCIDevNum, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
-function GetDevPXIChassisNum(device::String, data::UInt32)
-    ccall((:DAQmxGetDevPXIChassisNum, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevPXIChassisNum(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevPXIChassisNum, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
-function GetDevPXISlotNum(device::String, data::UInt32)
-    ccall((:DAQmxGetDevPXISlotNum, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevPXISlotNum(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevPXISlotNum, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
 function GetDevCompactDAQChassisDevName(device::String, data::Vector{UInt8}, bufferSize::UInt32)
     ccall((:DAQmxGetDevCompactDAQChassisDevName, :libnidaqmx), Cint, (Cstring, Ref{UInt8}, Cuint), device, data, bufferSize)
 end
 
-function GetDevCompactDAQSlotNum(device::String, data::UInt32)
-    ccall((:DAQmxGetDevCompactDAQSlotNum, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevCompactDAQSlotNum(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevCompactDAQSlotNum, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
 function GetDevCompactRIOChassisDevName(device::String, data::Vector{UInt8}, bufferSize::UInt32)
     ccall((:DAQmxGetDevCompactRIOChassisDevName, :libnidaqmx), Cint, (Cstring, Ref{UInt8}, Cuint), device, data, bufferSize)
 end
 
-function GetDevCompactRIOSlotNum(device::String, data::UInt32)
-    ccall((:DAQmxGetDevCompactRIOSlotNum, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevCompactRIOSlotNum(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevCompactRIOSlotNum, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
 function GetDevTCPIPHostname(device::String, data::Vector{UInt8}, bufferSize::UInt32)
@@ -8642,12 +8642,12 @@ function GetDevTerminals(device::String, data::Vector{UInt8}, bufferSize::UInt32
     ccall((:DAQmxGetDevTerminals, :libnidaqmx), Cint, (Cstring, Ref{UInt8}, Cuint), device, data, bufferSize)
 end
 
-function GetDevNumTimeTrigs(device::String, data::UInt32)
-    ccall((:DAQmxGetDevNumTimeTrigs, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevNumTimeTrigs(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevNumTimeTrigs, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
-function GetDevNumTimestampEngines(device::String, data::UInt32)
-    ccall((:DAQmxGetDevNumTimestampEngines, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), device, data)
+function GetDevNumTimestampEngines(device::String, data::Ref{UInt32})
+    ccall((:DAQmxGetDevNumTimestampEngines, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
 function GetExportedAIConvClkOutputTerm(taskHandle::TaskHandle, data::Vector{UInt8}, bufferSize::UInt32)
@@ -9066,11 +9066,11 @@ function ResetExportedHshkEventInterlockedAssertedLvl(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedHshkEventInterlockedAssertedLvl, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedHshkEventInterlockedAssertOnStart(taskHandle::TaskHandle, data::UInt32)
+function GetExportedHshkEventInterlockedAssertOnStart(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetExportedHshkEventInterlockedAssertOnStart, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetExportedHshkEventInterlockedAssertOnStart(taskHandle::TaskHandle, data::UInt32)
+function SetExportedHshkEventInterlockedAssertOnStart(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetExportedHshkEventInterlockedAssertOnStart, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -9150,11 +9150,11 @@ function ResetExportedRdyForXferEventDeassertCond(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedRdyForXferEventDeassertCond, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedRdyForXferEventDeassertCondCustomThreshold(taskHandle::TaskHandle, data::UInt32)
+function GetExportedRdyForXferEventDeassertCondCustomThreshold(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetExportedRdyForXferEventDeassertCondCustomThreshold, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetExportedRdyForXferEventDeassertCondCustomThreshold(taskHandle::TaskHandle, data::UInt32)
+function SetExportedRdyForXferEventDeassertCondCustomThreshold(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetExportedRdyForXferEventDeassertCondCustomThreshold, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -9238,11 +9238,11 @@ function GetPersistedChanAuthor(channel::String, data::Vector{UInt8}, bufferSize
     ccall((:DAQmxGetPersistedChanAuthor, :libnidaqmx), Cint, (Cstring, Ref{UInt8}, Cuint), channel, data, bufferSize)
 end
 
-function GetPersistedChanAllowInteractiveEditing(channel::String, data::UInt32)
+function GetPersistedChanAllowInteractiveEditing(channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetPersistedChanAllowInteractiveEditing, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), channel, data)
 end
 
-function GetPersistedChanAllowInteractiveDeletion(channel::String, data::UInt32)
+function GetPersistedChanAllowInteractiveDeletion(channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetPersistedChanAllowInteractiveDeletion, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), channel, data)
 end
 
@@ -9250,11 +9250,11 @@ function GetPersistedScaleAuthor(scaleName::String, data::Vector{UInt8}, bufferS
     ccall((:DAQmxGetPersistedScaleAuthor, :libnidaqmx), Cint, (Cstring, Ref{UInt8}, Cuint), scaleName, data, bufferSize)
 end
 
-function GetPersistedScaleAllowInteractiveEditing(scaleName::String, data::UInt32)
+function GetPersistedScaleAllowInteractiveEditing(scaleName::String, data::Ref{UInt32})
     ccall((:DAQmxGetPersistedScaleAllowInteractiveEditing, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), scaleName, data)
 end
 
-function GetPersistedScaleAllowInteractiveDeletion(scaleName::String, data::UInt32)
+function GetPersistedScaleAllowInteractiveDeletion(scaleName::String, data::Ref{UInt32})
     ccall((:DAQmxGetPersistedScaleAllowInteractiveDeletion, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), scaleName, data)
 end
 
@@ -9262,11 +9262,11 @@ function GetPersistedTaskAuthor(taskName::String, data::Vector{UInt8}, bufferSiz
     ccall((:DAQmxGetPersistedTaskAuthor, :libnidaqmx), Cint, (Cstring, Ref{UInt8}, Cuint), taskName, data, bufferSize)
 end
 
-function GetPersistedTaskAllowInteractiveEditing(taskName::String, data::UInt32)
+function GetPersistedTaskAllowInteractiveEditing(taskName::String, data::Ref{UInt32})
     ccall((:DAQmxGetPersistedTaskAllowInteractiveEditing, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), taskName, data)
 end
 
-function GetPersistedTaskAllowInteractiveDeletion(taskName::String, data::UInt32)
+function GetPersistedTaskAllowInteractiveDeletion(taskName::String, data::Ref{UInt32})
     ccall((:DAQmxGetPersistedTaskAllowInteractiveDeletion, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), taskName, data)
 end
 
@@ -9302,11 +9302,11 @@ function ResetPhysicalChanAIPowerControlVoltage(physicalChannel::String)
     ccall((:DAQmxResetPhysicalChanAIPowerControlVoltage, :libnidaqmx), Cint, (Ref{UInt8},), physicalChannel)
 end
 
-function GetPhysicalChanAIPowerControlEnable(physicalChannel::String, data::UInt32)
+function GetPhysicalChanAIPowerControlEnable(physicalChannel::String, data::Ref{UInt32})
     ccall((:DAQmxGetPhysicalChanAIPowerControlEnable, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), physicalChannel, data)
 end
 
-function SetPhysicalChanAIPowerControlEnable(physicalChannel::String, data::UInt32)
+function SetPhysicalChanAIPowerControlEnable(physicalChannel::String, data::Ref{UInt32})
     ccall((:DAQmxSetPhysicalChanAIPowerControlEnable, :libnidaqmx), Cint, (Ref{UInt8}, Cuint), physicalChannel, data)
 end
 
@@ -9326,11 +9326,11 @@ function ResetPhysicalChanAIPowerControlType(physicalChannel::String)
     ccall((:DAQmxResetPhysicalChanAIPowerControlType, :libnidaqmx), Cint, (Ref{UInt8},), physicalChannel)
 end
 
-function GetPhysicalChanAISensorPowerOpenChan(physicalChannel::String, data::UInt32)
+function GetPhysicalChanAISensorPowerOpenChan(physicalChannel::String, data::Ref{UInt32})
     ccall((:DAQmxGetPhysicalChanAISensorPowerOpenChan, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), physicalChannel, data)
 end
 
-function GetPhysicalChanAISensorPowerOvercurrent(physicalChannel::String, data::UInt32)
+function GetPhysicalChanAISensorPowerOvercurrent(physicalChannel::String, data::Ref{UInt32})
     ccall((:DAQmxGetPhysicalChanAISensorPowerOvercurrent, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), physicalChannel, data)
 end
 
@@ -9346,11 +9346,11 @@ function GetPhysicalChanAOTermCfgs(physicalChannel::String, data::Int32)
     ccall((:DAQmxGetPhysicalChanAOTermCfgs, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}), physicalChannel, data)
 end
 
-function GetPhysicalChanAOManualControlEnable(physicalChannel::String, data::UInt32)
+function GetPhysicalChanAOManualControlEnable(physicalChannel::String, data::Ref{UInt32})
     ccall((:DAQmxGetPhysicalChanAOManualControlEnable, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), physicalChannel, data)
 end
 
-function SetPhysicalChanAOManualControlEnable(physicalChannel::String, data::UInt32)
+function SetPhysicalChanAOManualControlEnable(physicalChannel::String, data::Ref{UInt32})
     ccall((:DAQmxSetPhysicalChanAOManualControlEnable, :libnidaqmx), Cint, (Ref{UInt8}, Cuint), physicalChannel, data)
 end
 
@@ -9358,7 +9358,7 @@ function ResetPhysicalChanAOManualControlEnable(physicalChannel::String)
     ccall((:DAQmxResetPhysicalChanAOManualControlEnable, :libnidaqmx), Cint, (Ref{UInt8},), physicalChannel)
 end
 
-function GetPhysicalChanAOManualControlShortDetected(physicalChannel::String, data::UInt32)
+function GetPhysicalChanAOManualControlShortDetected(physicalChannel::String, data::Ref{UInt32})
     ccall((:DAQmxGetPhysicalChanAOManualControlShortDetected, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), physicalChannel, data)
 end
 
@@ -9370,11 +9370,11 @@ function GetPhysicalChanAOManualControlFreq(physicalChannel::String, data::Float
     ccall((:DAQmxGetPhysicalChanAOManualControlFreq, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), physicalChannel, data)
 end
 
-function GetAOPowerAmpChannelEnable(physicalChannel::String, data::UInt32)
+function GetAOPowerAmpChannelEnable(physicalChannel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAOPowerAmpChannelEnable, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), physicalChannel, data)
 end
 
-function SetAOPowerAmpChannelEnable(physicalChannel::String, data::UInt32)
+function SetAOPowerAmpChannelEnable(physicalChannel::String, data::Ref{UInt32})
     ccall((:DAQmxSetAOPowerAmpChannelEnable, :libnidaqmx), Cint, (Ref{UInt8}, Cuint), physicalChannel, data)
 end
 
@@ -9386,7 +9386,7 @@ function GetAOPowerAmpScalingCoeff(physicalChannel::String, data::Vector{Float64
     ccall((:DAQmxGetAOPowerAmpScalingCoeff, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Cuint), physicalChannel, data, arraySizeInElements)
 end
 
-function GetAOPowerAmpOvercurrent(physicalChannel::String, data::UInt32)
+function GetAOPowerAmpOvercurrent(physicalChannel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAOPowerAmpOvercurrent, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), physicalChannel, data)
 end
 
@@ -9398,11 +9398,11 @@ function GetAOPowerAmpOffset(physicalChannel::String, data::Float64)
     ccall((:DAQmxGetAOPowerAmpOffset, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), physicalChannel, data)
 end
 
-function GetPhysicalChanDIPortWidth(physicalChannel::String, data::UInt32)
+function GetPhysicalChanDIPortWidth(physicalChannel::String, data::Ref{UInt32})
     ccall((:DAQmxGetPhysicalChanDIPortWidth, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), physicalChannel, data)
 end
 
-function GetPhysicalChanDISampClkSupported(physicalChannel::String, data::UInt32)
+function GetPhysicalChanDISampClkSupported(physicalChannel::String, data::Ref{UInt32})
     ccall((:DAQmxGetPhysicalChanDISampClkSupported, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), physicalChannel, data)
 end
 
@@ -9410,15 +9410,15 @@ function GetPhysicalChanDISampModes(physicalChannel::String, data::Vector{Int32}
     ccall((:DAQmxGetPhysicalChanDISampModes, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}, Cuint), physicalChannel, data, arraySizeInElements)
 end
 
-function GetPhysicalChanDIChangeDetectSupported(physicalChannel::String, data::UInt32)
+function GetPhysicalChanDIChangeDetectSupported(physicalChannel::String, data::Ref{UInt32})
     ccall((:DAQmxGetPhysicalChanDIChangeDetectSupported, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), physicalChannel, data)
 end
 
-function GetPhysicalChanDOPortWidth(physicalChannel::String, data::UInt32)
+function GetPhysicalChanDOPortWidth(physicalChannel::String, data::Ref{UInt32})
     ccall((:DAQmxGetPhysicalChanDOPortWidth, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), physicalChannel, data)
 end
 
-function GetPhysicalChanDOSampClkSupported(physicalChannel::String, data::UInt32)
+function GetPhysicalChanDOSampClkSupported(physicalChannel::String, data::Ref{UInt32})
     ccall((:DAQmxGetPhysicalChanDOSampClkSupported, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), physicalChannel, data)
 end
 
@@ -9434,19 +9434,19 @@ function GetPhysicalChanCOSupportedOutputTypes(physicalChannel::String, data::Ve
     ccall((:DAQmxGetPhysicalChanCOSupportedOutputTypes, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}, Cuint), physicalChannel, data, arraySizeInElements)
 end
 
-function GetPhysicalChanTEDSMfgID(physicalChannel::String, data::UInt32)
+function GetPhysicalChanTEDSMfgID(physicalChannel::String, data::Ref{UInt32})
     ccall((:DAQmxGetPhysicalChanTEDSMfgID, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), physicalChannel, data)
 end
 
-function GetPhysicalChanTEDSModelNum(physicalChannel::String, data::UInt32)
+function GetPhysicalChanTEDSModelNum(physicalChannel::String, data::Ref{UInt32})
     ccall((:DAQmxGetPhysicalChanTEDSModelNum, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), physicalChannel, data)
 end
 
-function GetPhysicalChanTEDSSerialNum(physicalChannel::String, data::UInt32)
+function GetPhysicalChanTEDSSerialNum(physicalChannel::String, data::Ref{UInt32})
     ccall((:DAQmxGetPhysicalChanTEDSSerialNum, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), physicalChannel, data)
 end
 
-function GetPhysicalChanTEDSVersionNum(physicalChannel::String, data::UInt32)
+function GetPhysicalChanTEDSVersionNum(physicalChannel::String, data::Ref{UInt32})
     ccall((:DAQmxGetPhysicalChanTEDSVersionNum, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), physicalChannel, data)
 end
 
@@ -9498,11 +9498,11 @@ function ResetReadChannelsToRead(taskHandle::TaskHandle)
     ccall((:DAQmxResetReadChannelsToRead, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetReadReadAllAvailSamp(taskHandle::TaskHandle, data::UInt32)
+function GetReadReadAllAvailSamp(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetReadReadAllAvailSamp, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetReadReadAllAvailSamp(taskHandle::TaskHandle, data::UInt32)
+function SetReadReadAllAvailSamp(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetReadReadAllAvailSamp, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -9510,11 +9510,11 @@ function ResetReadReadAllAvailSamp(taskHandle::TaskHandle)
     ccall((:DAQmxResetReadReadAllAvailSamp, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetReadAutoStart(taskHandle::TaskHandle, data::UInt32)
+function GetReadAutoStart(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetReadAutoStart, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetReadAutoStart(taskHandle::TaskHandle, data::UInt32)
+function SetReadAutoStart(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetReadAutoStart, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -9582,11 +9582,11 @@ function ResetLoggingTDMSOperation(taskHandle::TaskHandle)
     ccall((:DAQmxResetLoggingTDMSOperation, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetLoggingPause(taskHandle::TaskHandle, data::UInt32)
+function GetLoggingPause(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetLoggingPause, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetLoggingPause(taskHandle::TaskHandle, data::UInt32)
+function SetLoggingPause(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetLoggingPause, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -9606,11 +9606,11 @@ function ResetLoggingSampsPerFile(taskHandle::TaskHandle)
     ccall((:DAQmxResetLoggingSampsPerFile, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetLoggingFileWriteSize(taskHandle::TaskHandle, data::UInt32)
+function GetLoggingFileWriteSize(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetLoggingFileWriteSize, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetLoggingFileWriteSize(taskHandle::TaskHandle, data::UInt32)
+function SetLoggingFileWriteSize(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetLoggingFileWriteSize, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -9634,7 +9634,7 @@ function GetReadCurrReadPos(taskHandle::TaskHandle, data::Vector{Culonglong})
     ccall((:DAQmxGetReadCurrReadPos, :libnidaqmx), Cint, (TaskHandle, Ref{Culonglong}), taskHandle, data)
 end
 
-function GetReadAvailSampPerChan(taskHandle::TaskHandle, data::UInt32)
+function GetReadAvailSampPerChan(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetReadAvailSampPerChan, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
@@ -9642,7 +9642,7 @@ function GetReadTotalSampPerChanAcquired(taskHandle::TaskHandle, data::Vector{Cu
     ccall((:DAQmxGetReadTotalSampPerChanAcquired, :libnidaqmx), Cint, (TaskHandle, Ref{Culonglong}), taskHandle, data)
 end
 
-function GetReadCommonModeRangeErrorChansExist(taskHandle::TaskHandle, data::UInt32)
+function GetReadCommonModeRangeErrorChansExist(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetReadCommonModeRangeErrorChansExist, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
@@ -9650,7 +9650,7 @@ function GetReadCommonModeRangeErrorChans(taskHandle::TaskHandle, data::Vector{U
     ccall((:DAQmxGetReadCommonModeRangeErrorChans, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, data, bufferSize)
 end
 
-function GetReadExcitFaultChansExist(taskHandle::TaskHandle, data::UInt32)
+function GetReadExcitFaultChansExist(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetReadExcitFaultChansExist, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
@@ -9658,7 +9658,7 @@ function GetReadExcitFaultChans(taskHandle::TaskHandle, data::Vector{UInt8}, buf
     ccall((:DAQmxGetReadExcitFaultChans, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, data, bufferSize)
 end
 
-function GetReadOvercurrentChansExist(taskHandle::TaskHandle, data::UInt32)
+function GetReadOvercurrentChansExist(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetReadOvercurrentChansExist, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
@@ -9666,7 +9666,7 @@ function GetReadOvercurrentChans(taskHandle::TaskHandle, data::Vector{UInt8}, bu
     ccall((:DAQmxGetReadOvercurrentChans, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, data, bufferSize)
 end
 
-function GetReadOvertemperatureChansExist(taskHandle::TaskHandle, data::UInt32)
+function GetReadOvertemperatureChansExist(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetReadOvertemperatureChansExist, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
@@ -9674,7 +9674,7 @@ function GetReadOvertemperatureChans(taskHandle::TaskHandle, data::Vector{UInt8}
     ccall((:DAQmxGetReadOvertemperatureChans, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, data, bufferSize)
 end
 
-function GetReadOpenChansExist(taskHandle::TaskHandle, data::UInt32)
+function GetReadOpenChansExist(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetReadOpenChansExist, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
@@ -9686,7 +9686,7 @@ function GetReadOpenChansDetails(taskHandle::TaskHandle, data::Vector{UInt8}, bu
     ccall((:DAQmxGetReadOpenChansDetails, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, data, bufferSize)
 end
 
-function GetReadOpenCurrentLoopChansExist(taskHandle::TaskHandle, data::UInt32)
+function GetReadOpenCurrentLoopChansExist(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetReadOpenCurrentLoopChansExist, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
@@ -9694,7 +9694,7 @@ function GetReadOpenCurrentLoopChans(taskHandle::TaskHandle, data::Vector{UInt8}
     ccall((:DAQmxGetReadOpenCurrentLoopChans, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, data, bufferSize)
 end
 
-function GetReadOpenThrmcplChansExist(taskHandle::TaskHandle, data::UInt32)
+function GetReadOpenThrmcplChansExist(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetReadOpenThrmcplChansExist, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
@@ -9702,7 +9702,7 @@ function GetReadOpenThrmcplChans(taskHandle::TaskHandle, data::Vector{UInt8}, bu
     ccall((:DAQmxGetReadOpenThrmcplChans, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, data, bufferSize)
 end
 
-function GetReadOverloadedChansExist(taskHandle::TaskHandle, data::UInt32)
+function GetReadOverloadedChansExist(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetReadOverloadedChansExist, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
@@ -9710,7 +9710,7 @@ function GetReadOverloadedChans(taskHandle::TaskHandle, data::Vector{UInt8}, buf
     ccall((:DAQmxGetReadOverloadedChans, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, data, bufferSize)
 end
 
-function GetReadPLLUnlockedChansExist(taskHandle::TaskHandle, data::UInt32)
+function GetReadPLLUnlockedChansExist(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetReadPLLUnlockedChansExist, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
@@ -9718,7 +9718,7 @@ function GetReadPLLUnlockedChans(taskHandle::TaskHandle, data::Vector{UInt8}, bu
     ccall((:DAQmxGetReadPLLUnlockedChans, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, data, bufferSize)
 end
 
-function GetReadSyncUnlockedChansExist(taskHandle::TaskHandle, data::UInt32)
+function GetReadSyncUnlockedChansExist(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetReadSyncUnlockedChansExist, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
@@ -9726,7 +9726,7 @@ function GetReadSyncUnlockedChans(taskHandle::TaskHandle, data::Vector{UInt8}, b
     ccall((:DAQmxGetReadSyncUnlockedChans, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, data, bufferSize)
 end
 
-function GetReadAccessoryInsertionOrRemovalDetected(taskHandle::TaskHandle, data::UInt32)
+function GetReadAccessoryInsertionOrRemovalDetected(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetReadAccessoryInsertionOrRemovalDetected, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
@@ -9734,19 +9734,19 @@ function GetReadDevsWithInsertedOrRemovedAccessories(taskHandle::TaskHandle, dat
     ccall((:DAQmxGetReadDevsWithInsertedOrRemovedAccessories, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, data, bufferSize)
 end
 
-function GetReadChangeDetectHasOverflowed(taskHandle::TaskHandle, data::UInt32)
+function GetReadChangeDetectHasOverflowed(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetReadChangeDetectHasOverflowed, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function GetReadRawDataWidth(taskHandle::TaskHandle, data::UInt32)
+function GetReadRawDataWidth(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetReadRawDataWidth, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function GetReadNumChans(taskHandle::TaskHandle, data::UInt32)
+function GetReadNumChans(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetReadNumChans, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function GetReadDigitalLinesBytesPerChan(taskHandle::TaskHandle, data::UInt32)
+function GetReadDigitalLinesBytesPerChan(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetReadDigitalLinesBytesPerChan, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
@@ -9774,11 +9774,11 @@ function ResetReadSleepTime(taskHandle::TaskHandle)
     ccall((:DAQmxResetReadSleepTime, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetRealTimeConvLateErrorsToWarnings(taskHandle::TaskHandle, data::UInt32)
+function GetRealTimeConvLateErrorsToWarnings(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetRealTimeConvLateErrorsToWarnings, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetRealTimeConvLateErrorsToWarnings(taskHandle::TaskHandle, data::UInt32)
+function SetRealTimeConvLateErrorsToWarnings(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetRealTimeConvLateErrorsToWarnings, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -9786,11 +9786,11 @@ function ResetRealTimeConvLateErrorsToWarnings(taskHandle::TaskHandle)
     ccall((:DAQmxResetRealTimeConvLateErrorsToWarnings, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetRealTimeNumOfWarmupIters(taskHandle::TaskHandle, data::UInt32)
+function GetRealTimeNumOfWarmupIters(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetRealTimeNumOfWarmupIters, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetRealTimeNumOfWarmupIters(taskHandle::TaskHandle, data::UInt32)
+function SetRealTimeNumOfWarmupIters(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetRealTimeNumOfWarmupIters, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -9810,11 +9810,11 @@ function ResetRealTimeWaitForNextSampClkWaitMode(taskHandle::TaskHandle)
     ccall((:DAQmxResetRealTimeWaitForNextSampClkWaitMode, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetRealTimeReportMissedSamp(taskHandle::TaskHandle, data::UInt32)
+function GetRealTimeReportMissedSamp(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetRealTimeReportMissedSamp, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetRealTimeReportMissedSamp(taskHandle::TaskHandle, data::UInt32)
+function SetRealTimeReportMissedSamp(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetRealTimeReportMissedSamp, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -9950,11 +9950,11 @@ function SetSwitchChanUsage(switchChannelName::String, data::Int32)
     ccall((:DAQmxSetSwitchChanUsage, :libnidaqmx), Cint, (Ref{UInt8}, Cint), switchChannelName, data)
 end
 
-function GetSwitchChanAnlgBusSharingEnable(switchChannelName::String, data::UInt32)
+function GetSwitchChanAnlgBusSharingEnable(switchChannelName::String, data::Ref{UInt32})
     ccall((:DAQmxGetSwitchChanAnlgBusSharingEnable, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), switchChannelName, data)
 end
 
-function SetSwitchChanAnlgBusSharingEnable(switchChannelName::String, data::UInt32)
+function SetSwitchChanAnlgBusSharingEnable(switchChannelName::String, data::Ref{UInt32})
     ccall((:DAQmxSetSwitchChanAnlgBusSharingEnable, :libnidaqmx), Cint, (Ref{UInt8}, Cuint), switchChannelName, data)
 end
 
@@ -9998,7 +9998,7 @@ function GetSwitchChanMaxDCVoltage(switchChannelName::String, data::Float64)
     ccall((:DAQmxGetSwitchChanMaxDCVoltage, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), switchChannelName, data)
 end
 
-function GetSwitchChanWireMode(switchChannelName::String, data::UInt32)
+function GetSwitchChanWireMode(switchChannelName::String, data::Ref{UInt32})
     ccall((:DAQmxGetSwitchChanWireMode, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), switchChannelName, data)
 end
 
@@ -10018,23 +10018,23 @@ function SetSwitchDevSettlingTime(deviceName::String, data::Float64)
     ccall((:DAQmxSetSwitchDevSettlingTime, :libnidaqmx), Cint, (Ref{UInt8}, Cdouble), deviceName, data)
 end
 
-function GetSwitchDevAutoConnAnlgBus(deviceName::String, data::UInt32)
+function GetSwitchDevAutoConnAnlgBus(deviceName::String, data::Ref{UInt32})
     ccall((:DAQmxGetSwitchDevAutoConnAnlgBus, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), deviceName, data)
 end
 
-function SetSwitchDevAutoConnAnlgBus(deviceName::String, data::UInt32)
+function SetSwitchDevAutoConnAnlgBus(deviceName::String, data::Ref{UInt32})
     ccall((:DAQmxSetSwitchDevAutoConnAnlgBus, :libnidaqmx), Cint, (Ref{UInt8}, Cuint), deviceName, data)
 end
 
-function GetSwitchDevPwrDownLatchRelaysAfterSettling(deviceName::String, data::UInt32)
+function GetSwitchDevPwrDownLatchRelaysAfterSettling(deviceName::String, data::Ref{UInt32})
     ccall((:DAQmxGetSwitchDevPwrDownLatchRelaysAfterSettling, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), deviceName, data)
 end
 
-function SetSwitchDevPwrDownLatchRelaysAfterSettling(deviceName::String, data::UInt32)
+function SetSwitchDevPwrDownLatchRelaysAfterSettling(deviceName::String, data::Ref{UInt32})
     ccall((:DAQmxSetSwitchDevPwrDownLatchRelaysAfterSettling, :libnidaqmx), Cint, (Ref{UInt8}, Cuint), deviceName, data)
 end
 
-function GetSwitchDevSettled(deviceName::String, data::UInt32)
+function GetSwitchDevSettled(deviceName::String, data::Ref{UInt32})
     ccall((:DAQmxGetSwitchDevSettled, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), deviceName, data)
 end
 
@@ -10042,7 +10042,7 @@ function GetSwitchDevRelayList(deviceName::String, data::Vector{UInt8}, bufferSi
     ccall((:DAQmxGetSwitchDevRelayList, :libnidaqmx), Cint, (Cstring, Ref{UInt8}, Cuint), deviceName, data, bufferSize)
 end
 
-function GetSwitchDevNumRelays(deviceName::String, data::UInt32)
+function GetSwitchDevNumRelays(deviceName::String, data::Ref{UInt32})
     ccall((:DAQmxGetSwitchDevNumRelays, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), deviceName, data)
 end
 
@@ -10050,15 +10050,15 @@ function GetSwitchDevSwitchChanList(deviceName::String, data::Vector{UInt8}, buf
     ccall((:DAQmxGetSwitchDevSwitchChanList, :libnidaqmx), Cint, (Cstring, Ref{UInt8}, Cuint), deviceName, data, bufferSize)
 end
 
-function GetSwitchDevNumSwitchChans(deviceName::String, data::UInt32)
+function GetSwitchDevNumSwitchChans(deviceName::String, data::Ref{UInt32})
     ccall((:DAQmxGetSwitchDevNumSwitchChans, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), deviceName, data)
 end
 
-function GetSwitchDevNumRows(deviceName::String, data::UInt32)
+function GetSwitchDevNumRows(deviceName::String, data::Ref{UInt32})
     ccall((:DAQmxGetSwitchDevNumRows, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), deviceName, data)
 end
 
-function GetSwitchDevNumColumns(deviceName::String, data::UInt32)
+function GetSwitchDevNumColumns(deviceName::String, data::Ref{UInt32})
     ccall((:DAQmxGetSwitchDevNumColumns, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), deviceName, data)
 end
 
@@ -10094,35 +10094,35 @@ function ResetSwitchScanRepeatMode(taskHandle::TaskHandle)
     ccall((:DAQmxResetSwitchScanRepeatMode, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetSwitchScanWaitingForAdv(taskHandle::TaskHandle, data::UInt32)
+function GetSwitchScanWaitingForAdv(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetSwitchScanWaitingForAdv, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
 function GetSysGlobalChans(data::Vector{UInt8}, bufferSize::UInt32)
-    ccall((:DAQmxGetSysGlobalChans, :libnidaqmx), Cint, (Cstring, Cuint), data, bufferSize)
+    ccall((:DAQmxGetSysGlobalChans, :libnidaqmx), Cint, (Ref{Cuchar}, Cuint), data, bufferSize)
 end
 
 function GetSysScales(data::Vector{UInt8}, bufferSize::UInt32)
-    ccall((:DAQmxGetSysScales, :libnidaqmx), Cint, (Cstring, Cuint), data, bufferSize)
+    ccall((:DAQmxGetSysScales, :libnidaqmx), Cint, (Ref{Cuchar}, Cuint), data, bufferSize)
 end
 
 function GetSysTasks(data::Vector{UInt8}, bufferSize::UInt32)
-    ccall((:DAQmxGetSysTasks, :libnidaqmx), Cint, (Ptr{Cuint}, Cuint), data, bufferSize)
+    ccall((:DAQmxGetSysTasks, :libnidaqmx), Cint, (Ref{Cuchar}, Cuint), data, bufferSize)
 end
 
 function GetSysDevNames(data::Vector{UInt8}, bufferSize::UInt32)
     ccall((:DAQmxGetSysDevNames, :libnidaqmx), Cint, (Ref{Cuchar}, Cuint), data, bufferSize)
 end
 
-function GetSysNIDAQMajorVersion(data::UInt32)
+function GetSysNIDAQMajorVersion(data::Ref{UInt32})
     ccall((:DAQmxGetSysNIDAQMajorVersion, :libnidaqmx), Cint, (Ref{Cuint},), data)
 end
 
-function GetSysNIDAQMinorVersion(data::UInt32)
+function GetSysNIDAQMinorVersion(data::Ref{UInt32})
     ccall((:DAQmxGetSysNIDAQMinorVersion, :libnidaqmx), Cint, (Ref{Cuint},), data)
 end
 
-function GetSysNIDAQUpdateVersion(data::UInt32)
+function GetSysNIDAQUpdateVersion(data::Ref{UInt32})
     ccall((:DAQmxGetSysNIDAQUpdateVersion, :libnidaqmx), Cint, (Ref{Cuint},), data)
 end
 
@@ -10142,11 +10142,11 @@ function GetTaskDevices(taskHandle::TaskHandle, data::Vector{UInt8}, bufferSize:
     ccall((:DAQmxGetTaskDevices, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, data, bufferSize)
 end
 
-function GetTaskNumDevices(taskHandle::TaskHandle, data::UInt32)
+function GetTaskNumDevices(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetTaskNumDevices, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function GetTaskComplete(taskHandle::TaskHandle, data::UInt32)
+function GetTaskComplete(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetTaskComplete, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
@@ -10250,11 +10250,11 @@ function ResetSampClkUnderflowBehavior(taskHandle::TaskHandle)
     ccall((:DAQmxResetSampClkUnderflowBehavior, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetSampClkTimebaseDiv(taskHandle::TaskHandle, data::UInt32)
+function GetSampClkTimebaseDiv(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetSampClkTimebaseDiv, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetSampClkTimebaseDiv(taskHandle::TaskHandle, data::UInt32)
+function SetSampClkTimebaseDiv(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetSampClkTimebaseDiv, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -10302,11 +10302,11 @@ function ResetSampClkTimebaseActiveEdge(taskHandle::TaskHandle)
     ccall((:DAQmxResetSampClkTimebaseActiveEdge, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetSampClkTimebaseMasterTimebaseDiv(taskHandle::TaskHandle, data::UInt32)
+function GetSampClkTimebaseMasterTimebaseDiv(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetSampClkTimebaseMasterTimebaseDiv, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetSampClkTimebaseMasterTimebaseDiv(taskHandle::TaskHandle, data::UInt32)
+function SetSampClkTimebaseMasterTimebaseDiv(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetSampClkTimebaseMasterTimebaseDiv, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -10318,11 +10318,11 @@ function GetSampClkTimebaseTerm(taskHandle::TaskHandle, data::Vector{UInt8}, buf
     ccall((:DAQmxGetSampClkTimebaseTerm, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, data, bufferSize)
 end
 
-function GetSampClkDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function GetSampClkDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetSampClkDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetSampClkDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function SetSampClkDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetSampClkDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -10366,11 +10366,11 @@ function ResetSampClkDigFltrTimebaseRate(taskHandle::TaskHandle)
     ccall((:DAQmxResetSampClkDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetSampClkDigSyncEnable(taskHandle::TaskHandle, data::UInt32)
+function GetSampClkDigSyncEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetSampClkDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetSampClkDigSyncEnable(taskHandle::TaskHandle, data::UInt32)
+function SetSampClkDigSyncEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetSampClkDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -10378,11 +10378,11 @@ function ResetSampClkDigSyncEnable(taskHandle::TaskHandle)
     ccall((:DAQmxResetSampClkDigSyncEnable, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetSampClkWriteWfmUseInitialWfmDT(taskHandle::TaskHandle, data::UInt32)
+function GetSampClkWriteWfmUseInitialWfmDT(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetSampClkWriteWfmUseInitialWfmDT, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetSampClkWriteWfmUseInitialWfmDT(taskHandle::TaskHandle, data::UInt32)
+function SetSampClkWriteWfmUseInitialWfmDT(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetSampClkWriteWfmUseInitialWfmDT, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -10450,11 +10450,11 @@ function ResetChangeDetectDIFallingEdgePhysicalChans(taskHandle::TaskHandle)
     ccall((:DAQmxResetChangeDetectDIFallingEdgePhysicalChans, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetChangeDetectDITristate(taskHandle::TaskHandle, data::UInt32)
+function GetChangeDetectDITristate(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetChangeDetectDITristate, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetChangeDetectDITristate(taskHandle::TaskHandle, data::UInt32)
+function SetChangeDetectDITristate(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetChangeDetectDITristate, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -10462,11 +10462,11 @@ function ResetChangeDetectDITristate(taskHandle::TaskHandle)
     ccall((:DAQmxResetChangeDetectDITristate, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetOnDemandSimultaneousAOEnable(taskHandle::TaskHandle, data::UInt32)
+function GetOnDemandSimultaneousAOEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetOnDemandSimultaneousAOEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetOnDemandSimultaneousAOEnable(taskHandle::TaskHandle, data::UInt32)
+function SetOnDemandSimultaneousAOEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetOnDemandSimultaneousAOEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -10566,11 +10566,11 @@ function ResetAIConvActiveEdgeEx(taskHandle::TaskHandle, deviceNames::String)
     ccall((:DAQmxResetAIConvActiveEdgeEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}), taskHandle, deviceNames)
 end
 
-function GetAIConvTimebaseDiv(taskHandle::TaskHandle, data::UInt32)
+function GetAIConvTimebaseDiv(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetAIConvTimebaseDiv, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetAIConvTimebaseDiv(taskHandle::TaskHandle, data::UInt32)
+function SetAIConvTimebaseDiv(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetAIConvTimebaseDiv, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -10578,11 +10578,11 @@ function ResetAIConvTimebaseDiv(taskHandle::TaskHandle)
     ccall((:DAQmxResetAIConvTimebaseDiv, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAIConvTimebaseDivEx(taskHandle::TaskHandle, deviceNames::String, data::UInt32)
+function GetAIConvTimebaseDivEx(taskHandle::TaskHandle, deviceNames::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIConvTimebaseDivEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{Cuint}), taskHandle, deviceNames, data)
 end
 
-function SetAIConvTimebaseDivEx(taskHandle::TaskHandle, deviceNames::String, data::UInt32)
+function SetAIConvTimebaseDivEx(taskHandle::TaskHandle, deviceNames::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIConvTimebaseDivEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cuint), taskHandle, deviceNames, data)
 end
 
@@ -10662,11 +10662,11 @@ function ResetDelayFromSampClkDelayEx(taskHandle::TaskHandle, deviceNames::Strin
     ccall((:DAQmxResetDelayFromSampClkDelayEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}), taskHandle, deviceNames)
 end
 
-function GetAIConvDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function GetAIConvDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetAIConvDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetAIConvDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function SetAIConvDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetAIConvDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -10674,11 +10674,11 @@ function ResetAIConvDigFltrEnable(taskHandle::TaskHandle)
     ccall((:DAQmxResetAIConvDigFltrEnable, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAIConvDigFltrEnableEx(taskHandle::TaskHandle, deviceNames::String, data::UInt32)
+function GetAIConvDigFltrEnableEx(taskHandle::TaskHandle, deviceNames::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIConvDigFltrEnableEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{Cuint}), taskHandle, deviceNames, data)
 end
 
-function SetAIConvDigFltrEnableEx(taskHandle::TaskHandle, deviceNames::String, data::UInt32)
+function SetAIConvDigFltrEnableEx(taskHandle::TaskHandle, deviceNames::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIConvDigFltrEnableEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cuint), taskHandle, deviceNames, data)
 end
 
@@ -10758,11 +10758,11 @@ function ResetAIConvDigFltrTimebaseRateEx(taskHandle::TaskHandle, deviceNames::S
     ccall((:DAQmxResetAIConvDigFltrTimebaseRateEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}), taskHandle, deviceNames)
 end
 
-function GetAIConvDigSyncEnable(taskHandle::TaskHandle, data::UInt32)
+function GetAIConvDigSyncEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetAIConvDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetAIConvDigSyncEnable(taskHandle::TaskHandle, data::UInt32)
+function SetAIConvDigSyncEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetAIConvDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -10770,11 +10770,11 @@ function ResetAIConvDigSyncEnable(taskHandle::TaskHandle)
     ccall((:DAQmxResetAIConvDigSyncEnable, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAIConvDigSyncEnableEx(taskHandle::TaskHandle, deviceNames::String, data::UInt32)
+function GetAIConvDigSyncEnableEx(taskHandle::TaskHandle, deviceNames::String, data::Ref{UInt32})
     ccall((:DAQmxGetAIConvDigSyncEnableEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{Cuint}), taskHandle, deviceNames, data)
 end
 
-function SetAIConvDigSyncEnableEx(taskHandle::TaskHandle, deviceNames::String, data::UInt32)
+function SetAIConvDigSyncEnableEx(taskHandle::TaskHandle, deviceNames::String, data::Ref{UInt32})
     ccall((:DAQmxSetAIConvDigSyncEnableEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cuint), taskHandle, deviceNames, data)
 end
 
@@ -10914,11 +10914,11 @@ function GetSyncPulseTerm(taskHandle::TaskHandle, data::Vector{UInt8}, bufferSiz
     ccall((:DAQmxGetSyncPulseTerm, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, data, bufferSize)
 end
 
-function GetSyncClkInterval(taskHandle::TaskHandle, data::UInt32)
+function GetSyncClkInterval(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetSyncClkInterval, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetSyncClkInterval(taskHandle::TaskHandle, data::UInt32)
+function SetSyncClkInterval(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetSyncClkInterval, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -10926,11 +10926,11 @@ function ResetSyncClkInterval(taskHandle::TaskHandle)
     ccall((:DAQmxResetSyncClkInterval, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetSampTimingEngine(taskHandle::TaskHandle, data::UInt32)
+function GetSampTimingEngine(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetSampTimingEngine, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetSampTimingEngine(taskHandle::TaskHandle, data::UInt32)
+function SetSampTimingEngine(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetSampTimingEngine, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -10938,11 +10938,11 @@ function ResetSampTimingEngine(taskHandle::TaskHandle)
     ccall((:DAQmxResetSampTimingEngine, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetFirstSampTimestampEnable(taskHandle::TaskHandle, data::UInt32)
+function GetFirstSampTimestampEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetFirstSampTimestampEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetFirstSampTimestampEnable(taskHandle::TaskHandle, data::UInt32)
+function SetFirstSampTimestampEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetFirstSampTimestampEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -11030,11 +11030,11 @@ function ResetDigEdgeStartTrigEdge(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigEdgeStartTrigEdge, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigEdgeStartTrigDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function GetDigEdgeStartTrigDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetDigEdgeStartTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetDigEdgeStartTrigDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function SetDigEdgeStartTrigDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetDigEdgeStartTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -11078,11 +11078,11 @@ function ResetDigEdgeStartTrigDigFltrTimebaseRate(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigEdgeStartTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigEdgeStartTrigDigSyncEnable(taskHandle::TaskHandle, data::UInt32)
+function GetDigEdgeStartTrigDigSyncEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetDigEdgeStartTrigDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetDigEdgeStartTrigDigSyncEnable(taskHandle::TaskHandle, data::UInt32)
+function SetDigEdgeStartTrigDigSyncEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetDigEdgeStartTrigDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -11186,11 +11186,11 @@ function ResetAnlgEdgeStartTrigCoupling(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgEdgeStartTrigCoupling, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgEdgeStartTrigDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function GetAnlgEdgeStartTrigDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetAnlgEdgeStartTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetAnlgEdgeStartTrigDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function SetAnlgEdgeStartTrigDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetAnlgEdgeStartTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -11234,11 +11234,11 @@ function ResetAnlgEdgeStartTrigDigFltrTimebaseRate(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgEdgeStartTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgEdgeStartTrigDigSyncEnable(taskHandle::TaskHandle, data::UInt32)
+function GetAnlgEdgeStartTrigDigSyncEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetAnlgEdgeStartTrigDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetAnlgEdgeStartTrigDigSyncEnable(taskHandle::TaskHandle, data::UInt32)
+function SetAnlgEdgeStartTrigDigSyncEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetAnlgEdgeStartTrigDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -11366,11 +11366,11 @@ function ResetAnlgWinStartTrigCoupling(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgWinStartTrigCoupling, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgWinStartTrigDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function GetAnlgWinStartTrigDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetAnlgWinStartTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetAnlgWinStartTrigDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function SetAnlgWinStartTrigDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetAnlgWinStartTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -11414,11 +11414,11 @@ function ResetAnlgWinStartTrigDigFltrTimebaseRate(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgWinStartTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgWinStartTrigDigSyncEnable(taskHandle::TaskHandle, data::UInt32)
+function GetAnlgWinStartTrigDigSyncEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetAnlgWinStartTrigDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetAnlgWinStartTrigDigSyncEnable(taskHandle::TaskHandle, data::UInt32)
+function SetAnlgWinStartTrigDigSyncEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetAnlgWinStartTrigDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -11450,11 +11450,11 @@ function ResetStartTrigTimescale(taskHandle::TaskHandle)
     ccall((:DAQmxResetStartTrigTimescale, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetStartTrigTimestampEnable(taskHandle::TaskHandle, data::UInt32)
+function GetStartTrigTimestampEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetStartTrigTimestampEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetStartTrigTimestampEnable(taskHandle::TaskHandle, data::UInt32)
+function SetStartTrigTimestampEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetStartTrigTimestampEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -11502,11 +11502,11 @@ function ResetStartTrigDelayUnits(taskHandle::TaskHandle)
     ccall((:DAQmxResetStartTrigDelayUnits, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetStartTrigRetriggerable(taskHandle::TaskHandle, data::UInt32)
+function GetStartTrigRetriggerable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetStartTrigRetriggerable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetStartTrigRetriggerable(taskHandle::TaskHandle, data::UInt32)
+function SetStartTrigRetriggerable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetStartTrigRetriggerable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -11538,11 +11538,11 @@ function ResetStartTrigRetriggerWin(taskHandle::TaskHandle)
     ccall((:DAQmxResetStartTrigRetriggerWin, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetStartTrigMaxNumTrigsToDetect(taskHandle::TaskHandle, data::UInt32)
+function GetStartTrigMaxNumTrigsToDetect(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetStartTrigMaxNumTrigsToDetect, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetStartTrigMaxNumTrigsToDetect(taskHandle::TaskHandle, data::UInt32)
+function SetStartTrigMaxNumTrigsToDetect(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetStartTrigMaxNumTrigsToDetect, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -11562,11 +11562,11 @@ function ResetRefTrigType(taskHandle::TaskHandle)
     ccall((:DAQmxResetRefTrigType, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetRefTrigPretrigSamples(taskHandle::TaskHandle, data::UInt32)
+function GetRefTrigPretrigSamples(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetRefTrigPretrigSamples, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetRefTrigPretrigSamples(taskHandle::TaskHandle, data::UInt32)
+function SetRefTrigPretrigSamples(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetRefTrigPretrigSamples, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -11602,11 +11602,11 @@ function ResetDigEdgeRefTrigEdge(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigEdgeRefTrigEdge, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigEdgeRefTrigDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function GetDigEdgeRefTrigDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetDigEdgeRefTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetDigEdgeRefTrigDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function SetDigEdgeRefTrigDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetDigEdgeRefTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -11650,11 +11650,11 @@ function ResetDigEdgeRefTrigDigFltrTimebaseRate(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigEdgeRefTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigEdgeRefTrigDigSyncEnable(taskHandle::TaskHandle, data::UInt32)
+function GetDigEdgeRefTrigDigSyncEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetDigEdgeRefTrigDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetDigEdgeRefTrigDigSyncEnable(taskHandle::TaskHandle, data::UInt32)
+function SetDigEdgeRefTrigDigSyncEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetDigEdgeRefTrigDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -11758,11 +11758,11 @@ function ResetAnlgEdgeRefTrigCoupling(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgEdgeRefTrigCoupling, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgEdgeRefTrigDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function GetAnlgEdgeRefTrigDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetAnlgEdgeRefTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetAnlgEdgeRefTrigDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function SetAnlgEdgeRefTrigDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetAnlgEdgeRefTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -11806,11 +11806,11 @@ function ResetAnlgEdgeRefTrigDigFltrTimebaseRate(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgEdgeRefTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgEdgeRefTrigDigSyncEnable(taskHandle::TaskHandle, data::UInt32)
+function GetAnlgEdgeRefTrigDigSyncEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetAnlgEdgeRefTrigDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetAnlgEdgeRefTrigDigSyncEnable(taskHandle::TaskHandle, data::UInt32)
+function SetAnlgEdgeRefTrigDigSyncEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetAnlgEdgeRefTrigDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -11938,11 +11938,11 @@ function ResetAnlgWinRefTrigCoupling(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgWinRefTrigCoupling, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgWinRefTrigDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function GetAnlgWinRefTrigDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetAnlgWinRefTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetAnlgWinRefTrigDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function SetAnlgWinRefTrigDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetAnlgWinRefTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -11986,11 +11986,11 @@ function ResetAnlgWinRefTrigDigFltrTimebaseRate(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgWinRefTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgWinRefTrigDigSyncEnable(taskHandle::TaskHandle, data::UInt32)
+function GetAnlgWinRefTrigDigSyncEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetAnlgWinRefTrigDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetAnlgWinRefTrigDigSyncEnable(taskHandle::TaskHandle, data::UInt32)
+function SetAnlgWinRefTrigDigSyncEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetAnlgWinRefTrigDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -11998,11 +11998,11 @@ function ResetAnlgWinRefTrigDigSyncEnable(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgWinRefTrigDigSyncEnable, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetRefTrigAutoTrigEnable(taskHandle::TaskHandle, data::UInt32)
+function GetRefTrigAutoTrigEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetRefTrigAutoTrigEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetRefTrigAutoTrigEnable(taskHandle::TaskHandle, data::UInt32)
+function SetRefTrigAutoTrigEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetRefTrigAutoTrigEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -12010,15 +12010,15 @@ function ResetRefTrigAutoTrigEnable(taskHandle::TaskHandle)
     ccall((:DAQmxResetRefTrigAutoTrigEnable, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetRefTrigAutoTriggered(taskHandle::TaskHandle, data::UInt32)
+function GetRefTrigAutoTriggered(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetRefTrigAutoTriggered, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function GetRefTrigTimestampEnable(taskHandle::TaskHandle, data::UInt32)
+function GetRefTrigTimestampEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetRefTrigTimestampEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetRefTrigTimestampEnable(taskHandle::TaskHandle, data::UInt32)
+function SetRefTrigTimestampEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetRefTrigTimestampEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -12054,11 +12054,11 @@ function ResetRefTrigDelay(taskHandle::TaskHandle)
     ccall((:DAQmxResetRefTrigDelay, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetRefTrigRetriggerable(taskHandle::TaskHandle, data::UInt32)
+function GetRefTrigRetriggerable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetRefTrigRetriggerable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetRefTrigRetriggerable(taskHandle::TaskHandle, data::UInt32)
+function SetRefTrigRetriggerable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetRefTrigRetriggerable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -12090,11 +12090,11 @@ function ResetRefTrigRetriggerWin(taskHandle::TaskHandle)
     ccall((:DAQmxResetRefTrigRetriggerWin, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetRefTrigMaxNumTrigsToDetect(taskHandle::TaskHandle, data::UInt32)
+function GetRefTrigMaxNumTrigsToDetect(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetRefTrigMaxNumTrigsToDetect, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetRefTrigMaxNumTrigsToDetect(taskHandle::TaskHandle, data::UInt32)
+function SetRefTrigMaxNumTrigsToDetect(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetRefTrigMaxNumTrigsToDetect, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -12138,11 +12138,11 @@ function ResetDigEdgeAdvTrigEdge(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigEdgeAdvTrigEdge, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigEdgeAdvTrigDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function GetDigEdgeAdvTrigDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetDigEdgeAdvTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetDigEdgeAdvTrigDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function SetDigEdgeAdvTrigDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetDigEdgeAdvTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -12262,11 +12262,11 @@ function ResetAnlgLvlPauseTrigCoupling(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgLvlPauseTrigCoupling, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgLvlPauseTrigDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function GetAnlgLvlPauseTrigDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetAnlgLvlPauseTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetAnlgLvlPauseTrigDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function SetAnlgLvlPauseTrigDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetAnlgLvlPauseTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -12310,11 +12310,11 @@ function ResetAnlgLvlPauseTrigDigFltrTimebaseRate(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgLvlPauseTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgLvlPauseTrigDigSyncEnable(taskHandle::TaskHandle, data::UInt32)
+function GetAnlgLvlPauseTrigDigSyncEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetAnlgLvlPauseTrigDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetAnlgLvlPauseTrigDigSyncEnable(taskHandle::TaskHandle, data::UInt32)
+function SetAnlgLvlPauseTrigDigSyncEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetAnlgLvlPauseTrigDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -12382,11 +12382,11 @@ function ResetAnlgWinPauseTrigCoupling(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgWinPauseTrigCoupling, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgWinPauseTrigDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function GetAnlgWinPauseTrigDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetAnlgWinPauseTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetAnlgWinPauseTrigDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function SetAnlgWinPauseTrigDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetAnlgWinPauseTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -12430,11 +12430,11 @@ function ResetAnlgWinPauseTrigDigFltrTimebaseRate(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgWinPauseTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgWinPauseTrigDigSyncEnable(taskHandle::TaskHandle, data::UInt32)
+function GetAnlgWinPauseTrigDigSyncEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetAnlgWinPauseTrigDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetAnlgWinPauseTrigDigSyncEnable(taskHandle::TaskHandle, data::UInt32)
+function SetAnlgWinPauseTrigDigSyncEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetAnlgWinPauseTrigDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -12466,11 +12466,11 @@ function ResetDigLvlPauseTrigWhen(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigLvlPauseTrigWhen, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigLvlPauseTrigDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function GetDigLvlPauseTrigDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetDigLvlPauseTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetDigLvlPauseTrigDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function SetDigLvlPauseTrigDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetDigLvlPauseTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -12514,11 +12514,11 @@ function ResetDigLvlPauseTrigDigFltrTimebaseRate(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigLvlPauseTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigLvlPauseTrigDigSyncEnable(taskHandle::TaskHandle, data::UInt32)
+function GetDigLvlPauseTrigDigSyncEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetDigLvlPauseTrigDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetDigLvlPauseTrigDigSyncEnable(taskHandle::TaskHandle, data::UInt32)
+function SetDigLvlPauseTrigDigSyncEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetDigLvlPauseTrigDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -12602,11 +12602,11 @@ function ResetDigEdgeArmStartTrigEdge(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigEdgeArmStartTrigEdge, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigEdgeArmStartTrigDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function GetDigEdgeArmStartTrigDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetDigEdgeArmStartTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetDigEdgeArmStartTrigDigFltrEnable(taskHandle::TaskHandle, data::UInt32)
+function SetDigEdgeArmStartTrigDigFltrEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetDigEdgeArmStartTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -12650,11 +12650,11 @@ function ResetDigEdgeArmStartTrigDigFltrTimebaseRate(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigEdgeArmStartTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigEdgeArmStartTrigDigSyncEnable(taskHandle::TaskHandle, data::UInt32)
+function GetDigEdgeArmStartTrigDigSyncEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetDigEdgeArmStartTrigDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetDigEdgeArmStartTrigDigSyncEnable(taskHandle::TaskHandle, data::UInt32)
+function SetDigEdgeArmStartTrigDigSyncEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetDigEdgeArmStartTrigDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -12686,11 +12686,11 @@ function ResetArmStartTrigTimescale(taskHandle::TaskHandle)
     ccall((:DAQmxResetArmStartTrigTimescale, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetArmStartTrigTimestampEnable(taskHandle::TaskHandle, data::UInt32)
+function GetArmStartTrigTimestampEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetArmStartTrigTimestampEnable, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetArmStartTrigTimestampEnable(taskHandle::TaskHandle, data::UInt32)
+function SetArmStartTrigTimestampEnable(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetArmStartTrigTimestampEnable, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -12750,11 +12750,11 @@ function ResetWatchdogExpirTrigType(taskHandle::TaskHandle)
     ccall((:DAQmxResetWatchdogExpirTrigType, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetWatchdogExpirTrigTrigOnNetworkConnLoss(taskHandle::TaskHandle, data::UInt32)
+function GetWatchdogExpirTrigTrigOnNetworkConnLoss(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetWatchdogExpirTrigTrigOnNetworkConnLoss, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function SetWatchdogExpirTrigTrigOnNetworkConnLoss(taskHandle::TaskHandle, data::UInt32)
+function SetWatchdogExpirTrigTrigOnNetworkConnLoss(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxSetWatchdogExpirTrigTrigOnNetworkConnLoss, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, data)
 end
 
@@ -12834,7 +12834,7 @@ function ResetWatchdogCOExpirState(taskHandle::TaskHandle, lines::String)
     ccall((:DAQmxResetWatchdogCOExpirState, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}), taskHandle, lines)
 end
 
-function GetWatchdogHasExpired(taskHandle::TaskHandle, data::UInt32)
+function GetWatchdogHasExpired(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetWatchdogHasExpired, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
@@ -12878,7 +12878,7 @@ function GetWriteCurrWritePos(taskHandle::TaskHandle, data::Vector{Culonglong})
     ccall((:DAQmxGetWriteCurrWritePos, :libnidaqmx), Cint, (TaskHandle, Ref{Culonglong}), taskHandle, data)
 end
 
-function GetWriteOvercurrentChansExist(taskHandle::TaskHandle, data::UInt32)
+function GetWriteOvercurrentChansExist(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetWriteOvercurrentChansExist, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
@@ -12886,7 +12886,7 @@ function GetWriteOvercurrentChans(taskHandle::TaskHandle, data::Vector{UInt8}, b
     ccall((:DAQmxGetWriteOvercurrentChans, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, data, bufferSize)
 end
 
-function GetWriteOvertemperatureChansExist(taskHandle::TaskHandle, data::UInt32)
+function GetWriteOvertemperatureChansExist(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetWriteOvertemperatureChansExist, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
@@ -12894,7 +12894,7 @@ function GetWriteOvertemperatureChans(taskHandle::TaskHandle, data::Vector{UInt8
     ccall((:DAQmxGetWriteOvertemperatureChans, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, data, bufferSize)
 end
 
-function GetWriteExternalOvervoltageChansExist(taskHandle::TaskHandle, data::UInt32)
+function GetWriteExternalOvervoltageChansExist(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetWriteExternalOvervoltageChansExist, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
@@ -12902,7 +12902,7 @@ function GetWriteExternalOvervoltageChans(taskHandle::TaskHandle, data::Vector{U
     ccall((:DAQmxGetWriteExternalOvervoltageChans, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, data, bufferSize)
 end
 
-function GetWriteOverloadedChansExist(taskHandle::TaskHandle, data::UInt32)
+function GetWriteOverloadedChansExist(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetWriteOverloadedChansExist, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
@@ -12910,7 +12910,7 @@ function GetWriteOverloadedChans(taskHandle::TaskHandle, data::Vector{UInt8}, bu
     ccall((:DAQmxGetWriteOverloadedChans, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, data, bufferSize)
 end
 
-function GetWriteOpenCurrentLoopChansExist(taskHandle::TaskHandle, data::UInt32)
+function GetWriteOpenCurrentLoopChansExist(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetWriteOpenCurrentLoopChansExist, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
@@ -12918,7 +12918,7 @@ function GetWriteOpenCurrentLoopChans(taskHandle::TaskHandle, data::Vector{UInt8
     ccall((:DAQmxGetWriteOpenCurrentLoopChans, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, data, bufferSize)
 end
 
-function GetWritePowerSupplyFaultChansExist(taskHandle::TaskHandle, data::UInt32)
+function GetWritePowerSupplyFaultChansExist(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetWritePowerSupplyFaultChansExist, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
@@ -12926,7 +12926,7 @@ function GetWritePowerSupplyFaultChans(taskHandle::TaskHandle, data::Vector{UInt
     ccall((:DAQmxGetWritePowerSupplyFaultChans, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, data, bufferSize)
 end
 
-function GetWriteSyncUnlockedChansExist(taskHandle::TaskHandle, data::UInt32)
+function GetWriteSyncUnlockedChansExist(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetWriteSyncUnlockedChansExist, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
@@ -12934,7 +12934,7 @@ function GetWriteSyncUnlockedChans(taskHandle::TaskHandle, data::Vector{UInt8}, 
     ccall((:DAQmxGetWriteSyncUnlockedChans, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, data, bufferSize)
 end
 
-function GetWriteSpaceAvail(taskHandle::TaskHandle, data::UInt32)
+function GetWriteSpaceAvail(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetWriteSpaceAvail, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
@@ -12942,7 +12942,7 @@ function GetWriteTotalSampPerChanGenerated(taskHandle::TaskHandle, data::Vector{
     ccall((:DAQmxGetWriteTotalSampPerChanGenerated, :libnidaqmx), Cint, (TaskHandle, Ref{Culonglong}), taskHandle, data)
 end
 
-function GetWriteAccessoryInsertionOrRemovalDetected(taskHandle::TaskHandle, data::UInt32)
+function GetWriteAccessoryInsertionOrRemovalDetected(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetWriteAccessoryInsertionOrRemovalDetected, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
@@ -12950,11 +12950,11 @@ function GetWriteDevsWithInsertedOrRemovedAccessories(taskHandle::TaskHandle, da
     ccall((:DAQmxGetWriteDevsWithInsertedOrRemovedAccessories, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, data, bufferSize)
 end
 
-function GetWriteRawDataWidth(taskHandle::TaskHandle, data::UInt32)
+function GetWriteRawDataWidth(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetWriteRawDataWidth, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function GetWriteNumChans(taskHandle::TaskHandle, data::UInt32)
+function GetWriteNumChans(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetWriteNumChans, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
@@ -12982,7 +12982,7 @@ function ResetWriteSleepTime(taskHandle::TaskHandle)
     ccall((:DAQmxResetWriteSleepTime, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetWriteDigitalLinesBytesPerChan(taskHandle::TaskHandle, data::UInt32)
+function GetWriteDigitalLinesBytesPerChan(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetWriteDigitalLinesBytesPerChan, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 

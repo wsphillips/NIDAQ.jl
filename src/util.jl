@@ -1,6 +1,7 @@
 
 function Base.convert( ::Type{Vector{String}},
                       x::DAQStringBuffer)
+    length(x.str) == 0 && return nothing 
     x.str[end] = 0
     strvec = split(unsafe_string(pointer(x.str)), ", "; keepempty=false)
     return String.(strvec)
@@ -21,6 +22,17 @@ function catch_error(code::Int32)
     code < Int32(0) && throw(convert(String,buf))
 end
 
+function version()
+    major, minor, update = Ref{UInt32}(), Ref{UInt32}(), Ref{UInt32}()
+    
+    DAQmx.GetSysNIDAQMajorVersion(major) |> catch_error
+    DAQmx.GetSysNIDAQMinorVersion(minor) |> catch_error
+    DAQmx.GetSysNIDAQUpdateVersion(update) |> catch_error
+    
+    major, minor, update = Int(major[]), Int(minor[]), Int(update[])
+
+    return VersionNumber(major,minor,update)
+end
 
 function Base.show(io::IO, chan::PhysicalChannel{T}) where T <: AbstractIO 
     println(io, "Channel name: ", chan.name)
@@ -73,7 +85,6 @@ function Base.append!(task::DAQTask{AI}, index::ChannelIndex, dev::DAQDevice=Def
     end
 
     new_channels = dev.channels[AI][index]
-    
     !isa(new_channels, Vector) && (append!(task,new_channels); return)
     
     for chan in new_channels
