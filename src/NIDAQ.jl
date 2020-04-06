@@ -13,6 +13,9 @@ export AI, AO, DI, DO, CI, CO
 export lsdev, lschan
 export start, stop, clear
 export taskalloc, read!
+export rate, rate!, maxrate
+
+
 include("types.jl")
 include("util.jl")
 include("task.jl")

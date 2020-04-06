@@ -143,6 +143,24 @@ function getproperties(channel::TaskChannel{T}; warning=false) where T <: Abstra
     return
 end
 
+function rate(task::DAQTask)
+    out = Ref{Float64}()
+    DAQmx.GetSampClkRate(task.handle, out) |> catch_error
+    return out[]
+end
+
+function rate!(task::DAQTask, newrate::Float64)
+    DAQmx.SetSampClkRate(task.handle, newrate) |> catch_error
+    return
+end
+
+function maxrate(task::DAQTask)
+    out = Ref{Float64}()
+    DAQmx.GetSampClkMaxRate(task.handle, out) |> catch_error
+    return out[]
+end
+
+
 # system properties
 function getproperties(; warning=false, show=true)
     

@@ -10186,7 +10186,7 @@ function ResetSampTimingType(taskHandle::TaskHandle)
     ccall((:DAQmxResetSampTimingType, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetSampClkRate(taskHandle::TaskHandle, data::Float64)
+function GetSampClkRate(taskHandle::TaskHandle, data::Ref{Float64})
     ccall((:DAQmxGetSampClkRate, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
@@ -10198,7 +10198,7 @@ function ResetSampClkRate(taskHandle::TaskHandle)
     ccall((:DAQmxResetSampClkRate, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetSampClkMaxRate(taskHandle::TaskHandle, data::Float64)
+function GetSampClkMaxRate(taskHandle::TaskHandle, data::Ref{Float64})
     ccall((:DAQmxGetSampClkMaxRate, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
