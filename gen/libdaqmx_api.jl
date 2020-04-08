@@ -397,8 +397,8 @@ function ResetChanAttribute(taskHandle::TaskHandle, channel::Ref{UInt8}, attribu
     ccall((:DAQmxResetChanAttribute, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cint), taskHandle, channel, attribute)
 end
 
-function CfgSampClkTiming(taskHandle::TaskHandle, source::Ref{UInt8}, rate::Cdouble, activeEdge::Cint, sampleMode::Cint, sampsPerChan::Culonglong)
-    ccall((:DAQmxCfgSampClkTiming, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cdouble, Cint, Cint, Culonglong), taskHandle, source, rate, activeEdge, sampleMode, sampsPerChan)
+function CfgSampClkTiming(taskHandle::TaskHandle, source::String, rate::Union{Float64,Int64}, activeEdge::DAQmxConstant, sampleMode::DAQmxConstant, sampsPerChan::Int64)
+    ccall((:DAQmxCfgSampClkTiming, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble, Cint, Cint, Culonglong), taskHandle, source, rate, activeEdge, sampleMode, sampsPerChan)
 end
 
 function CfgHandshakingTiming(taskHandle::TaskHandle, sampleMode::Cint, sampsPerChan::Culonglong)

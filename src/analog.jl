@@ -28,7 +28,7 @@ readalloc(task::DAQTask{AI},
           samples::Int=1024) = readalloc(Float64, task, samples)
 
 function Base.read!( dst::Vector{T},
-                    task::DAQTask{AI}) where T <: RWTypes
+                    task::DAQTask{AI})::Nothing where T <: RWTypes
     
     samples_read = Ref{Int32}()
     samples = length(dst)
@@ -40,7 +40,7 @@ function Base.read!( dst::Vector{T},
         @warn "Read samples($(samples_read[])) != requested samples($samples)"
     end
 
-    return 
+    return nothing 
 end
 
 function Base.read(     task::DAQTask{AI},
@@ -53,51 +53,38 @@ function Base.read(     task::DAQTask{AI},
     return reshape(data, samples, :)
 end
 
-function callback(handle::TaskHandle, event_type::Cint, num_samples::Cuint,
-                  chart::ChartRoll)::Cint
-    read!(chart.buffer, task)
-    append!(result, buffer)
-    return 0
+function recordcallback(handle::NIDAQ.TaskHandle, event_type::Cint,
+                        num_samples::Cuint, data::Ptr{Cvoid})::Cint
+    println("ping") 
+       return
 end
 
-function done_cb(handle::TaskHandle, status::Cint, cb_data::Ptr{Cvoid})::Cint
+function donecallback(handle::NIDAQ.TaskHandle, status::Cint, data::Ptr{Cvoid})::Cint
     catch_error(status)
-    return 0
+    return
 end
 
-mutable struct ChartRoll
-    result::Vector{Float64}
-    buffer::Vector{Float64}
-    function ChartRoll(task::DAQTask, sampling::Frequency, refresh::Frequency)
-        samples_per_chan = cld(sampling, refresh)  # samples PER CHANNEL
-        buffer = readalloc(task, samples) # Use readalloc here to account for
-                                          # multi-channel reading
-        DAQmx.CfgSampClkTiming(task.handle, "", sampling, DAQmx.Rising,
-                               DAQmx.ContSamps, samples_per_chan) |> catch_error
-        return new(Float64[], buffer)
-    end
-end
+const recordcallback_c = @cfunction(recordcallback, Cint, (NIDAQ.TaskHandle, Cint, Cuint, Ptr{Cvoid}))
+const donecallback_c = @cfunction(donecallback, Cint, (NIDAQ.TaskHandle, Cint, Ptr{Cvoid}))
 
-mutable struct Sweep
-    result::Vector{Float64}
-    function Sweep(task::DAQTask, sampling::Frequency, duration::Float64)
-        samples = round(Int, sampling * duration)
-        DAQmx.CfgSampClkTiming(task.handle, "", sampling, DAQmx.Rising,
-                               DAQmx.FiniteSamps, samples_per_chan) |> catch_error
-        result = readalloc(task, samples)
-        return new(result)
-    end
-end
-
-function record(task::DAQTask{AI}, chart::ChartRoll)
+function recording(task::DAQTask{AI}, sampling::Frequency=20000, refresh::Frequency=60)
+        
     
-    samples::Int64 =
-    result = Float64[]
-    buffer = NIDAQ.readalloc(task, samples)
-    DAQmx.CfgSampClkTiming(task.handle, DAQmx.Rising, DAQmx.ContSamps, samples)
-
+    num_samples::Int64 = cld(sampling, refresh)
+    DAQmx.CfgSampClkTiming(task.handle, "", sampling, DAQmx.Rising,
+                          DAQmx.ContSamps, num_samples) |> catch_error 
     
-    return result
+    data = C_NULL #optional data arg
+    DAQmx.RegisterEveryNSamplesEvent(task.handle, DAQmx.Acquired_Into_Buffer,
+                                     num_samples, recordcallback_c, data) |> catch_error
+    DAQmx.RegisterDoneEvent(task.handle, donecallback_c, data) |> catch_error
+    
+    start(task) # callbacks in use once task starts
+    sleep(3.0) # segfaulting (Julia core dump) instantly
+    stop(task)
+    println("ok")
+
+    return
 end
 
 # Write functions
@@ -119,4 +106,38 @@ function Base.write(task::DAQTask{AO},
     return
 end
 
+mutable struct Sweep
+    result::Vector{Float64}
+    function Sweep(task::DAQTask, sampling::Frequency, duration::Float64)
+        samples_per_chan = round(Int, sampling * duration)
+        DAQmx.CfgSampClkTiming(task.handle, "", sampling, DAQmx.Rising,
+                               DAQmx.FiniteSamps, samples_per_chan) |> catch_error
+        result = readalloc(task, samples_per_chan)
+        return new(result)
+    end
+end
+
+mutable struct ChartRoll
+    result::Vector{Float64}
+    buffer::Vector{Float64}
+    function ChartRoll(task::DAQTask, sampling::Frequency, refresh::Frequency)
+        samples_per_chan::Int64 = cld(sampling, refresh)  # samples PER CHANNEL
+        buffer = readalloc(task, samples_per_chan) # Use readalloc here to account for
+                                          # multi-channel reading
+        DAQmx.CfgSampClkTiming(task.handle, "", sampling, DAQmx.Rising,
+                               DAQmx.ContSamps, samples_per_chan) |> catch_error
+        return new(Float64[], buffer)
+    end
+end
+
+ #=buffer = Vector{Float64}(undef, Int(num_samples))
+    read_analog_fun[Float64](handle, num_samples, 1.0,
+                       DAQmx.GroupByChannel, buffer,
+                       length(buffer), samples_read) |> catch_error
+    
+    if num_samples !== samples_read[]
+        @warn "Read samples($(samples_read[])) != requested samples($samples)"
+    end
+
+    append!(data, buffer) =#
 

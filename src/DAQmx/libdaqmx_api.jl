@@ -53,12 +53,21 @@ function GetTaskAttribute(taskHandle::TaskHandle, attribute::Int32, value::Ref{C
     ccall((:DAQmxGetTaskAttribute, :libnidaqmx), Cint, (TaskHandle, Cint, Ref{Cvoid}), taskHandle, attribute, value)
 end
 
-function RegisterEveryNSamplesEvent(task::TaskHandle, everyNsamplesEventType::Int32, nSamples::UInt32, options::UInt32, callbackFunction::EveryNSamplesEventCallbackPtr, callbackData::Ref{Cvoid})
-    ccall((:DAQmxRegisterEveryNSamplesEvent, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cuint, EveryNSamplesEventCallbackPtr, Ref{Cvoid}), task, everyNsamplesEventType, nSamples, options, callbackFunction, callbackData)
+function RegisterEveryNSamplesEvent(task::TaskHandle,
+                                    everyNsamplesEventType::DAQmxConstant,
+                                    nSamples::Integer,
+                                    callbackFunction, callbackData)
+
+    ccall((:DAQmxRegisterEveryNSamplesEvent, :libnidaqmx),
+          Cint, (TaskHandle, Cint, Cuint, Cuint, Ptr{Cvoid}, Ptr{Cvoid}),
+          task, everyNsamplesEventType, nSamples, UInt32(0), callbackFunction, callbackData)
 end
 
-function RegisterDoneEvent(task::TaskHandle, options::UInt32, callbackFunction::DoneEventCallbackPtr, callbackData::Ref{Cvoid})
-    ccall((:DAQmxRegisterDoneEvent, :libnidaqmx), Cint, (TaskHandle, Cuint, DoneEventCallbackPtr, Ref{Cvoid}), task, options, callbackFunction, callbackData)
+function RegisterDoneEvent(task::TaskHandle, callbackFunction, callbackData)
+    
+    ccall((:DAQmxRegisterDoneEvent, :libnidaqmx),
+          Cint, (TaskHandle, Cuint, Ptr{Cvoid}, Ptr{Cvoid}),
+          task, UInt32(0), callbackFunction, callbackData)
 end
 
 function RegisterSignalEvent(task::TaskHandle, signalID::Int32, options::UInt32, callbackFunction::SignalEventCallbackPtr, callbackData::Ref{Cvoid})
@@ -402,8 +411,8 @@ function ResetChanAttribute(taskHandle::TaskHandle, channel::String, attribute::
     ccall((:DAQmxResetChanAttribute, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, attribute)
 end
 
-function CfgSampClkTiming(taskHandle::TaskHandle, source::String, rate::Float64, activeEdge::Int32, sampleMode::Int32, sampsPerChan::Culonglong)
-    ccall((:DAQmxCfgSampClkTiming, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cdouble, Cint, Cint, Culonglong), taskHandle, source, rate, activeEdge, sampleMode, sampsPerChan)
+function CfgSampClkTiming(taskHandle::TaskHandle, source::String, rate::Union{Float64,Int64}, activeEdge::DAQmxConstant, sampleMode::DAQmxConstant, sampsPerChan::Int64)
+    ccall((:DAQmxCfgSampClkTiming, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble, Cint, Cint, Culonglong), taskHandle, source, rate, activeEdge, sampleMode, sampsPerChan)
 end
 
 function CfgHandshakingTiming(taskHandle::TaskHandle, sampleMode::Int32, sampsPerChan::Culonglong)
