@@ -53,37 +53,80 @@ function Base.read(     task::DAQTask{AI},
     return reshape(data, samples, :)
 end
 
-function recordcallback(handle::NIDAQ.TaskHandle, event_type::Cint,
-                        num_samples::Cuint, data::Ptr{Cvoid})::Cint
-    println("ping") 
-       return
+struct _NIDAQEventCB
+    uvhandle::Ptr{Nothing}
+    task_handle::TaskHandle
+    event_type::Cint
+    num_samples::Cuint
 end
 
-function donecallback(handle::NIDAQ.TaskHandle, status::Cint, data::Ptr{Cvoid})::Cint
-    catch_error(status)
-    return
+struct _NIDAQDoneCB
+    uvhandle::Ptr{Nothing}
+    task_handle::TaskHandle
+    status::Cint
 end
 
-const recordcallback_c = @cfunction(recordcallback, Cint, (NIDAQ.TaskHandle, Cint, Cuint, Ptr{Cvoid}))
-const donecallback_c = @cfunction(donecallback, Cint, (NIDAQ.TaskHandle, Cint, Ptr{Cvoid}))
+function event_notify(task_handle::TaskHandle, event_type::Cint, num_samples::Cuint, data::Ptr{Nothing})::Cint
+    
+    ptr = convert(Ptr{_NIDAQEventCB}, data)
+    uvhandle = unsafe_load(ptr).uvhandle
 
-function recording(task::DAQTask{AI}, sampling::Frequency=20000, refresh::Frequency=60)
-        
+    val = _NIDAQEventCB(uvhandle, task_handle, event_type, num_samples)
+    unsafe_store!(ptr, val)
+    
+    ccall(:uv_async_send, Nothing, (Ptr{Nothing},), uvhandle)
+    return 0
+end
+
+function done_notify(task_handle::TaskHandle, status::Cint, data::Ptr{Nothing})::Cint
+   #= 
+    ptr = convert(Ptr{_NIDAQDoneCB}, data)
+    uvhandle = unsafe_load(ptr).uvhandle
+    val = _NIDAQDoneCB(uvhandle, task_handle, status)
+    unsafe_store!(ptr, val)
+
+    ccall(:uv_async_send, Nothing, (Ptr{Nothing},), uvhandle)
+    =#
+    return 0 
+end
+
+    
+function recording(task::DAQTask{AI}, event_cb::Function, sampling::Frequency=20000, refresh::Frequency=60)
     
     num_samples::Int64 = cld(sampling, refresh)
     DAQmx.CfgSampClkTiming(task.handle, "", sampling, DAQmx.Rising,
                           DAQmx.ContSamps, num_samples) |> catch_error 
     
-    data = C_NULL #optional data arg
-    DAQmx.RegisterEveryNSamplesEvent(task.handle, DAQmx.Acquired_Into_Buffer,
-                                     num_samples, recordcallback_c, data) |> catch_error
-    DAQmx.RegisterDoneEvent(task.handle, donecallback_c, data) |> catch_error
+    cb = Base.AsyncCondition()
     
-    start(task) # callbacks in use once task starts
-    sleep(3.0) # segfaulting (Julia core dump) instantly
-    stop(task)
-    println("ok")
+    event_notify_c = @cfunction(event_notify, Cint, (TaskHandle, Cint, Cuint, Ptr{Cvoid}))
+    done_notify_c = @cfunction(done_notify, Cint, (TaskHandle, Cint, Ptr{Cvoid}))
 
+    GC.@preserve cb begin
+    
+        r_data = Ref(_NIDAQEventCB(Base.unsafe_convert(Ptr{Cvoid}, cb),C_NULL, 0,0))
+        DAQmx.RegisterEveryNSamplesEvent(task.handle, DAQmx.Acquired_Into_Buffer,
+                                         num_samples, event_notify_c, r_data) |> catch_error
+        DAQmx.RegisterDoneEvent(task.handle, done_notify_c, C_NULL) |> catch_error
+    
+        @async begin
+            try
+                start(task)
+                for j in 1:100 
+                    Base.wait(cb)
+                    #data = r_data[]
+                    event_cb()
+                end
+            catch
+                rethrow()
+            finally
+                stop(task)
+                # need to reset the task as well
+                # perhaps save config and reload here
+                Base.close(cb)
+            end
+        end
+    end
     return
 end
 
