@@ -29,3 +29,9 @@ function isrunning(task::DAQTask)
     DAQmx.IsTaskDone(task.handle, istaskdone) |> catch_error
     return !(Bool(istaskdone[]))
 end
+
+function refresh!(task::DAQTask)
+    DAQmx.ClearTask(task.handle) |> catch_error
+    # rebuild task from fields of DAQTask and replace TaskHandle
+    return
+end

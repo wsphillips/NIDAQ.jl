@@ -19,7 +19,7 @@ function catch_error(code::Int32)
     DAQmx.GetErrorString(code, buf.str, buf.size)
 
     code > Int32(0) && (@warn convert(String, buf); return)
-    code < Int32(0) && throw(convert(String,buf))
+    code < Int32(0) && throw(convert(String, buf))
 end
 
 function version()
@@ -46,8 +46,7 @@ function Base.show(io::IO, chan::PhysicalChannel{T}) where T <: AbstractIO
     end
 end
 
-#FIXME: make a reasonable display of
-# DAQDevice so it doesn't look like garbagio
+#FIXME: make a pretty print display for devices
 function Base.show(io::IO, dev::DAQDevice)
     return nothing
 end
