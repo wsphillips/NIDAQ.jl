@@ -24,3 +24,8 @@ function clear(task::DAQTask)
     return
 end
 
+function isrunning(task::DAQTask)
+    istaskdone = Ref{UInt32}()
+    DAQmx.IsTaskDone(task.handle, istaskdone) |> catch_error
+    return !(Bool(istaskdone[]))
+end
