@@ -1,5 +1,7 @@
 
 function update!(t::DAQTask)
+    #synchronize Julia DAQTask to current properties
+    #of the associated TaskHandle in C land
 end
 
 function Base.push!(t::DAQTask, chan::DAQChannel; kwargs...)

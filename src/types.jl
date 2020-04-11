@@ -1,5 +1,4 @@
 
-# Types #
 # daq io types
 abstract type AbstractIO end
 abstract type AnalogIn   <: AbstractIO end
@@ -36,11 +35,10 @@ const getchanfun = LittleDict(
 struct DAQStringBuffer
      str::Vector{UInt8}
     size::UInt32
-
+    
     function DAQStringBuffer(size = 256)
         str  = Vector{UInt8}(undef, size)
         size = UInt32(size)
-
         return new(str,size)
     end
 end
@@ -48,14 +46,12 @@ end
 mutable struct DAQDevice
         name::String
     channels::Union{LittleDict,Nothing}
-
+    
     function DAQDevice(name::String)
-        
         x = new(name)
         chanobjs = lschan(x; asobjects=true)
         zipped = zip(keys(getchanfun),chanobjs)
         x.channels = LittleDict([kv for kv in zipped])
-        
         return x
     end
 end
@@ -64,21 +60,6 @@ struct PhysicalChannel{T<:AbstractIO} <: DAQChannel
       name::String
     parent::DAQDevice
     ranges::Union{Vector{Tuple{Float64,Float64}},Nothing}
-end
-
-mutable struct DAQTask{T<:AbstractIO}
-        name::String
-      handle::TaskHandle
-      device::Union{DAQDevice,Nothing}
-    channels::Union{Vector{PhysicalChannel{T}},Nothing}
-
-    function DAQTask{T}(name::String) where T <: AbstractIO
-        
-        handleptr = Ref{TaskHandle}()
-        DAQmx.CreateTask(name, handleptr) |> catch_error
-
-        return new(name, handleptr[], nothing, nothing)
-    end
 end
 
 # This hasn't been implemented yet, but will act as a
@@ -91,11 +72,24 @@ mutable struct TaskChannel{T<:AbstractIO} <: DAQChannel
       attr::OrderedDict
 
     function TaskChannel{<:AbstractIO}(alias::String, 
-                                       pchan::PhysicalChannel)
-        
+                                       pchan::PhysicalChannel)    
         return new(alias, pchan, OrderedDict())
     end
 end
+
+mutable struct DAQTask{T<:AbstractIO}
+        name::String
+      handle::TaskHandle
+      device::Union{DAQDevice,Nothing}
+    channels::Union{Vector{PhysicalChannel{T}},Nothing}
+
+    function DAQTask{T}(name::String) where T <: AbstractIO
+        handleptr = Ref{TaskHandle}()
+        DAQmx.CreateTask(name, handleptr) |> catch_error
+        return new(name, handleptr[], nothing, nothing)
+    end
+end
+
 
 DAQTask{T}() where T <: AbstractIO = DAQTask{T}("")
 
