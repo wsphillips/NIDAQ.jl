@@ -2,55 +2,87 @@
 # Task functions
 
 function LoadTask(taskName::String, taskHandle::Ref{TaskHandle})
-    ccall((:DAQmxLoadTask, :libnidaqmx), Cint, (Ref{UInt8}, Ref{TaskHandle}), taskName, taskHandle)
+    ccall((:DAQmxLoadTask, :libnidaqmx), Cint,
+          (Ref{UInt8}, Ref{TaskHandle}),
+          taskName, taskHandle)
 end
 
 function CreateTask(taskName::String, taskHandle::Ref{TaskHandle})
-    ccall((:DAQmxCreateTask, :libnidaqmx), Cint, (Cstring, Ref{TaskHandle}), taskName, taskHandle)
+    ccall((:DAQmxCreateTask, :libnidaqmx), Cint,
+          (Cstring, Ref{TaskHandle}),
+          taskName, taskHandle)
 end
 
 function AddGlobalChansToTask(taskHandle::TaskHandle, channelNames::String)
-    ccall((:DAQmxAddGlobalChansToTask, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channelNames)
+    ccall((:DAQmxAddGlobalChansToTask, :libnidaqmx), Cint,
+          (TaskHandle, Cstring),
+          taskHandle, channelNames)
 end
 
 function StartTask(taskHandle::TaskHandle)
-    ccall((:DAQmxStartTask, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
+    ccall((:DAQmxStartTask, :libnidaqmx), Cint,
+          (TaskHandle,), taskHandle)
 end
 
 function StopTask(taskHandle::TaskHandle)
-    ccall((:DAQmxStopTask, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
+    ccall((:DAQmxStopTask, :libnidaqmx), Cint,
+          (TaskHandle,), taskHandle)
 end
 
 function ClearTask(taskHandle::TaskHandle)
-    ccall((:DAQmxClearTask, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
+    ccall((:DAQmxClearTask, :libnidaqmx), Cint,
+          (TaskHandle,), taskHandle)
 end
 
 function WaitUntilTaskDone(taskHandle::TaskHandle, timeToWait::Float64)
-    ccall((:DAQmxWaitUntilTaskDone, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, timeToWait)
+    ccall((:DAQmxWaitUntilTaskDone, :libnidaqmx), Cint,
+          (TaskHandle, Cdouble),
+          taskHandle, timeToWait)
 end
 
-function WaitForValidTimestamp(taskHandle::TaskHandle, timestampEvent::Int32, timeout::Float64, timestamp::Ref{CVIAbsoluteTime})
-    ccall((:DAQmxWaitForValidTimestamp, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Ref{CVIAbsoluteTime}), taskHandle, timestampEvent, timeout, timestamp)
+function WaitForValidTimestamp(taskHandle::TaskHandle, timestampEvent::Int32,
+                               timeout::Float64, timestamp::Ref{CVIAbsoluteTime})
+
+    ccall((:DAQmxWaitForValidTimestamp, :libnidaqmx), Cint,
+          (TaskHandle, Cint, Cdouble, Ref{CVIAbsoluteTime}),
+          taskHandle, timestampEvent, timeout, timestamp)
 end
 
 function IsTaskDone(taskHandle::TaskHandle, isTaskDone::Ref{UInt32})
-    ccall((:DAQmxIsTaskDone, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, isTaskDone)
+    
+    ccall((:DAQmxIsTaskDone, :libnidaqmx), Cint,
+          (TaskHandle, Ref{Cuint}),
+          taskHandle, isTaskDone)
 end
 
 function TaskControl(taskHandle::TaskHandle, action::Int32)
-    ccall((:DAQmxTaskControl, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, action)
+
+    ccall((:DAQmxTaskControl, :libnidaqmx), Cint,
+          (TaskHandle, Cint),
+          taskHandle, action)
 end
 
-function GetNthTaskChannel(taskHandle::TaskHandle, index::UInt32, buffer::Vector{UInt8}, bufferSize::Int32)
-    ccall((:DAQmxGetNthTaskChannel, :libnidaqmx), Cint, (TaskHandle, Cuint, Ref{UInt8}, Cint), taskHandle, index, buffer, bufferSize)
+function GetNthTaskChannel(taskHandle::TaskHandle, index::UInt32,
+                           buffer::Vector{UInt8}, bufferSize::Int32)
+
+    ccall((:DAQmxGetNthTaskChannel, :libnidaqmx), Cint,
+          (TaskHandle, Cuint, Ref{UInt8}, Cint),
+          taskHandle, index, buffer, bufferSize)
 end
 
-function GetNthTaskDevice(taskHandle::TaskHandle, index::UInt32, buffer::Vector{UInt8}, bufferSize::Int32)
-    ccall((:DAQmxGetNthTaskDevice, :libnidaqmx), Cint, (TaskHandle, Cuint, Ref{UInt8}, Cint), taskHandle, index, buffer, bufferSize)
+function GetNthTaskDevice(taskHandle::TaskHandle, index::UInt32,
+                          buffer::Vector{UInt8}, bufferSize::Int32)
+
+    ccall((:DAQmxGetNthTaskDevice, :libnidaqmx), Cint,
+          (TaskHandle, Cuint, Ref{UInt8}, Cint),
+          taskHandle, index, buffer, bufferSize)
 end
 
 function GetTaskAttribute(taskHandle::TaskHandle, attribute::Int32, value::Ref{Cvoid})
-    ccall((:DAQmxGetTaskAttribute, :libnidaqmx), Cint, (TaskHandle, Cint, Ref{Cvoid}), taskHandle, attribute, value)
+
+    ccall((:DAQmxGetTaskAttribute, :libnidaqmx), Cint,
+          (TaskHandle, Cint, Ref{Cvoid}),
+          taskHandle, attribute, value)
 end
 
 function RegisterEveryNSamplesEvent(task::TaskHandle,
@@ -70,15 +102,26 @@ function RegisterDoneEvent(task::TaskHandle, callbackFunction, callbackData)
           task, UInt32(0), callbackFunction, callbackData)
 end
 
-function RegisterSignalEvent(task::TaskHandle, signalID::Int32, options::UInt32, callbackFunction::SignalEventCallbackPtr, callbackData::Ref{Cvoid})
-    ccall((:DAQmxRegisterSignalEvent, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, SignalEventCallbackPtr, Ref{Cvoid}), task, signalID, options, callbackFunction, callbackData)
+function RegisterSignalEvent(task::TaskHandle, signalID::DAQmxConstant,
+                             callbackFunction, callbackData)
+
+    ccall((:DAQmxRegisterSignalEvent, :libnidaqmx), Cint,
+          (TaskHandle, Cint, Cuint, Ptr{Cvoid}, Ptr{Cvoid}),
+          task, signalID, UInt32(0), callbackFunction, callbackData)
 end
 
 #### Channel functions ####
 # Channel creation
 
-function CreateAIVoltageChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::DAQmxConstant, minVal::Float64, maxVal::Float64, units::DAQmxConstant, customScaleName::String)
-    ccall((:DAQmxCreateAIVoltageChan, :libnidaqmx), Cint, (TaskHandle, Cstring, Cstring, Cint, Cdouble, Cdouble, Cint, Cstring), taskHandle, physicalChannel, nameToAssignToChannel, terminalConfig, minVal, maxVal, units, customScaleName)
+function CreateAIVoltageChan(taskHandle::TaskHandle, physicalChannel::String,
+                             nameToAssignToChannel::String, terminalConfig::DAQmxConstant,
+                             minVal::Float64, maxVal::Float64, units::DAQmxConstant,
+                             customScaleName::String)
+
+    ccall((:DAQmxCreateAIVoltageChan, :libnidaqmx), Cint,
+          (TaskHandle, Cstring, Cstring, Cint, Cdouble, Cdouble, Cint, Cstring),
+          taskHandle, physicalChannel, nameToAssignToChannel, terminalConfig, minVal,
+          maxVal, units, customScaleName)
 end
 
 function CreateAICurrentChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Int32, minVal::Float64, maxVal::Float64, units::Int32, shuntResistorLoc::Int32, extShuntResistorVal::Float64, customScaleName::String)

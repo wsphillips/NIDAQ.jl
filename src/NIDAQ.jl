@@ -4,6 +4,7 @@ include("DAQmx/DAQmx.jl")
 
 using .DAQmx
 using PrettyTables, OrderedCollections, InteractiveUtils, OffsetArrays
+using DataStructures, Distributed
 import Base.write, Base.read!, Base.push!, Base.show
 
 export DAQmx
@@ -13,8 +14,8 @@ export AI, AO, DI, DO, CI, CO
 export lsdev, lschan
 export start, stop, clear
 export taskalloc, read!
-export rate, rate!, maxrate
-
+export rate, maxrate
+export record!
 
 include("types.jl")
 include("util.jl")

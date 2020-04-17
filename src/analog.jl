@@ -26,7 +26,7 @@ function Base.read!(dst::Vector{T},
                     handle::TaskHandle) where T <: RWTypes
     
     samples_read = Ref{Int32}()
-    samples = length(dst)
+    samples::Cint = length(dst)
     read_analog_fun[T](handle, samples, 1.0,
                        DAQmx.GroupByScanNumber, dst,
                        samples, samples_read) |> catch_error
@@ -81,11 +81,20 @@ function done_notify(task_handle::TaskHandle, status::Cint,
     end
     return 0 
 end
-#TODO: add optional hooks for plotting/arbitrary functions
+
+function clearevents!(handle::TaskHandle)
+    DAQmx.RegisterEveryNSamplesEvent(handle, DAQmx.Acquired_Into_Buffer,
+                                     0, C_NULL, C_NULL) |> catch_error
+    DAQmx.RegisterDoneEvent(handle, C_NULL, C_NULL) |> catch_error
+    DAQmx.RegisterSignalEvent(handle, DAQmx.SampleClock, C_NULL, C_NULL) |> catch_error
+    return nothing
+end
+
 function record!(result::Vector{T},
                  task::DAQTask{AI}, 
                  sampling::Frequency=20000, 
-                 refresh::Frequency=60) where T <: RWTypes
+                 refresh::Frequency=50;
+                 remote::Union{RemoteChannel,Nothing} = nothing) where T <: RWTypes
     
     num_samples::Int64 = cld(sampling, refresh)
     buffer = readalloc(task, num_samples)
@@ -101,12 +110,15 @@ function record!(result::Vector{T},
     done_notify_c = @cfunction(done_notify, Cint,
                                (TaskHandle, Cint, Ptr{Cvoid}))
 
-    GC.@preserve cb1 cb2 begin
+    GC.@preserve cb1 cb2 task buffer event_notify_c done_notify_c begin
+        
         r_data = Ref(DAQEventCB(Base.unsafe_convert(Ptr{Cvoid}, cb1),
                      C_NULL, 0, 0))
         r_return = Ref(DAQDoneCB(Base.unsafe_convert(Ptr{Cvoid}, cb2),
                        C_NULL, 0))
 
+        clearevents!(task.handle) # remove any stale callbacks
+        
         DAQmx.RegisterEveryNSamplesEvent(task.handle,
                                          DAQmx.Acquired_Into_Buffer,
                                          num_samples, event_notify_c,
@@ -114,33 +126,35 @@ function record!(result::Vector{T},
         
         DAQmx.RegisterDoneEvent(task.handle, done_notify_c,
                                 r_return) |> catch_error
-    
         @async begin
             try
                 start(task)
+                
                 @async begin
                     while isrunning(task)
                         Base.wait(cb2)
                         catch_error(r_return[].status)
                     end
                 end
+                
                 while isrunning(task)
                     Base.wait(cb1)
                     data = r_data[]
                     read!(buffer, data.task_handle)
                     append!(result, buffer)
+                    isnothing(remote) || put!(remote, buffer)
                 end
+
             catch
                 rethrow()
             finally
-                # TODO: need to reset the task here
-                # because registered callbacks persist in C
-                # refresh!(task)
                 Base.close(cb1)
                 Base.close(cb2)
             end
         end
-    end
+
+    end # GC preserve
+    
     return nothing
 end
 
