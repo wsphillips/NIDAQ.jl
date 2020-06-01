@@ -8,7 +8,7 @@ const getchanfun = LittleDict(
     CO => DAQmx.GetDevCOPhysicalChans)
 
 function DAQDevice(name::String)
-    x = DAQDevice(name)
+    x = DAQDevice(name, nothing)
     chanobjs = lschan(x; asobjects=true)
     zipped = zip(keys(getchanfun),chanobjs)
     x.channels = LittleDict([kv for kv in zipped])
