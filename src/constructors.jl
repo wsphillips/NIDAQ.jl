@@ -1,3 +1,12 @@
+# Channel get function lookups
+const getchanfun = LittleDict(
+    AI => DAQmx.GetDevAIPhysicalChans,
+    AO => DAQmx.GetDevAOPhysicalChans,
+    DI => DAQmx.GetDevDILines,
+    DO => DAQmx.GetDevDOLines,
+    CI => DAQmx.GetDevCIPhysicalChans,
+    CO => DAQmx.GetDevCOPhysicalChans)
+
 function DAQDevice(name::String)
     x = DAQDevice(name)
     chanobjs = lschan(x; asobjects=true)

@@ -22,15 +22,6 @@ const CO = CounterOut
 const ChannelIndex = Union{Integer,UnitRange{<:Integer}}
 const AnalogIO = Union{AnalogIn, AnalogOut}
 
-# Channel get function lookups
-const getchanfun = LittleDict(
-    AI => DAQmx.GetDevAIPhysicalChans,
-    AO => DAQmx.GetDevAOPhysicalChans,
-    DI => DAQmx.GetDevDILines,
-    DO => DAQmx.GetDevDOLines,
-    CI => DAQmx.GetDevCIPhysicalChans,
-    CO => DAQmx.GetDevCOPhysicalChans)
-
 # holds non-null-terminated strings (buffers)
 struct DAQStringBuffer
      str::Vector{UInt8}
