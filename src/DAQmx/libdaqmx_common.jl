@@ -524,6 +524,8 @@ end
     PersistedChan_Author = 8912
 end
 
+
+# careful about type definition collision with base
 @cenum Task::Int32 begin
     Channels = 4723
     Complete = 4724

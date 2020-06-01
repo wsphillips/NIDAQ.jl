@@ -2,6 +2,7 @@ module DAQmx
 
 export TaskHandle
 using CEnum
+import ..NIDAQ.daqmx_handle
 
 const Success = Cint(0)
 const TaskHandle = Ptr{Cvoid}
@@ -20,7 +21,10 @@ struct CVIAbsoluteTime
 end
 
 include(joinpath(@__DIR__,"libdaqmx_common.jl"))
+
+if daqmx_handle !== nothing
 include(joinpath(@__DIR__,"libdaqmx_api.jl"))
+end
 
 end # module DAQmx
 

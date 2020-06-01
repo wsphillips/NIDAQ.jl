@@ -110,7 +110,9 @@ function record!(result::Vector{T},
     done_notify_c = @cfunction(done_notify, Cint,
                                (TaskHandle, Cint, Ptr{Cvoid}))
 
-    GC.@preserve cb1 cb2 task buffer event_notify_c done_notify_c begin
+    sweep_counter = 0
+
+    GC.@preserve cb1 cb2 task buffer event_notify_c done_notify_c sweep_counter begin
         
         r_data = Ref(DAQEventCB(Base.unsafe_convert(Ptr{Cvoid}, cb1),
                      C_NULL, 0, 0))
@@ -134,6 +136,7 @@ function record!(result::Vector{T},
                     while isrunning(task)
                         Base.wait(cb2)
                         catch_error(r_return[].status)
+
                     end
                 end
                 
@@ -143,6 +146,13 @@ function record!(result::Vector{T},
                     read!(buffer, data.task_handle)
                     append!(result, buffer)
                     isnothing(remote) || put!(remote, buffer)
+                    if sweep_counter > 49
+                        # write to disk
+                        result  = eltype(result)[]
+                        sweep_counter = 0
+                    else
+                        sweep_counter += 1
+                    end
                 end
 
             catch

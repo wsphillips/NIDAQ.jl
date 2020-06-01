@@ -46,14 +46,6 @@ end
 mutable struct DAQDevice
         name::String
     channels::Union{LittleDict,Nothing}
-    
-    function DAQDevice(name::String)
-        x = new(name)
-        chanobjs = lschan(x; asobjects=true)
-        zipped = zip(keys(getchanfun),chanobjs)
-        x.channels = LittleDict([kv for kv in zipped])
-        return x
-    end
 end
 
 struct PhysicalChannel{T<:AbstractIO} <: DAQChannel
@@ -70,7 +62,6 @@ mutable struct TaskChannel{T<:AbstractIO} <: DAQChannel
      alias::String
       phys::PhysicalChannel
       attr::OrderedDict
-
     function TaskChannel{<:AbstractIO}(alias::String, 
                                        pchan::PhysicalChannel)    
         return new(alias, pchan, OrderedDict())
@@ -83,13 +74,7 @@ mutable struct DAQTask{T<:AbstractIO}
       device::Union{DAQDevice,Nothing}
     channels::Union{Vector{PhysicalChannel{T}},Nothing}
 
-    function DAQTask{T}(name::String) where T <: AbstractIO
-        handleptr = Ref{TaskHandle}()
-        DAQmx.CreateTask(name, handleptr) |> catch_error
-        return new(name, handleptr[], nothing, nothing)
-    end
 end
 
 
-DAQTask{T}() where T <: AbstractIO = DAQTask{T}("")
 
