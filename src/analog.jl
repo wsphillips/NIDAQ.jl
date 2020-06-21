@@ -22,27 +22,28 @@ function readalloc(task::DAQTask{AI},
     return Vector{T}(undef, samples*length(task.channels))
 end
 
-function Base.read!(dst::Vector{T},
+function Base.read!(dst::Vector{T}, num_channels::Integer,
                     handle::TaskHandle) where T <: RWTypes
     
     samples_read = Ref{Int32}()
-    samples::Cint = length(dst)
-    read_analog_fun[T](handle, samples, 1.0,
+    buffer_samples::Cint = length(dst)
+    samples_perchan::Cint = buffer_samples ÷ num_channels 
+    read_analog_fun[T](handle, samples_perchan, 1.0,
                        DAQmx.GroupByScanNumber, dst,
-                       samples, samples_read) |> catch_error
+                       buffer_samples, samples_read) |> catch_error
     
-    if samples !== samples_read[]
+    if samples_perchan !== samples_read[]
         @warn "Read samples($(samples_read[])) != requested samples($samples)"
     end
 
     return nothing 
 end
 
-read!(dst::Vector{<:RWTypes}, task::DAQTask) = read!(dst, task.handle)
+read!(dst::Vector{<:RWTypes}, task::DAQTask) = read!(dst, length(task.channels), task.handle)
 
 function Base.read(task::DAQTask{AI}, samples::Int = 1024,
                    precision::Type{T} = Float64) where T <: RWTypes
-    data = readalloc(precision, task, samples)
+    data = readalloc(task, samples, precision)
     read!(data, task)
     return data
 end
@@ -96,11 +97,11 @@ function record!(result::Vector{T},
                  refresh::Frequency=50;
                  remote::Union{RemoteChannel,Nothing} = nothing) where T <: RWTypes
     
-    num_samples::Int64 = cld(sampling, refresh)
-    buffer = readalloc(task, num_samples)
-    
+    num_samples_perchan::Int64 = cld(sampling, refresh)
+    buffer = readalloc(task, num_samples_perchan)
+    num_channels = length(task.channels) 
     DAQmx.CfgSampClkTiming(task.handle, "", sampling, DAQmx.Rising,
-                          DAQmx.ContSamps, num_samples) |> catch_error 
+                          DAQmx.ContSamps, num_samples_perchan) |> catch_error 
     
     cb1 = Base.AsyncCondition()
     cb2 = Base.AsyncCondition()
@@ -112,7 +113,7 @@ function record!(result::Vector{T},
 
     sweep_counter = 0
 
-    GC.@preserve cb1 cb2 task buffer event_notify_c done_notify_c sweep_counter begin
+    GC.@preserve cb1 cb2 task buffer event_notify_c done_notify_c sweep_counter num_channels begin
         
         r_data = Ref(DAQEventCB(Base.unsafe_convert(Ptr{Cvoid}, cb1),
                      C_NULL, 0, 0))
@@ -123,7 +124,7 @@ function record!(result::Vector{T},
         
         DAQmx.RegisterEveryNSamplesEvent(task.handle,
                                          DAQmx.Acquired_Into_Buffer,
-                                         num_samples, event_notify_c,
+                                         num_samples_perchan, event_notify_c,
                                          r_data) |> catch_error
         
         DAQmx.RegisterDoneEvent(task.handle, done_notify_c,
@@ -143,9 +144,10 @@ function record!(result::Vector{T},
                 while isrunning(task)
                     Base.wait(cb1)
                     data = r_data[]
-                    read!(buffer, data.task_handle)
+                    read!(buffer, num_channels, data.task_handle)
                     append!(result, buffer)
                     isnothing(remote) || put!(remote, buffer)
+                    
                     if sweep_counter > 49
                         # write to disk
                         result  = eltype(result)[]
