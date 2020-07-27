@@ -27,13 +27,15 @@ include("analog.jl")
 #include("digital.jl")
 #include("counter.jl")
 
-const supported_version = v"19.5.0"
+const VERSION_SUPPORT = v"20.1.0"
+global CLIENT_VERSION
 
-const hostver = version()
+function __init__()
+    global CLIENT_VERSION = version()
 
-supported_version == hostver || @warn("Installed NIDAQmx version: v$hostver is not " *
-                                      "officially supported. This may result in " *
-                                      "undefined behavior/errors/segfaults.")
-
+    VERSION_SUPPORT == CLIENT_VERSION || @warn("Installed NIDAQmx version: v$hostver is not " *
+                                               "officially supported. This may result in " *
+                                               "undefined behavior/errors/segfaults.")
+end
 
 end

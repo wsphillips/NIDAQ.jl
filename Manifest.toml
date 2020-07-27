@@ -9,9 +9,9 @@ uuid = "fa961155-64e5-5f13-b03f-caf6b980ea82"
 version = "0.4.1"
 
 [[Crayons]]
-git-tree-sha1 = "9f3adcb26c79d6270eb678f3c61bf44cc6b7077e"
+git-tree-sha1 = "c437a9c2114c7ba19322712e58942b383ffbd6c0"
 uuid = "a8cc5b0e-0ffa-5ad4-8c14-923d3ee1735f"
-version = "4.0.2"
+version = "4.0.3"
 
 [[DataAPI]]
 git-tree-sha1 = "176e23402d80e7743fc26c19c681bfb11246af32"
@@ -20,9 +20,9 @@ version = "1.3.0"
 
 [[DataStructures]]
 deps = ["InteractiveUtils", "OrderedCollections"]
-git-tree-sha1 = "af6d9c86e191c917c2276fbede1137e8ea20157f"
+git-tree-sha1 = "edad9434967fdc0a2631a65d902228400642120c"
 uuid = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
-version = "0.17.17"
+version = "0.17.19"
 
 [[DataValueInterfaces]]
 git-tree-sha1 = "bfc1187b79289637fa0ef6d4436ebdfe6905cbd6"
@@ -71,14 +71,14 @@ deps = ["Base64"]
 uuid = "d6f4376e-aef5-505a-96c1-9c027394607a"
 
 [[OffsetArrays]]
-git-tree-sha1 = "930db8ef90483570107f2396b1ffc6680f08e8b7"
+git-tree-sha1 = "4ba4cd84c88df8340da1c3e2d8dcb9d18dd1b53b"
 uuid = "6fe1bfb0-de20-5000-8ca7-80f57d26f881"
-version = "1.0.4"
+version = "1.1.1"
 
 [[OrderedCollections]]
-git-tree-sha1 = "12ce190210d278e12644bcadf5b21cbdcf225cd3"
+git-tree-sha1 = "293b70ac1780f9584c89268a6e2a560d938a7065"
 uuid = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
-version = "1.2.0"
+version = "1.3.0"
 
 [[Parameters]]
 deps = ["OrderedCollections", "UnPack"]
@@ -92,9 +92,9 @@ uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 
 [[PrettyTables]]
 deps = ["Crayons", "Formatting", "Parameters", "Reexport", "Tables"]
-git-tree-sha1 = "ac3cecc7254adfffb8fdbd2c83eaa247e14b02da"
+git-tree-sha1 = "8458dc04a493ae5c2fed3796c1d3117972c69694"
 uuid = "08abe8d2-0d0c-5749-adfa-8a2ac140af0d"
-version = "0.9.0"
+version = "0.9.1"
 
 [[Printf]]
 deps = ["Unicode"]
