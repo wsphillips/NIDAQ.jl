@@ -30,6 +30,7 @@ include("analog.jl")
 const VERSION_SUPPORT = v"20.1.0"
 global CLIENT_VERSION
 
+#=
 function __init__()
     global CLIENT_VERSION = version()
 
@@ -37,5 +38,5 @@ function __init__()
                                                "officially supported. This may result in " *
                                                "undefined behavior/errors/segfaults.")
 end
-
+=#
 end
