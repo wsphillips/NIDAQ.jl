@@ -34,14 +34,14 @@ function ClearTask(taskHandle::TaskHandle)
           (TaskHandle,), taskHandle)
 end
 
-function WaitUntilTaskDone(taskHandle::TaskHandle, timeToWait::Float64)
+function WaitUntilTaskDone(taskHandle::TaskHandle, timeToWait::Real)
     ccall((:DAQmxWaitUntilTaskDone, :libnidaqmx), Cint,
           (TaskHandle, Cdouble),
           taskHandle, timeToWait)
 end
 
-function WaitForValidTimestamp(taskHandle::TaskHandle, timestampEvent::Int32,
-                               timeout::Float64, timestamp::Ref{CVIAbsoluteTime})
+function WaitForValidTimestamp(taskHandle::TaskHandle, timestampEvent::Integer,
+                               timeout::Real, timestamp::Ref{CVIAbsoluteTime})
 
     ccall((:DAQmxWaitForValidTimestamp, :libnidaqmx), Cint,
           (TaskHandle, Cint, Cdouble, Ref{CVIAbsoluteTime}),
@@ -55,7 +55,7 @@ function IsTaskDone(taskHandle::TaskHandle, isTaskDone::Ref{UInt32})
           taskHandle, isTaskDone)
 end
 
-function TaskControl(taskHandle::TaskHandle, action::Int32)
+function TaskControl(taskHandle::TaskHandle, action::Integer)
 
     ccall((:DAQmxTaskControl, :libnidaqmx), Cint,
           (TaskHandle, Cint),
@@ -63,7 +63,7 @@ function TaskControl(taskHandle::TaskHandle, action::Int32)
 end
 
 function GetNthTaskChannel(taskHandle::TaskHandle, index::UInt32,
-                           buffer::Vector{UInt8}, bufferSize::Int32)
+                           buffer::Vector{UInt8}, bufferSize::Integer)
 
     ccall((:DAQmxGetNthTaskChannel, :libnidaqmx), Cint,
           (TaskHandle, Cuint, Ref{UInt8}, Cint),
@@ -71,14 +71,14 @@ function GetNthTaskChannel(taskHandle::TaskHandle, index::UInt32,
 end
 
 function GetNthTaskDevice(taskHandle::TaskHandle, index::UInt32,
-                          buffer::Vector{UInt8}, bufferSize::Int32)
+                          buffer::Vector{UInt8}, bufferSize::Integer)
 
     ccall((:DAQmxGetNthTaskDevice, :libnidaqmx), Cint,
           (TaskHandle, Cuint, Ref{UInt8}, Cint),
           taskHandle, index, buffer, bufferSize)
 end
 
-function GetTaskAttribute(taskHandle::TaskHandle, attribute::Int32, value::Ref{Cvoid})
+function GetTaskAttribute(taskHandle::TaskHandle, attribute::Integer, value::Ref{Cvoid})
 
     ccall((:DAQmxGetTaskAttribute, :libnidaqmx), Cint,
           (TaskHandle, Cint, Ref{Cvoid}),
@@ -115,7 +115,7 @@ end
 
 function CreateAIVoltageChan(taskHandle::TaskHandle, physicalChannel::String,
                              nameToAssignToChannel::String, terminalConfig::DAQmxConstant,
-                             minVal::Float64, maxVal::Float64, units::DAQmxConstant,
+                             minVal::Real, maxVal::Real, units::DAQmxConstant,
                              customScaleName::String)
 
     ccall((:DAQmxCreateAIVoltageChan, :libnidaqmx), Cint,
@@ -124,303 +124,303 @@ function CreateAIVoltageChan(taskHandle::TaskHandle, physicalChannel::String,
           maxVal, units, customScaleName)
 end
 
-function CreateAICurrentChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Int32, minVal::Float64, maxVal::Float64, units::Int32, shuntResistorLoc::Int32, extShuntResistorVal::Float64, customScaleName::String)
+function CreateAICurrentChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Integer, minVal::Real, maxVal::Real, units::Integer, shuntResistorLoc::Integer, extShuntResistorVal::Real, customScaleName::String)
     ccall((:DAQmxCreateAICurrentChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cdouble, Cdouble, Cint, Cint, Cdouble, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, terminalConfig, minVal, maxVal, units, shuntResistorLoc, extShuntResistorVal, customScaleName)
 end
 
-function CreateAIVoltageRMSChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Int32, minVal::Float64, maxVal::Float64, units::Int32, customScaleName::String)
+function CreateAIVoltageRMSChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Integer, minVal::Real, maxVal::Real, units::Integer, customScaleName::String)
     ccall((:DAQmxCreateAIVoltageRMSChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cdouble, Cdouble, Cint, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, terminalConfig, minVal, maxVal, units, customScaleName)
 end
 
-function CreateAICurrentRMSChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Int32, minVal::Float64, maxVal::Float64, units::Int32, shuntResistorLoc::Int32, extShuntResistorVal::Float64, customScaleName::String)
+function CreateAICurrentRMSChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Integer, minVal::Real, maxVal::Real, units::Integer, shuntResistorLoc::Integer, extShuntResistorVal::Real, customScaleName::String)
     ccall((:DAQmxCreateAICurrentRMSChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cdouble, Cdouble, Cint, Cint, Cdouble, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, terminalConfig, minVal, maxVal, units, shuntResistorLoc, extShuntResistorVal, customScaleName)
 end
 
-function CreateAIThrmcplChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, thermocoupleType::Int32, cjcSource::Int32, cjcVal::Float64, cjcChannel::String)
+function CreateAIThrmcplChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, thermocoupleType::Integer, cjcSource::Integer, cjcVal::Real, cjcChannel::String)
     ccall((:DAQmxCreateAIThrmcplChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cint, Cdouble, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, thermocoupleType, cjcSource, cjcVal, cjcChannel)
 end
 
-function CreateAIRTDChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, rtdType::Int32, resistanceConfig::Int32, currentExcitSource::Int32, currentExcitVal::Float64, r0::Float64)
+function CreateAIRTDChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, rtdType::Integer, resistanceConfig::Integer, currentExcitSource::Integer, currentExcitVal::Real, r0::Real)
     ccall((:DAQmxCreateAIRTDChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cint, Cint, Cdouble, Cdouble), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, rtdType, resistanceConfig, currentExcitSource, currentExcitVal, r0)
 end
 
-function CreateAIThrmstrChanIex(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, resistanceConfig::Int32, currentExcitSource::Int32, currentExcitVal::Float64, a::Float64, b::Float64, c::Float64)
+function CreateAIThrmstrChanIex(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, resistanceConfig::Integer, currentExcitSource::Integer, currentExcitVal::Real, a::Real, b::Real, c::Real)
     ccall((:DAQmxCreateAIThrmstrChanIex, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cint, Cdouble, Cdouble, Cdouble, Cdouble), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, resistanceConfig, currentExcitSource, currentExcitVal, a, b, c)
 end
 
-function CreateAIThrmstrChanVex(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, resistanceConfig::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, a::Float64, b::Float64, c::Float64, r1::Float64)
+function CreateAIThrmstrChanVex(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, resistanceConfig::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, a::Real, b::Real, c::Real, r1::Real)
     ccall((:DAQmxCreateAIThrmstrChanVex, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cint, Cdouble, Cdouble, Cdouble, Cdouble, Cdouble), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, resistanceConfig, voltageExcitSource, voltageExcitVal, a, b, c, r1)
 end
 
-function CreateAIFreqVoltageChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, thresholdLevel::Float64, hysteresis::Float64, customScaleName::String)
+function CreateAIFreqVoltageChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, thresholdLevel::Real, hysteresis::Real, customScaleName::String)
     ccall((:DAQmxCreateAIFreqVoltageChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cdouble, Cdouble, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, thresholdLevel, hysteresis, customScaleName)
 end
 
-function CreateAIResistanceChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, resistanceConfig::Int32, currentExcitSource::Int32, currentExcitVal::Float64, customScaleName::String)
+function CreateAIResistanceChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, resistanceConfig::Integer, currentExcitSource::Integer, currentExcitVal::Real, customScaleName::String)
     ccall((:DAQmxCreateAIResistanceChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cint, Cdouble, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, resistanceConfig, currentExcitSource, currentExcitVal, customScaleName)
 end
 
-function CreateAIStrainGageChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, strainConfig::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, gageFactor::Float64, initialBridgeVoltage::Float64, nominalGageResistance::Float64, poissonRatio::Float64, leadWireResistance::Float64, customScaleName::String)
+function CreateAIStrainGageChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, strainConfig::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, gageFactor::Real, initialBridgeVoltage::Real, nominalGageResistance::Real, poissonRatio::Real, leadWireResistance::Real, customScaleName::String)
     ccall((:DAQmxCreateAIStrainGageChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cint, Cdouble, Cdouble, Cdouble, Cdouble, Cdouble, Cdouble, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, strainConfig, voltageExcitSource, voltageExcitVal, gageFactor, initialBridgeVoltage, nominalGageResistance, poissonRatio, leadWireResistance, customScaleName)
 end
 
-function CreateAIRosetteStrainGageChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, rosetteType::Int32, gageOrientation::Float64, rosetteMeasTypes::Ref{Int32}, numRosetteMeasTypes::UInt32, strainConfig::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, gageFactor::Float64, nominalGageResistance::Float64, poissonRatio::Float64, leadWireResistance::Float64)
+function CreateAIRosetteStrainGageChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, rosetteType::Integer, gageOrientation::Real, rosetteMeasTypes::Ref{Int32}, numRosetteMeasTypes::UInt32, strainConfig::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, gageFactor::Real, nominalGageResistance::Real, poissonRatio::Real, leadWireResistance::Real)
     ccall((:DAQmxCreateAIRosetteStrainGageChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cdouble, Ref{Cint}, Cuint, Cint, Cint, Cdouble, Cdouble, Cdouble, Cdouble, Cdouble), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, rosetteType, gageOrientation, rosetteMeasTypes, numRosetteMeasTypes, strainConfig, voltageExcitSource, voltageExcitVal, gageFactor, nominalGageResistance, poissonRatio, leadWireResistance)
 end
 
-function CreateAIForceBridgeTwoPointLinChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, bridgeConfig::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, nominalBridgeResistance::Float64, firstElectricalVal::Float64, secondElectricalVal::Float64, electricalUnits::Int32, firstPhysicalVal::Float64, secondPhysicalVal::Float64, physicalUnits::Int32, customScaleName::String)
+function CreateAIForceBridgeTwoPointLinChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, bridgeConfig::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, nominalBridgeResistance::Real, firstElectricalVal::Real, secondElectricalVal::Real, electricalUnits::Integer, firstPhysicalVal::Real, secondPhysicalVal::Real, physicalUnits::Integer, customScaleName::String)
     ccall((:DAQmxCreateAIForceBridgeTwoPointLinChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cint, Cdouble, Cdouble, Cdouble, Cdouble, Cint, Cdouble, Cdouble, Cint, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, bridgeConfig, voltageExcitSource, voltageExcitVal, nominalBridgeResistance, firstElectricalVal, secondElectricalVal, electricalUnits, firstPhysicalVal, secondPhysicalVal, physicalUnits, customScaleName)
 end
 
-function CreateAIForceBridgeTableChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, bridgeConfig::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, nominalBridgeResistance::Float64, electricalVals::Ref{Cdouble}, numElectricalVals::UInt32, electricalUnits::Int32, physicalVals::Ref{Cdouble}, numPhysicalVals::UInt32, physicalUnits::Int32, customScaleName::String)
+function CreateAIForceBridgeTableChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, bridgeConfig::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, nominalBridgeResistance::Real, electricalVals::Ref{Cdouble}, numElectricalVals::UInt32, electricalUnits::Integer, physicalVals::Ref{Cdouble}, numPhysicalVals::UInt32, physicalUnits::Integer, customScaleName::String)
     ccall((:DAQmxCreateAIForceBridgeTableChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cint, Cdouble, Cdouble, Ref{Cdouble}, Cuint, Cint, Ref{Cdouble}, Cuint, Cint, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, bridgeConfig, voltageExcitSource, voltageExcitVal, nominalBridgeResistance, electricalVals, numElectricalVals, electricalUnits, physicalVals, numPhysicalVals, physicalUnits, customScaleName)
 end
 
-function CreateAIForceBridgePolynomialChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, bridgeConfig::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, nominalBridgeResistance::Float64, forwardCoeffs::Ref{Cdouble}, numForwardCoeffs::UInt32, reverseCoeffs::Ref{Cdouble}, numReverseCoeffs::UInt32, electricalUnits::Int32, physicalUnits::Int32, customScaleName::String)
+function CreateAIForceBridgePolynomialChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, bridgeConfig::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, nominalBridgeResistance::Real, forwardCoeffs::Ref{Cdouble}, numForwardCoeffs::UInt32, reverseCoeffs::Ref{Cdouble}, numReverseCoeffs::UInt32, electricalUnits::Integer, physicalUnits::Integer, customScaleName::String)
     ccall((:DAQmxCreateAIForceBridgePolynomialChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cint, Cdouble, Cdouble, Ref{Cdouble}, Cuint, Ref{Cdouble}, Cuint, Cint, Cint, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, bridgeConfig, voltageExcitSource, voltageExcitVal, nominalBridgeResistance, forwardCoeffs, numForwardCoeffs, reverseCoeffs, numReverseCoeffs, electricalUnits, physicalUnits, customScaleName)
 end
 
-function CreateAIPressureBridgeTwoPointLinChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, bridgeConfig::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, nominalBridgeResistance::Float64, firstElectricalVal::Float64, secondElectricalVal::Float64, electricalUnits::Int32, firstPhysicalVal::Float64, secondPhysicalVal::Float64, physicalUnits::Int32, customScaleName::String)
+function CreateAIPressureBridgeTwoPointLinChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, bridgeConfig::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, nominalBridgeResistance::Real, firstElectricalVal::Real, secondElectricalVal::Real, electricalUnits::Integer, firstPhysicalVal::Real, secondPhysicalVal::Real, physicalUnits::Integer, customScaleName::String)
     ccall((:DAQmxCreateAIPressureBridgeTwoPointLinChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cint, Cdouble, Cdouble, Cdouble, Cdouble, Cint, Cdouble, Cdouble, Cint, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, bridgeConfig, voltageExcitSource, voltageExcitVal, nominalBridgeResistance, firstElectricalVal, secondElectricalVal, electricalUnits, firstPhysicalVal, secondPhysicalVal, physicalUnits, customScaleName)
 end
 
-function CreateAIPressureBridgeTableChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, bridgeConfig::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, nominalBridgeResistance::Float64, electricalVals::Ref{Cdouble}, numElectricalVals::UInt32, electricalUnits::Int32, physicalVals::Ref{Cdouble}, numPhysicalVals::UInt32, physicalUnits::Int32, customScaleName::String)
+function CreateAIPressureBridgeTableChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, bridgeConfig::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, nominalBridgeResistance::Real, electricalVals::Ref{Cdouble}, numElectricalVals::UInt32, electricalUnits::Integer, physicalVals::Ref{Cdouble}, numPhysicalVals::UInt32, physicalUnits::Integer, customScaleName::String)
     ccall((:DAQmxCreateAIPressureBridgeTableChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cint, Cdouble, Cdouble, Ref{Cdouble}, Cuint, Cint, Ref{Cdouble}, Cuint, Cint, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, bridgeConfig, voltageExcitSource, voltageExcitVal, nominalBridgeResistance, electricalVals, numElectricalVals, electricalUnits, physicalVals, numPhysicalVals, physicalUnits, customScaleName)
 end
 
-function CreateAIPressureBridgePolynomialChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, bridgeConfig::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, nominalBridgeResistance::Float64, forwardCoeffs::Ref{Cdouble}, numForwardCoeffs::UInt32, reverseCoeffs::Ref{Cdouble}, numReverseCoeffs::UInt32, electricalUnits::Int32, physicalUnits::Int32, customScaleName::String)
+function CreateAIPressureBridgePolynomialChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, bridgeConfig::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, nominalBridgeResistance::Real, forwardCoeffs::Ref{Cdouble}, numForwardCoeffs::UInt32, reverseCoeffs::Ref{Cdouble}, numReverseCoeffs::UInt32, electricalUnits::Integer, physicalUnits::Integer, customScaleName::String)
     ccall((:DAQmxCreateAIPressureBridgePolynomialChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cint, Cdouble, Cdouble, Ref{Cdouble}, Cuint, Ref{Cdouble}, Cuint, Cint, Cint, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, bridgeConfig, voltageExcitSource, voltageExcitVal, nominalBridgeResistance, forwardCoeffs, numForwardCoeffs, reverseCoeffs, numReverseCoeffs, electricalUnits, physicalUnits, customScaleName)
 end
 
-function CreateAITorqueBridgeTwoPointLinChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, bridgeConfig::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, nominalBridgeResistance::Float64, firstElectricalVal::Float64, secondElectricalVal::Float64, electricalUnits::Int32, firstPhysicalVal::Float64, secondPhysicalVal::Float64, physicalUnits::Int32, customScaleName::String)
+function CreateAITorqueBridgeTwoPointLinChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, bridgeConfig::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, nominalBridgeResistance::Real, firstElectricalVal::Real, secondElectricalVal::Real, electricalUnits::Integer, firstPhysicalVal::Real, secondPhysicalVal::Real, physicalUnits::Integer, customScaleName::String)
     ccall((:DAQmxCreateAITorqueBridgeTwoPointLinChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cint, Cdouble, Cdouble, Cdouble, Cdouble, Cint, Cdouble, Cdouble, Cint, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, bridgeConfig, voltageExcitSource, voltageExcitVal, nominalBridgeResistance, firstElectricalVal, secondElectricalVal, electricalUnits, firstPhysicalVal, secondPhysicalVal, physicalUnits, customScaleName)
 end
 
-function CreateAITorqueBridgeTableChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, bridgeConfig::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, nominalBridgeResistance::Float64, electricalVals::Ref{Cdouble}, numElectricalVals::UInt32, electricalUnits::Int32, physicalVals::Ref{Cdouble}, numPhysicalVals::UInt32, physicalUnits::Int32, customScaleName::String)
+function CreateAITorqueBridgeTableChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, bridgeConfig::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, nominalBridgeResistance::Real, electricalVals::Ref{Cdouble}, numElectricalVals::UInt32, electricalUnits::Integer, physicalVals::Ref{Cdouble}, numPhysicalVals::UInt32, physicalUnits::Integer, customScaleName::String)
     ccall((:DAQmxCreateAITorqueBridgeTableChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cint, Cdouble, Cdouble, Ref{Cdouble}, Cuint, Cint, Ref{Cdouble}, Cuint, Cint, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, bridgeConfig, voltageExcitSource, voltageExcitVal, nominalBridgeResistance, electricalVals, numElectricalVals, electricalUnits, physicalVals, numPhysicalVals, physicalUnits, customScaleName)
 end
 
-function CreateAITorqueBridgePolynomialChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, bridgeConfig::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, nominalBridgeResistance::Float64, forwardCoeffs::Ref{Cdouble}, numForwardCoeffs::UInt32, reverseCoeffs::Ref{Cdouble}, numReverseCoeffs::UInt32, electricalUnits::Int32, physicalUnits::Int32, customScaleName::String)
+function CreateAITorqueBridgePolynomialChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, bridgeConfig::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, nominalBridgeResistance::Real, forwardCoeffs::Ref{Cdouble}, numForwardCoeffs::UInt32, reverseCoeffs::Ref{Cdouble}, numReverseCoeffs::UInt32, electricalUnits::Integer, physicalUnits::Integer, customScaleName::String)
     ccall((:DAQmxCreateAITorqueBridgePolynomialChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cint, Cdouble, Cdouble, Ref{Cdouble}, Cuint, Ref{Cdouble}, Cuint, Cint, Cint, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, bridgeConfig, voltageExcitSource, voltageExcitVal, nominalBridgeResistance, forwardCoeffs, numForwardCoeffs, reverseCoeffs, numReverseCoeffs, electricalUnits, physicalUnits, customScaleName)
 end
 
-function CreateAIBridgeChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, bridgeConfig::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, nominalBridgeResistance::Float64, customScaleName::String)
+function CreateAIBridgeChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, bridgeConfig::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, nominalBridgeResistance::Real, customScaleName::String)
     ccall((:DAQmxCreateAIBridgeChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cint, Cdouble, Cdouble, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, bridgeConfig, voltageExcitSource, voltageExcitVal, nominalBridgeResistance, customScaleName)
 end
 
-function CreateAIVoltageChanWithExcit(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Int32, minVal::Float64, maxVal::Float64, units::Int32, bridgeConfig::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, useExcitForScaling::UInt32, customScaleName::String)
+function CreateAIVoltageChanWithExcit(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Integer, minVal::Real, maxVal::Real, units::Integer, bridgeConfig::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, useExcitForScaling::UInt32, customScaleName::String)
     ccall((:DAQmxCreateAIVoltageChanWithExcit, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cdouble, Cdouble, Cint, Cint, Cint, Cdouble, Cuint, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, terminalConfig, minVal, maxVal, units, bridgeConfig, voltageExcitSource, voltageExcitVal, useExcitForScaling, customScaleName)
 end
 
-function CreateAITempBuiltInSensorChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, units::Int32)
+function CreateAITempBuiltInSensorChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, units::Integer)
     ccall((:DAQmxCreateAITempBuiltInSensorChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint), taskHandle, physicalChannel, nameToAssignToChannel, units)
 end
 
-function CreateAIAccelChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Int32, minVal::Float64, maxVal::Float64, units::Int32, sensitivity::Float64, sensitivityUnits::Int32, currentExcitSource::Int32, currentExcitVal::Float64, customScaleName::String)
+function CreateAIAccelChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Integer, minVal::Real, maxVal::Real, units::Integer, sensitivity::Real, sensitivityUnits::Integer, currentExcitSource::Integer, currentExcitVal::Real, customScaleName::String)
     ccall((:DAQmxCreateAIAccelChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cdouble, Cdouble, Cint, Cdouble, Cint, Cint, Cdouble, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, terminalConfig, minVal, maxVal, units, sensitivity, sensitivityUnits, currentExcitSource, currentExcitVal, customScaleName)
 end
 
-function CreateAIVelocityIEPEChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Int32, minVal::Float64, maxVal::Float64, units::Int32, sensitivity::Float64, sensitivityUnits::Int32, currentExcitSource::Int32, currentExcitVal::Float64, customScaleName::String)
+function CreateAIVelocityIEPEChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Integer, minVal::Real, maxVal::Real, units::Integer, sensitivity::Real, sensitivityUnits::Integer, currentExcitSource::Integer, currentExcitVal::Real, customScaleName::String)
     ccall((:DAQmxCreateAIVelocityIEPEChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cdouble, Cdouble, Cint, Cdouble, Cint, Cint, Cdouble, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, terminalConfig, minVal, maxVal, units, sensitivity, sensitivityUnits, currentExcitSource, currentExcitVal, customScaleName)
 end
 
-function CreateAIForceIEPEChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Int32, minVal::Float64, maxVal::Float64, units::Int32, sensitivity::Float64, sensitivityUnits::Int32, currentExcitSource::Int32, currentExcitVal::Float64, customScaleName::String)
+function CreateAIForceIEPEChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Integer, minVal::Real, maxVal::Real, units::Integer, sensitivity::Real, sensitivityUnits::Integer, currentExcitSource::Integer, currentExcitVal::Real, customScaleName::String)
     ccall((:DAQmxCreateAIForceIEPEChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cdouble, Cdouble, Cint, Cdouble, Cint, Cint, Cdouble, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, terminalConfig, minVal, maxVal, units, sensitivity, sensitivityUnits, currentExcitSource, currentExcitVal, customScaleName)
 end
 
-function CreateAIMicrophoneChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Int32, units::Int32, micSensitivity::Float64, maxSndPressLevel::Float64, currentExcitSource::Int32, currentExcitVal::Float64, customScaleName::String)
+function CreateAIMicrophoneChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Integer, units::Integer, micSensitivity::Real, maxSndPressLevel::Real, currentExcitSource::Integer, currentExcitVal::Real, customScaleName::String)
     ccall((:DAQmxCreateAIMicrophoneChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cint, Cdouble, Cdouble, Cint, Cdouble, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, terminalConfig, units, micSensitivity, maxSndPressLevel, currentExcitSource, currentExcitVal, customScaleName)
 end
 
-function CreateAIChargeChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Int32, minVal::Float64, maxVal::Float64, units::Int32, customScaleName::String)
+function CreateAIChargeChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Integer, minVal::Real, maxVal::Real, units::Integer, customScaleName::String)
     ccall((:DAQmxCreateAIChargeChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cdouble, Cdouble, Cint, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, terminalConfig, minVal, maxVal, units, customScaleName)
 end
 
-function CreateAIAccelChargeChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Int32, minVal::Float64, maxVal::Float64, units::Int32, sensitivity::Float64, sensitivityUnits::Int32, customScaleName::String)
+function CreateAIAccelChargeChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Integer, minVal::Real, maxVal::Real, units::Integer, sensitivity::Real, sensitivityUnits::Integer, customScaleName::String)
     ccall((:DAQmxCreateAIAccelChargeChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cdouble, Cdouble, Cint, Cdouble, Cint, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, terminalConfig, minVal, maxVal, units, sensitivity, sensitivityUnits, customScaleName)
 end
 
-function CreateAIAccel4WireDCVoltageChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Int32, minVal::Float64, maxVal::Float64, units::Int32, sensitivity::Float64, sensitivityUnits::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, useExcitForScaling::UInt32, customScaleName::String)
+function CreateAIAccel4WireDCVoltageChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Integer, minVal::Real, maxVal::Real, units::Integer, sensitivity::Real, sensitivityUnits::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, useExcitForScaling::UInt32, customScaleName::String)
     ccall((:DAQmxCreateAIAccel4WireDCVoltageChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cdouble, Cdouble, Cint, Cdouble, Cint, Cint, Cdouble, Cuint, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, terminalConfig, minVal, maxVal, units, sensitivity, sensitivityUnits, voltageExcitSource, voltageExcitVal, useExcitForScaling, customScaleName)
 end
 
-function CreateAIPosLVDTChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, sensitivity::Float64, sensitivityUnits::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, voltageExcitFreq::Float64, ACExcitWireMode::Int32, customScaleName::String)
+function CreateAIPosLVDTChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, sensitivity::Real, sensitivityUnits::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, voltageExcitFreq::Real, ACExcitWireMode::Integer, customScaleName::String)
     ccall((:DAQmxCreateAIPosLVDTChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cdouble, Cint, Cint, Cdouble, Cdouble, Cint, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, sensitivity, sensitivityUnits, voltageExcitSource, voltageExcitVal, voltageExcitFreq, ACExcitWireMode, customScaleName)
 end
 
-function CreateAIPosRVDTChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, sensitivity::Float64, sensitivityUnits::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, voltageExcitFreq::Float64, ACExcitWireMode::Int32, customScaleName::String)
+function CreateAIPosRVDTChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, sensitivity::Real, sensitivityUnits::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, voltageExcitFreq::Real, ACExcitWireMode::Integer, customScaleName::String)
     ccall((:DAQmxCreateAIPosRVDTChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cdouble, Cint, Cint, Cdouble, Cdouble, Cint, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, sensitivity, sensitivityUnits, voltageExcitSource, voltageExcitVal, voltageExcitFreq, ACExcitWireMode, customScaleName)
 end
 
-function CreateAIPosEddyCurrProxProbeChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, sensitivity::Float64, sensitivityUnits::Int32, customScaleName::String)
+function CreateAIPosEddyCurrProxProbeChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, sensitivity::Real, sensitivityUnits::Integer, customScaleName::String)
     ccall((:DAQmxCreateAIPosEddyCurrProxProbeChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cdouble, Cint, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, sensitivity, sensitivityUnits, customScaleName)
 end
 
-function CreateAIDeviceTempChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, units::Int32)
+function CreateAIDeviceTempChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, units::Integer)
     ccall((:DAQmxCreateAIDeviceTempChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint), taskHandle, physicalChannel, nameToAssignToChannel, units)
 end
 
-function CreateTEDSAIVoltageChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Int32, minVal::Float64, maxVal::Float64, units::Int32, customScaleName::String)
+function CreateTEDSAIVoltageChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Integer, minVal::Real, maxVal::Real, units::Integer, customScaleName::String)
     ccall((:DAQmxCreateTEDSAIVoltageChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cdouble, Cdouble, Cint, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, terminalConfig, minVal, maxVal, units, customScaleName)
 end
 
-function CreateTEDSAICurrentChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Int32, minVal::Float64, maxVal::Float64, units::Int32, shuntResistorLoc::Int32, extShuntResistorVal::Float64, customScaleName::String)
+function CreateTEDSAICurrentChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Integer, minVal::Real, maxVal::Real, units::Integer, shuntResistorLoc::Integer, extShuntResistorVal::Real, customScaleName::String)
     ccall((:DAQmxCreateTEDSAICurrentChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cdouble, Cdouble, Cint, Cint, Cdouble, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, terminalConfig, minVal, maxVal, units, shuntResistorLoc, extShuntResistorVal, customScaleName)
 end
 
-function CreateTEDSAIThrmcplChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, cjcSource::Int32, cjcVal::Float64, cjcChannel::String)
+function CreateTEDSAIThrmcplChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, cjcSource::Integer, cjcVal::Real, cjcChannel::String)
     ccall((:DAQmxCreateTEDSAIThrmcplChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cdouble, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, cjcSource, cjcVal, cjcChannel)
 end
 
-function CreateTEDSAIRTDChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, resistanceConfig::Int32, currentExcitSource::Int32, currentExcitVal::Float64)
+function CreateTEDSAIRTDChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, resistanceConfig::Integer, currentExcitSource::Integer, currentExcitVal::Real)
     ccall((:DAQmxCreateTEDSAIRTDChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cint, Cdouble), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, resistanceConfig, currentExcitSource, currentExcitVal)
 end
 
-function CreateTEDSAIThrmstrChanIex(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, resistanceConfig::Int32, currentExcitSource::Int32, currentExcitVal::Float64)
+function CreateTEDSAIThrmstrChanIex(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, resistanceConfig::Integer, currentExcitSource::Integer, currentExcitVal::Real)
     ccall((:DAQmxCreateTEDSAIThrmstrChanIex, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cint, Cdouble), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, resistanceConfig, currentExcitSource, currentExcitVal)
 end
 
-function CreateTEDSAIThrmstrChanVex(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, resistanceConfig::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, r1::Float64)
+function CreateTEDSAIThrmstrChanVex(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, resistanceConfig::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, r1::Real)
     ccall((:DAQmxCreateTEDSAIThrmstrChanVex, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cint, Cdouble, Cdouble), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, resistanceConfig, voltageExcitSource, voltageExcitVal, r1)
 end
 
-function CreateTEDSAIResistanceChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, resistanceConfig::Int32, currentExcitSource::Int32, currentExcitVal::Float64, customScaleName::String)
+function CreateTEDSAIResistanceChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, resistanceConfig::Integer, currentExcitSource::Integer, currentExcitVal::Real, customScaleName::String)
     ccall((:DAQmxCreateTEDSAIResistanceChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cint, Cdouble, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, resistanceConfig, currentExcitSource, currentExcitVal, customScaleName)
 end
 
-function CreateTEDSAIStrainGageChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, initialBridgeVoltage::Float64, leadWireResistance::Float64, customScaleName::String)
+function CreateTEDSAIStrainGageChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, initialBridgeVoltage::Real, leadWireResistance::Real, customScaleName::String)
     ccall((:DAQmxCreateTEDSAIStrainGageChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cdouble, Cdouble, Cdouble, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, voltageExcitSource, voltageExcitVal, initialBridgeVoltage, leadWireResistance, customScaleName)
 end
 
-function CreateTEDSAIForceBridgeChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, customScaleName::String)
+function CreateTEDSAIForceBridgeChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, customScaleName::String)
     ccall((:DAQmxCreateTEDSAIForceBridgeChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cdouble, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, voltageExcitSource, voltageExcitVal, customScaleName)
 end
 
-function CreateTEDSAIPressureBridgeChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, customScaleName::String)
+function CreateTEDSAIPressureBridgeChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, customScaleName::String)
     ccall((:DAQmxCreateTEDSAIPressureBridgeChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cdouble, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, voltageExcitSource, voltageExcitVal, customScaleName)
 end
 
-function CreateTEDSAITorqueBridgeChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, customScaleName::String)
+function CreateTEDSAITorqueBridgeChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, customScaleName::String)
     ccall((:DAQmxCreateTEDSAITorqueBridgeChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cdouble, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, voltageExcitSource, voltageExcitVal, customScaleName)
 end
 
-function CreateTEDSAIBridgeChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, customScaleName::String)
+function CreateTEDSAIBridgeChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, customScaleName::String)
     ccall((:DAQmxCreateTEDSAIBridgeChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cdouble, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, voltageExcitSource, voltageExcitVal, customScaleName)
 end
 
-function CreateTEDSAIVoltageChanWithExcit(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Int32, minVal::Float64, maxVal::Float64, units::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, customScaleName::String)
+function CreateTEDSAIVoltageChanWithExcit(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Integer, minVal::Real, maxVal::Real, units::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, customScaleName::String)
     ccall((:DAQmxCreateTEDSAIVoltageChanWithExcit, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cdouble, Cdouble, Cint, Cint, Cdouble, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, terminalConfig, minVal, maxVal, units, voltageExcitSource, voltageExcitVal, customScaleName)
 end
 
-function CreateTEDSAIAccelChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Int32, minVal::Float64, maxVal::Float64, units::Int32, currentExcitSource::Int32, currentExcitVal::Float64, customScaleName::String)
+function CreateTEDSAIAccelChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Integer, minVal::Real, maxVal::Real, units::Integer, currentExcitSource::Integer, currentExcitVal::Real, customScaleName::String)
     ccall((:DAQmxCreateTEDSAIAccelChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cdouble, Cdouble, Cint, Cint, Cdouble, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, terminalConfig, minVal, maxVal, units, currentExcitSource, currentExcitVal, customScaleName)
 end
 
-function CreateTEDSAIForceIEPEChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Int32, minVal::Float64, maxVal::Float64, units::Int32, currentExcitSource::Int32, currentExcitVal::Float64, customScaleName::String)
+function CreateTEDSAIForceIEPEChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Integer, minVal::Real, maxVal::Real, units::Integer, currentExcitSource::Integer, currentExcitVal::Real, customScaleName::String)
     ccall((:DAQmxCreateTEDSAIForceIEPEChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cdouble, Cdouble, Cint, Cint, Cdouble, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, terminalConfig, minVal, maxVal, units, currentExcitSource, currentExcitVal, customScaleName)
 end
 
-function CreateTEDSAIMicrophoneChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Int32, units::Int32, maxSndPressLevel::Float64, currentExcitSource::Int32, currentExcitVal::Float64, customScaleName::String)
+function CreateTEDSAIMicrophoneChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, terminalConfig::Integer, units::Integer, maxSndPressLevel::Real, currentExcitSource::Integer, currentExcitVal::Real, customScaleName::String)
     ccall((:DAQmxCreateTEDSAIMicrophoneChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cint, Cdouble, Cint, Cdouble, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, terminalConfig, units, maxSndPressLevel, currentExcitSource, currentExcitVal, customScaleName)
 end
 
-function CreateTEDSAIPosLVDTChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, voltageExcitFreq::Float64, ACExcitWireMode::Int32, customScaleName::String)
+function CreateTEDSAIPosLVDTChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, voltageExcitFreq::Real, ACExcitWireMode::Integer, customScaleName::String)
     ccall((:DAQmxCreateTEDSAIPosLVDTChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cdouble, Cdouble, Cint, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, voltageExcitSource, voltageExcitVal, voltageExcitFreq, ACExcitWireMode, customScaleName)
 end
 
-function CreateTEDSAIPosRVDTChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, voltageExcitSource::Int32, voltageExcitVal::Float64, voltageExcitFreq::Float64, ACExcitWireMode::Int32, customScaleName::String)
+function CreateTEDSAIPosRVDTChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, voltageExcitSource::Integer, voltageExcitVal::Real, voltageExcitFreq::Real, ACExcitWireMode::Integer, customScaleName::String)
     ccall((:DAQmxCreateTEDSAIPosRVDTChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cdouble, Cdouble, Cint, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, voltageExcitSource, voltageExcitVal, voltageExcitFreq, ACExcitWireMode, customScaleName)
 end
 
-function CreateAOVoltageChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, customScaleName::String)
+function CreateAOVoltageChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, customScaleName::String)
     ccall((:DAQmxCreateAOVoltageChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, customScaleName)
 end
 
-function CreateAOCurrentChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, customScaleName::String)
+function CreateAOCurrentChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, customScaleName::String)
     ccall((:DAQmxCreateAOCurrentChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Ref{UInt8}), taskHandle, physicalChannel, nameToAssignToChannel, minVal, maxVal, units, customScaleName)
 end
 
-function CreateAOFuncGenChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, type::Int32, freq::Float64, amplitude::Float64, offset::Float64)
+function CreateAOFuncGenChan(taskHandle::TaskHandle, physicalChannel::String, nameToAssignToChannel::String, type::Integer, freq::Real, amplitude::Real, offset::Real)
     ccall((:DAQmxCreateAOFuncGenChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cdouble, Cdouble, Cdouble), taskHandle, physicalChannel, nameToAssignToChannel, type, freq, amplitude, offset)
 end
 
-function CreateDIChan(taskHandle::TaskHandle, lines::String, nameToAssignToLines::String, lineGrouping::Int32)
+function CreateDIChan(taskHandle::TaskHandle, lines::String, nameToAssignToLines::String, lineGrouping::Integer)
     ccall((:DAQmxCreateDIChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint), taskHandle, lines, nameToAssignToLines, lineGrouping)
 end
 
-function CreateDOChan(taskHandle::TaskHandle, lines::String, nameToAssignToLines::String, lineGrouping::Int32)
+function CreateDOChan(taskHandle::TaskHandle, lines::String, nameToAssignToLines::String, lineGrouping::Integer)
     ccall((:DAQmxCreateDOChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint), taskHandle, lines, nameToAssignToLines, lineGrouping)
 end
 
-function CreateCIFreqChan(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, edge::Int32, measMethod::Int32, measTime::Float64, divisor::UInt32, customScaleName::String)
+function CreateCIFreqChan(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, edge::Integer, measMethod::Integer, measTime::Real, divisor::UInt32, customScaleName::String)
     ccall((:DAQmxCreateCIFreqChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cint, Cdouble, Cuint, Ref{UInt8}), taskHandle, counter, nameToAssignToChannel, minVal, maxVal, units, edge, measMethod, measTime, divisor, customScaleName)
 end
 
-function CreateCIPeriodChan(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, edge::Int32, measMethod::Int32, measTime::Float64, divisor::UInt32, customScaleName::String)
+function CreateCIPeriodChan(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, edge::Integer, measMethod::Integer, measTime::Real, divisor::UInt32, customScaleName::String)
     ccall((:DAQmxCreateCIPeriodChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cint, Cdouble, Cuint, Ref{UInt8}), taskHandle, counter, nameToAssignToChannel, minVal, maxVal, units, edge, measMethod, measTime, divisor, customScaleName)
 end
 
-function CreateCICountEdgesChan(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, edge::Int32, initialCount::UInt32, countDirection::Int32)
+function CreateCICountEdgesChan(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, edge::Integer, initialCount::UInt32, countDirection::Integer)
     ccall((:DAQmxCreateCICountEdgesChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cuint, Cint), taskHandle, counter, nameToAssignToChannel, edge, initialCount, countDirection)
 end
 
-function CreateCIDutyCycleChan(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, minFreq::Float64, maxFreq::Float64, edge::Int32, customScaleName::String)
+function CreateCIDutyCycleChan(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, minFreq::Real, maxFreq::Real, edge::Integer, customScaleName::String)
     ccall((:DAQmxCreateCIDutyCycleChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Ref{UInt8}), taskHandle, counter, nameToAssignToChannel, minFreq, maxFreq, edge, customScaleName)
 end
 
-function CreateCIPulseWidthChan(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, startingEdge::Int32, customScaleName::String)
+function CreateCIPulseWidthChan(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, startingEdge::Integer, customScaleName::String)
     ccall((:DAQmxCreateCIPulseWidthChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Ref{UInt8}), taskHandle, counter, nameToAssignToChannel, minVal, maxVal, units, startingEdge, customScaleName)
 end
 
-function CreateCISemiPeriodChan(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, customScaleName::String)
+function CreateCISemiPeriodChan(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, customScaleName::String)
     ccall((:DAQmxCreateCISemiPeriodChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Ref{UInt8}), taskHandle, counter, nameToAssignToChannel, minVal, maxVal, units, customScaleName)
 end
 
-function CreateCITwoEdgeSepChan(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32, firstEdge::Int32, secondEdge::Int32, customScaleName::String)
+function CreateCITwoEdgeSepChan(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer, firstEdge::Integer, secondEdge::Integer, customScaleName::String)
     ccall((:DAQmxCreateCITwoEdgeSepChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cint, Ref{UInt8}), taskHandle, counter, nameToAssignToChannel, minVal, maxVal, units, firstEdge, secondEdge, customScaleName)
 end
 
-function CreateCIPulseChanFreq(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32)
+function CreateCIPulseChanFreq(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer)
     ccall((:DAQmxCreateCIPulseChanFreq, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint), taskHandle, counter, nameToAssignToChannel, minVal, maxVal, units)
 end
 
-function CreateCIPulseChanTime(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, units::Int32)
+function CreateCIPulseChanTime(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, units::Integer)
     ccall((:DAQmxCreateCIPulseChanTime, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint), taskHandle, counter, nameToAssignToChannel, minVal, maxVal, units)
 end
 
-function CreateCIPulseChanTicks(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, sourceTerminal::String, minVal::Float64, maxVal::Float64)
+function CreateCIPulseChanTicks(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, sourceTerminal::String, minVal::Real, maxVal::Real)
     ccall((:DAQmxCreateCIPulseChanTicks, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble), taskHandle, counter, nameToAssignToChannel, sourceTerminal, minVal, maxVal)
 end
 
-function CreateCILinEncoderChan(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, decodingType::Int32, ZidxEnable::UInt32, ZidxVal::Float64, ZidxPhase::Int32, units::Int32, distPerPulse::Float64, initialPos::Float64, customScaleName::String)
+function CreateCILinEncoderChan(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, decodingType::Integer, ZidxEnable::UInt32, ZidxVal::Real, ZidxPhase::Integer, units::Integer, distPerPulse::Real, initialPos::Real, customScaleName::String)
     ccall((:DAQmxCreateCILinEncoderChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cuint, Cdouble, Cint, Cint, Cdouble, Cdouble, Ref{UInt8}), taskHandle, counter, nameToAssignToChannel, decodingType, ZidxEnable, ZidxVal, ZidxPhase, units, distPerPulse, initialPos, customScaleName)
 end
 
-function CreateCIAngEncoderChan(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, decodingType::Int32, ZidxEnable::UInt32, ZidxVal::Float64, ZidxPhase::Int32, units::Int32, pulsesPerRev::UInt32, initialAngle::Float64, customScaleName::String)
+function CreateCIAngEncoderChan(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, decodingType::Integer, ZidxEnable::UInt32, ZidxVal::Real, ZidxPhase::Integer, units::Integer, pulsesPerRev::UInt32, initialAngle::Real, customScaleName::String)
     ccall((:DAQmxCreateCIAngEncoderChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cuint, Cdouble, Cint, Cint, Cuint, Cdouble, Ref{UInt8}), taskHandle, counter, nameToAssignToChannel, decodingType, ZidxEnable, ZidxVal, ZidxPhase, units, pulsesPerRev, initialAngle, customScaleName)
 end
 
-function CreateCILinVelocityChan(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, decodingType::Int32, units::Int32, distPerPulse::Float64, customScaleName::String)
+function CreateCILinVelocityChan(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, decodingType::Integer, units::Integer, distPerPulse::Real, customScaleName::String)
     ccall((:DAQmxCreateCILinVelocityChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cdouble, Ref{UInt8}), taskHandle, counter, nameToAssignToChannel, minVal, maxVal, decodingType, units, distPerPulse, customScaleName)
 end
 
-function CreateCIAngVelocityChan(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, minVal::Float64, maxVal::Float64, decodingType::Int32, units::Int32, pulsesPerRev::UInt32, customScaleName::String)
+function CreateCIAngVelocityChan(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, minVal::Real, maxVal::Real, decodingType::Integer, units::Integer, pulsesPerRev::UInt32, customScaleName::String)
     ccall((:DAQmxCreateCIAngVelocityChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint, Cuint, Ref{UInt8}), taskHandle, counter, nameToAssignToChannel, minVal, maxVal, decodingType, units, pulsesPerRev, customScaleName)
 end
 
-function CreateCIGPSTimestampChan(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, units::Int32, syncMethod::Int32, customScaleName::String)
+function CreateCIGPSTimestampChan(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, units::Integer, syncMethod::Integer, customScaleName::String)
     ccall((:DAQmxCreateCIGPSTimestampChan, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cint, Ref{UInt8}), taskHandle, counter, nameToAssignToChannel, units, syncMethod, customScaleName)
 end
 
-function CreateCOPulseChanFreq(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, units::Int32, idleState::Int32, initialDelay::Float64, freq::Float64, dutyCycle::Float64)
+function CreateCOPulseChanFreq(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, units::Integer, idleState::Integer, initialDelay::Real, freq::Real, dutyCycle::Real)
     ccall((:DAQmxCreateCOPulseChanFreq, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cint, Cdouble, Cdouble, Cdouble), taskHandle, counter, nameToAssignToChannel, units, idleState, initialDelay, freq, dutyCycle)
 end
 
-function CreateCOPulseChanTime(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, units::Int32, idleState::Int32, initialDelay::Float64, lowTime::Float64, highTime::Float64)
+function CreateCOPulseChanTime(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, units::Integer, idleState::Integer, initialDelay::Real, lowTime::Real, highTime::Real)
     ccall((:DAQmxCreateCOPulseChanTime, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cint, Cdouble, Cdouble, Cdouble), taskHandle, counter, nameToAssignToChannel, units, idleState, initialDelay, lowTime, highTime)
 end
 
-function CreateCOPulseChanTicks(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, sourceTerminal::String, idleState::Int32, initialDelay::Int32, lowTicks::Int32, highTicks::Int32)
+function CreateCOPulseChanTicks(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, sourceTerminal::String, idleState::Integer, initialDelay::Integer, lowTicks::Integer, highTicks::Integer)
     ccall((:DAQmxCreateCOPulseChanTicks, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Ref{UInt8}, Cint, Cint, Cint, Cint), taskHandle, counter, nameToAssignToChannel, sourceTerminal, idleState, initialDelay, lowTicks, highTicks)
 end
 
@@ -442,15 +442,15 @@ function SetAIChanCalExpDate(taskHandle::TaskHandle, channelName::String, year::
     ccall((:DAQmxSetAIChanCalExpDate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint, Cuint, Cuint, Cuint, Cuint), taskHandle, channelName, year, month, day, hour, minute)
 end
 
-function GetChanAttribute(taskHandle::TaskHandle, channel::String, attribute::Int32, value::Ref{Cvoid})
+function GetChanAttribute(taskHandle::TaskHandle, channel::String, attribute::Integer, value::Ref{Cvoid})
     ccall((:DAQmxGetChanAttribute, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint, Ref{Cvoid}), taskHandle, channel, attribute, value)
 end
 
-function SetChanAttribute(taskHandle::TaskHandle, channel::String, attribute::Int32)
+function SetChanAttribute(taskHandle::TaskHandle, channel::String, attribute::Integer)
     ccall((:DAQmxSetChanAttribute, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, attribute)
 end
 
-function ResetChanAttribute(taskHandle::TaskHandle, channel::String, attribute::Int32)
+function ResetChanAttribute(taskHandle::TaskHandle, channel::String, attribute::Integer)
     ccall((:DAQmxResetChanAttribute, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, attribute)
 end
 
@@ -458,51 +458,51 @@ function CfgSampClkTiming(taskHandle::TaskHandle, source::String, rate::Union{Fl
     ccall((:DAQmxCfgSampClkTiming, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble, Cint, Cint, Culonglong), taskHandle, source, rate, activeEdge, sampleMode, sampsPerChan)
 end
 
-function CfgHandshakingTiming(taskHandle::TaskHandle, sampleMode::Int32, sampsPerChan::Culonglong)
+function CfgHandshakingTiming(taskHandle::TaskHandle, sampleMode::Integer, sampsPerChan::Culonglong)
     ccall((:DAQmxCfgHandshakingTiming, :libnidaqmx), Cint, (TaskHandle, Cint, Culonglong), taskHandle, sampleMode, sampsPerChan)
 end
 
-function CfgBurstHandshakingTimingImportClock(taskHandle::TaskHandle, sampleMode::Int32, sampsPerChan::Culonglong, sampleClkRate::Float64, sampleClkSrc::String, sampleClkActiveEdge::Int32, pauseWhen::Int32, readyEventActiveLevel::Int32)
+function CfgBurstHandshakingTimingImportClock(taskHandle::TaskHandle, sampleMode::Integer, sampsPerChan::Culonglong, sampleClkRate::Real, sampleClkSrc::String, sampleClkActiveEdge::Integer, pauseWhen::Integer, readyEventActiveLevel::Integer)
     ccall((:DAQmxCfgBurstHandshakingTimingImportClock, :libnidaqmx), Cint, (TaskHandle, Cint, Culonglong, Cdouble, Ref{UInt8}, Cint, Cint, Cint), taskHandle, sampleMode, sampsPerChan, sampleClkRate, sampleClkSrc, sampleClkActiveEdge, pauseWhen, readyEventActiveLevel)
 end
 
-function CfgBurstHandshakingTimingExportClock(taskHandle::TaskHandle, sampleMode::Int32, sampsPerChan::Culonglong, sampleClkRate::Float64, sampleClkOutpTerm::String, sampleClkPulsePolarity::Int32, pauseWhen::Int32, readyEventActiveLevel::Int32)
+function CfgBurstHandshakingTimingExportClock(taskHandle::TaskHandle, sampleMode::Integer, sampsPerChan::Culonglong, sampleClkRate::Real, sampleClkOutpTerm::String, sampleClkPulsePolarity::Integer, pauseWhen::Integer, readyEventActiveLevel::Integer)
     ccall((:DAQmxCfgBurstHandshakingTimingExportClock, :libnidaqmx), Cint, (TaskHandle, Cint, Culonglong, Cdouble, Ref{UInt8}, Cint, Cint, Cint), taskHandle, sampleMode, sampsPerChan, sampleClkRate, sampleClkOutpTerm, sampleClkPulsePolarity, pauseWhen, readyEventActiveLevel)
 end
 
-function CfgChangeDetectionTiming(taskHandle::TaskHandle, risingEdgeChan::String, fallingEdgeChan::String, sampleMode::Int32, sampsPerChan::Culonglong)
+function CfgChangeDetectionTiming(taskHandle::TaskHandle, risingEdgeChan::String, fallingEdgeChan::String, sampleMode::Integer, sampsPerChan::Culonglong)
     ccall((:DAQmxCfgChangeDetectionTiming, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Culonglong), taskHandle, risingEdgeChan, fallingEdgeChan, sampleMode, sampsPerChan)
 end
 
-function CfgImplicitTiming(taskHandle::TaskHandle, sampleMode::Int32, sampsPerChan::Culonglong)
+function CfgImplicitTiming(taskHandle::TaskHandle, sampleMode::Integer, sampsPerChan::Culonglong)
     ccall((:DAQmxCfgImplicitTiming, :libnidaqmx), Cint, (TaskHandle, Cint, Culonglong), taskHandle, sampleMode, sampsPerChan)
 end
 
-function CfgPipelinedSampClkTiming(taskHandle::TaskHandle, source::String, rate::Float64, activeEdge::Int32, sampleMode::Int32, sampsPerChan::Culonglong)
+function CfgPipelinedSampClkTiming(taskHandle::TaskHandle, source::String, rate::Real, activeEdge::Integer, sampleMode::Integer, sampsPerChan::Culonglong)
     ccall((:DAQmxCfgPipelinedSampClkTiming, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cdouble, Cint, Cint, Culonglong), taskHandle, source, rate, activeEdge, sampleMode, sampsPerChan)
 end
 
-function GetTimingAttribute(taskHandle::TaskHandle, attribute::Int32, value::Ref{Cvoid})
+function GetTimingAttribute(taskHandle::TaskHandle, attribute::Integer, value::Ref{Cvoid})
     ccall((:DAQmxGetTimingAttribute, :libnidaqmx), Cint, (TaskHandle, Cint, Ref{Cvoid}), taskHandle, attribute, value)
 end
 
-function SetTimingAttribute(taskHandle::TaskHandle, attribute::Int32)
+function SetTimingAttribute(taskHandle::TaskHandle, attribute::Integer)
     ccall((:DAQmxSetTimingAttribute, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, attribute)
 end
 
-function ResetTimingAttribute(taskHandle::TaskHandle, attribute::Int32)
+function ResetTimingAttribute(taskHandle::TaskHandle, attribute::Integer)
     ccall((:DAQmxResetTimingAttribute, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, attribute)
 end
 
-function GetTimingAttributeEx(taskHandle::TaskHandle, deviceNames::String, attribute::Int32, value::Ref{Cvoid})
+function GetTimingAttributeEx(taskHandle::TaskHandle, deviceNames::String, attribute::Integer, value::Ref{Cvoid})
     ccall((:DAQmxGetTimingAttributeEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cint, Ref{Cvoid}), taskHandle, deviceNames, attribute, value)
 end
 
-function SetTimingAttributeEx(taskHandle::TaskHandle, deviceNames::String, attribute::Int32)
+function SetTimingAttributeEx(taskHandle::TaskHandle, deviceNames::String, attribute::Integer)
     ccall((:DAQmxSetTimingAttributeEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cint), taskHandle, deviceNames, attribute)
 end
 
-function ResetTimingAttributeEx(taskHandle::TaskHandle, deviceNames::String, attribute::Int32)
+function ResetTimingAttributeEx(taskHandle::TaskHandle, deviceNames::String, attribute::Integer)
     ccall((:DAQmxResetTimingAttributeEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cint), taskHandle, deviceNames, attribute)
 end
 
@@ -510,11 +510,11 @@ function DisableStartTrig(taskHandle::TaskHandle)
     ccall((:DAQmxDisableStartTrig, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function CfgDigEdgeStartTrig(taskHandle::TaskHandle, triggerSource::String, triggerEdge::Int32)
+function CfgDigEdgeStartTrig(taskHandle::TaskHandle, triggerSource::String, triggerEdge::Integer)
     ccall((:DAQmxCfgDigEdgeStartTrig, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cint), taskHandle, triggerSource, triggerEdge)
 end
 
-function CfgAnlgEdgeStartTrig(taskHandle::TaskHandle, triggerSource::String, triggerSlope::Int32, triggerLevel::Float64)
+function CfgAnlgEdgeStartTrig(taskHandle::TaskHandle, triggerSource::String, triggerSlope::Integer, triggerLevel::Real)
     ccall((:DAQmxCfgAnlgEdgeStartTrig, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cint, Cdouble), taskHandle, triggerSource, triggerSlope, triggerLevel)
 end
 
@@ -522,15 +522,15 @@ function CfgAnlgMultiEdgeStartTrig(taskHandle::TaskHandle, triggerSources::Strin
     ccall((:DAQmxCfgAnlgMultiEdgeStartTrig, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{Cint}, Ref{Cdouble}, Cuint), taskHandle, triggerSources, triggerSlopeArray, triggerLevelArray, arraySize)
 end
 
-function CfgAnlgWindowStartTrig(taskHandle::TaskHandle, triggerSource::String, triggerWhen::Int32, windowTop::Float64, windowBottom::Float64)
+function CfgAnlgWindowStartTrig(taskHandle::TaskHandle, triggerSource::String, triggerWhen::Integer, windowTop::Real, windowBottom::Real)
     ccall((:DAQmxCfgAnlgWindowStartTrig, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cint, Cdouble, Cdouble), taskHandle, triggerSource, triggerWhen, windowTop, windowBottom)
 end
 
-function CfgTimeStartTrig(taskHandle::TaskHandle, when::CVIAbsoluteTime, timescale::Int32)
+function CfgTimeStartTrig(taskHandle::TaskHandle, when::CVIAbsoluteTime, timescale::Integer)
     ccall((:DAQmxCfgTimeStartTrig, :libnidaqmx), Cint, (TaskHandle, CVIAbsoluteTime, Cint), taskHandle, when, timescale)
 end
 
-function CfgDigPatternStartTrig(taskHandle::TaskHandle, triggerSource::String, triggerPattern::String, triggerWhen::Int32)
+function CfgDigPatternStartTrig(taskHandle::TaskHandle, triggerSource::String, triggerPattern::String, triggerWhen::Integer)
     ccall((:DAQmxCfgDigPatternStartTrig, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint), taskHandle, triggerSource, triggerPattern, triggerWhen)
 end
 
@@ -538,11 +538,11 @@ function DisableRefTrig(taskHandle::TaskHandle)
     ccall((:DAQmxDisableRefTrig, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function CfgDigEdgeRefTrig(taskHandle::TaskHandle, triggerSource::String, triggerEdge::Int32, pretriggerSamples::UInt32)
+function CfgDigEdgeRefTrig(taskHandle::TaskHandle, triggerSource::String, triggerEdge::Integer, pretriggerSamples::UInt32)
     ccall((:DAQmxCfgDigEdgeRefTrig, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cint, Cuint), taskHandle, triggerSource, triggerEdge, pretriggerSamples)
 end
 
-function CfgAnlgEdgeRefTrig(taskHandle::TaskHandle, triggerSource::String, triggerSlope::Int32, triggerLevel::Float64, pretriggerSamples::UInt32)
+function CfgAnlgEdgeRefTrig(taskHandle::TaskHandle, triggerSource::String, triggerSlope::Integer, triggerLevel::Real, pretriggerSamples::UInt32)
     ccall((:DAQmxCfgAnlgEdgeRefTrig, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cint, Cdouble, Cuint), taskHandle, triggerSource, triggerSlope, triggerLevel, pretriggerSamples)
 end
 
@@ -550,139 +550,139 @@ function CfgAnlgMultiEdgeRefTrig(taskHandle::TaskHandle, triggerSources::String,
     ccall((:DAQmxCfgAnlgMultiEdgeRefTrig, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{Cint}, Ref{Cdouble}, Cuint, Cuint), taskHandle, triggerSources, triggerSlopeArray, triggerLevelArray, pretriggerSamples, arraySize)
 end
 
-function CfgAnlgWindowRefTrig(taskHandle::TaskHandle, triggerSource::String, triggerWhen::Int32, windowTop::Float64, windowBottom::Float64, pretriggerSamples::UInt32)
+function CfgAnlgWindowRefTrig(taskHandle::TaskHandle, triggerSource::String, triggerWhen::Integer, windowTop::Real, windowBottom::Real, pretriggerSamples::UInt32)
     ccall((:DAQmxCfgAnlgWindowRefTrig, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cint, Cdouble, Cdouble, Cuint), taskHandle, triggerSource, triggerWhen, windowTop, windowBottom, pretriggerSamples)
 end
 
-function CfgDigPatternRefTrig(taskHandle::TaskHandle, triggerSource::String, triggerPattern::String, triggerWhen::Int32, pretriggerSamples::UInt32)
+function CfgDigPatternRefTrig(taskHandle::TaskHandle, triggerSource::String, triggerPattern::String, triggerWhen::Integer, pretriggerSamples::UInt32)
     ccall((:DAQmxCfgDigPatternRefTrig, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cuint), taskHandle, triggerSource, triggerPattern, triggerWhen, pretriggerSamples)
 end
 
-function GetTrigAttribute(taskHandle::TaskHandle, attribute::Int32, value::Ref{Cvoid})
+function GetTrigAttribute(taskHandle::TaskHandle, attribute::Integer, value::Ref{Cvoid})
     ccall((:DAQmxGetTrigAttribute, :libnidaqmx), Cint, (TaskHandle, Cint, Ref{Cvoid}), taskHandle, attribute, value)
 end
 
-function SetTrigAttribute(taskHandle::TaskHandle, attribute::Int32)
+function SetTrigAttribute(taskHandle::TaskHandle, attribute::Integer)
     ccall((:DAQmxSetTrigAttribute, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, attribute)
 end
 
-function ResetTrigAttribute(taskHandle::TaskHandle, attribute::Int32)
+function ResetTrigAttribute(taskHandle::TaskHandle, attribute::Integer)
     ccall((:DAQmxResetTrigAttribute, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, attribute)
 end
 
-function ReadAnalogF64(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Float64, fillMode::DAQmxConstant, readArray::Vector{Float64}, arraySizeInSamps::Integer, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+function ReadAnalogF64(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Real, fillMode::DAQmxConstant, readArray::AbstractArray{Float64}, arraySizeInSamps::Integer, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxReadAnalogF64, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cdouble}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadAnalogScalarF64(taskHandle::TaskHandle, timeout::Float64, value::Float64, reserved=C_NULL)
+function ReadAnalogScalarF64(taskHandle::TaskHandle, timeout::Real, value::Real, reserved=C_NULL)
     ccall((:DAQmxReadAnalogScalarF64, :libnidaqmx), Cint, (TaskHandle, Cdouble, Ref{Cdouble}, Ref{Cvoid}), taskHandle, timeout, value, reserved)
 end
 
-function ReadBinaryI16(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Float64, fillMode::DAQmxConstant, readArray::Vector{Int16}, arraySizeInSamps::Integer, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+function ReadBinaryI16(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Real, fillMode::DAQmxConstant, readArray::Vector{Int16}, arraySizeInSamps::Integer, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxReadBinaryI16, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cshort}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadBinaryU16(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Float64, fillMode::DAQmxConstant, readArray::Vector{UInt16}, arraySizeInSamps::Integer, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+function ReadBinaryU16(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Real, fillMode::DAQmxConstant, readArray::Vector{UInt16}, arraySizeInSamps::Integer, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxReadBinaryU16, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cushort}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadBinaryI32(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Float64, fillMode::DAQmxConstant, readArray::Vector{Int32}, arraySizeInSamps::Integer, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+function ReadBinaryI32(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Real, fillMode::DAQmxConstant, readArray::Vector{Int32}, arraySizeInSamps::Integer, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxReadBinaryI32, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cint}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadBinaryU32(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Float64, fillMode::DAQmxConstant, readArray::Vector{UInt32}, arraySizeInSamps::Integer, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+function ReadBinaryU32(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Real, fillMode::DAQmxConstant, readArray::Vector{UInt32}, arraySizeInSamps::Integer, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxReadBinaryU32, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cuint}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadDigitalU8(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, fillMode::DAQmxConstant, readArray::Vector{Cuchar}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+function ReadDigitalU8(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Real, fillMode::DAQmxConstant, readArray::Vector{Cuchar}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxReadDigitalU8, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cuchar}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadDigitalU16(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, fillMode::DAQmxConstant, readArray::Vector{Cushort}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+function ReadDigitalU16(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Real, fillMode::DAQmxConstant, readArray::Vector{Cushort}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxReadDigitalU16, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cushort}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadDigitalU32(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, fillMode::DAQmxConstant, readArray::Vector{UInt32}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+function ReadDigitalU32(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Real, fillMode::DAQmxConstant, readArray::Vector{UInt32}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxReadDigitalU32, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cuint}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadDigitalScalarU32(taskHandle::TaskHandle, timeout::Float64, value::Ref{UInt32}, reserved=C_NULL)
+function ReadDigitalScalarU32(taskHandle::TaskHandle, timeout::Real, value::Ref{UInt32}, reserved=C_NULL)
     ccall((:DAQmxReadDigitalScalarU32, :libnidaqmx), Cint, (TaskHandle, Cdouble, Ref{Cuint}, Ref{Cvoid}), taskHandle, timeout, value, reserved)
 end
 
-function ReadDigitalLines(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, fillMode::DAQmxConstant, readArray::Vector{Cuchar}, arraySizeInBytes::UInt32, sampsPerChanRead::Ref{Int32}, numBytesPerSamp::Ref{Int32}, reserved=C_NULL)
+function ReadDigitalLines(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Real, fillMode::DAQmxConstant, readArray::Vector{Cuchar}, arraySizeInBytes::UInt32, sampsPerChanRead::Ref{Int32}, numBytesPerSamp::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxReadDigitalLines, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cuchar}, Cuint, Ref{Cint}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInBytes, sampsPerChanRead, numBytesPerSamp, reserved)
 end
 
-function ReadCounterF64(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, readArray::Vector{Cdouble}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+function ReadCounterF64(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Real, readArray::Vector{Cdouble}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxReadCounterF64, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Ref{Cdouble}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadCounterU32(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, readArray::Vector{UInt32}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+function ReadCounterU32(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Real, readArray::Vector{UInt32}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxReadCounterU32, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Ref{Cuint}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadCounterF64Ex(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, fillMode::DAQmxConstant, readArray::Vector{Cdouble}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+function ReadCounterF64Ex(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Real, fillMode::DAQmxConstant, readArray::Vector{Cdouble}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxReadCounterF64Ex, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cdouble}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadCounterU32Ex(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, fillMode::DAQmxConstant, readArray::Vector{UInt32}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+function ReadCounterU32Ex(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Real, fillMode::DAQmxConstant, readArray::Vector{UInt32}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxReadCounterU32Ex, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cuint}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, fillMode, readArray, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadCounterScalarF64(taskHandle::TaskHandle, timeout::Float64, value::Ref{Cdouble}, reserved=C_NULL)
+function ReadCounterScalarF64(taskHandle::TaskHandle, timeout::Real, value::Ref{Cdouble}, reserved=C_NULL)
     ccall((:DAQmxReadCounterScalarF64, :libnidaqmx), Cint, (TaskHandle, Cdouble, Ref{Cdouble}, Ref{Cvoid}), taskHandle, timeout, value, reserved)
 end
 
-function ReadCounterScalarU32(taskHandle::TaskHandle, timeout::Float64, value::Ref{UInt32}, reserved=C_NULL)
+function ReadCounterScalarU32(taskHandle::TaskHandle, timeout::Real, value::Ref{UInt32}, reserved=C_NULL)
     ccall((:DAQmxReadCounterScalarU32, :libnidaqmx), Cint, (TaskHandle, Cdouble, Ref{Cuint}, Ref{Cvoid}), taskHandle, timeout, value, reserved)
 end
 
-function ReadCtrFreq(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, interleaved::UInt32, readArrayFrequency::Ref{Cdouble}, readArrayDutyCycle::Ref{Cdouble}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+function ReadCtrFreq(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Real, interleaved::UInt32, readArrayFrequency::Ref{Cdouble}, readArrayDutyCycle::Ref{Cdouble}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxReadCtrFreq, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cdouble}, Ref{Cdouble}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, interleaved, readArrayFrequency, readArrayDutyCycle, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadCtrTime(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, interleaved::UInt32, readArrayHighTime::Ref{Cdouble}, readArrayLowTime::Ref{Cdouble}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+function ReadCtrTime(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Real, interleaved::UInt32, readArrayHighTime::Ref{Cdouble}, readArrayLowTime::Ref{Cdouble}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxReadCtrTime, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cdouble}, Ref{Cdouble}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, interleaved, readArrayHighTime, readArrayLowTime, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadCtrTicks(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, interleaved::UInt32, readArrayHighTicks::Ref{UInt32}, readArrayLowTicks::Ref{UInt32}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
+function ReadCtrTicks(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Real, interleaved::UInt32, readArrayHighTicks::Ref{UInt32}, readArrayLowTicks::Ref{UInt32}, arraySizeInSamps::UInt32, sampsPerChanRead::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxReadCtrTicks, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Cuint, Ref{Cuint}, Ref{Cuint}, Cuint, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, interleaved, readArrayHighTicks, readArrayLowTicks, arraySizeInSamps, sampsPerChanRead, reserved)
 end
 
-function ReadCtrFreqScalar(taskHandle::TaskHandle, timeout::Float64, frequency::Ref{Cdouble}, dutyCycle::Ref{Cdouble}, reserved=C_NULL)
+function ReadCtrFreqScalar(taskHandle::TaskHandle, timeout::Real, frequency::Ref{Cdouble}, dutyCycle::Ref{Cdouble}, reserved=C_NULL)
     ccall((:DAQmxReadCtrFreqScalar, :libnidaqmx), Cint, (TaskHandle, Cdouble, Ref{Cdouble}, Ref{Cdouble}, Ref{Cvoid}), taskHandle, timeout, frequency, dutyCycle, reserved)
 end
 
-function ReadCtrTimeScalar(taskHandle::TaskHandle, timeout::Float64, highTime::Ref{Cdouble}, lowTime::Ref{Cdouble}, reserved=C_NULL)
+function ReadCtrTimeScalar(taskHandle::TaskHandle, timeout::Real, highTime::Ref{Cdouble}, lowTime::Ref{Cdouble}, reserved=C_NULL)
     ccall((:DAQmxReadCtrTimeScalar, :libnidaqmx), Cint, (TaskHandle, Cdouble, Ref{Cdouble}, Ref{Cdouble}, Ref{Cvoid}), taskHandle, timeout, highTime, lowTime, reserved)
 end
 
-function ReadCtrTicksScalar(taskHandle::TaskHandle, timeout::Float64, highTicks::Ref{UInt32}, lowTicks::Ref{UInt32}, reserved=C_NULL)
+function ReadCtrTicksScalar(taskHandle::TaskHandle, timeout::Real, highTicks::Ref{UInt32}, lowTicks::Ref{UInt32}, reserved=C_NULL)
     ccall((:DAQmxReadCtrTicksScalar, :libnidaqmx), Cint, (TaskHandle, Cdouble, Ref{Cuint}, Ref{Cuint}, Ref{Cvoid}), taskHandle, timeout, highTicks, lowTicks, reserved)
 end
 
-function ReadRaw(taskHandle::TaskHandle, numSampsPerChan::Int32, timeout::Float64, readArray::Vector{Cvoid}, arraySizeInBytes::UInt32, sampsRead::Ref{Int32}, numBytesPerSamp::Ref{Int32}, reserved=C_NULL)
+function ReadRaw(taskHandle::TaskHandle, numSampsPerChan::Integer, timeout::Real, readArray::Vector{Cvoid}, arraySizeInBytes::UInt32, sampsRead::Ref{Int32}, numBytesPerSamp::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxReadRaw, :libnidaqmx), Cint, (TaskHandle, Cint, Cdouble, Ref{Cvoid}, Cuint, Ref{Cint}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, timeout, readArray, arraySizeInBytes, sampsRead, numBytesPerSamp, reserved)
 end
 
-function GetNthTaskReadChannel(taskHandle::TaskHandle, index::UInt32, buffer::Vector{UInt8}, bufferSize::Int32)
+function GetNthTaskReadChannel(taskHandle::TaskHandle, index::UInt32, buffer::Vector{UInt8}, bufferSize::Integer)
     ccall((:DAQmxGetNthTaskReadChannel, :libnidaqmx), Cint, (TaskHandle, Cuint, Ref{UInt8}, Cint), taskHandle, index, buffer, bufferSize)
 end
 
-function GetReadAttribute(taskHandle::TaskHandle, attribute::Int32, value::Ref{Cvoid})
+function GetReadAttribute(taskHandle::TaskHandle, attribute::Integer, value::Ref{Cvoid})
     ccall((:DAQmxGetReadAttribute, :libnidaqmx), Cint, (TaskHandle, Cint, Ref{Cvoid}), taskHandle, attribute, value)
 end
 
-function SetReadAttribute(taskHandle::TaskHandle, attribute::Int32)
+function SetReadAttribute(taskHandle::TaskHandle, attribute::Integer)
     ccall((:DAQmxSetReadAttribute, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, attribute)
 end
 
-function ResetReadAttribute(taskHandle::TaskHandle, attribute::Int32)
+function ResetReadAttribute(taskHandle::TaskHandle, attribute::Integer)
     ccall((:DAQmxResetReadAttribute, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, attribute)
 end
 
-function ConfigureLogging(taskHandle::TaskHandle, filePath::String, loggingMode::Int32, groupName::String, operation::Int32)
+function ConfigureLogging(taskHandle::TaskHandle, filePath::String, loggingMode::Integer, groupName::String, operation::Integer)
     ccall((:DAQmxConfigureLogging, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cint, Ref{UInt8}, Cint), taskHandle, filePath, loggingMode, groupName, operation)
 end
 
@@ -690,131 +690,131 @@ function StartNewFile(taskHandle::TaskHandle, filePath::String)
     ccall((:DAQmxStartNewFile, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}), taskHandle, filePath)
 end
 
-function WriteAnalogF64(taskHandle::TaskHandle, numSampsPerChan::Integer, autoStart::Bool, timeout::Float64, dataLayout::DAQmxConstant, writeArray::Vector{Float64}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL=Ref{UInt32}())
+function WriteAnalogF64(taskHandle::TaskHandle, numSampsPerChan::Integer, autoStart::Bool, timeout::Real, dataLayout::DAQmxConstant, writeArray::Vector{Float64}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL=Ref{UInt32}())
     ccall((:DAQmxWriteAnalogF64, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cdouble}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
 end
 
-function WriteAnalogScalarF64(taskHandle::TaskHandle, autoStart::Bool, timeout::Float64, value::Float64, reserved=C_NULL)
+function WriteAnalogScalarF64(taskHandle::TaskHandle, autoStart::Bool, timeout::Real, value::Real, reserved=C_NULL)
     ccall((:DAQmxWriteAnalogScalarF64, :libnidaqmx), Cint, (TaskHandle, Cuint, Cdouble, Cdouble, Ref{Cvoid}), taskHandle, autoStart, timeout, value, reserved)
 end
 
-function WriteBinaryI16(taskHandle::TaskHandle, numSampsPerChan::Integer, autoStart::Bool, timeout::Float64, dataLayout::DAQmxConstant, writeArray::Vector{Int16}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
+function WriteBinaryI16(taskHandle::TaskHandle, numSampsPerChan::Integer, autoStart::Bool, timeout::Real, dataLayout::DAQmxConstant, writeArray::Vector{Int16}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxWriteBinaryI16, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cshort}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
 end
 
-function WriteBinaryU16(taskHandle::TaskHandle, numSampsPerChan::Integer, autoStart::Bool, timeout::Float64, dataLayout::DAQmxConstant, writeArray::Vector{UInt16}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
+function WriteBinaryU16(taskHandle::TaskHandle, numSampsPerChan::Integer, autoStart::Bool, timeout::Real, dataLayout::DAQmxConstant, writeArray::Vector{UInt16}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxWriteBinaryU16, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cushort}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
 end
 
-function WriteBinaryI32(taskHandle::TaskHandle, numSampsPerChan::Integer, autoStart::Bool, timeout::Float64, dataLayout::DAQmxConstant, writeArray::Vector{Int32}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
+function WriteBinaryI32(taskHandle::TaskHandle, numSampsPerChan::Integer, autoStart::Bool, timeout::Real, dataLayout::DAQmxConstant, writeArray::Vector{Int32}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxWriteBinaryI32, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cint}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
 end
 
-function WriteBinaryU32(taskHandle::TaskHandle, numSampsPerChan::Integer, autoStart::Bool, timeout::Float64, dataLayout::DAQmxConstant, writeArray::Vector{UInt32}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
+function WriteBinaryU32(taskHandle::TaskHandle, numSampsPerChan::Integer, autoStart::Bool, timeout::Real, dataLayout::DAQmxConstant, writeArray::Vector{UInt32}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxWriteBinaryU32, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cuint}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
 end
 
-function WriteDigitalU8(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, writeArray::Vector{Cuchar}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
+function WriteDigitalU8(taskHandle::TaskHandle, numSampsPerChan::Integer, autoStart::UInt32, timeout::Real, dataLayout::UInt32, writeArray::Vector{Cuchar}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxWriteDigitalU8, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cuchar}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
 end
 
-function WriteDigitalU16(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, writeArray::Vector{Cushort}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
+function WriteDigitalU16(taskHandle::TaskHandle, numSampsPerChan::Integer, autoStart::UInt32, timeout::Real, dataLayout::UInt32, writeArray::Vector{Cushort}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxWriteDigitalU16, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cushort}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
 end
 
-function WriteDigitalU32(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, writeArray::Vector{UInt32}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
+function WriteDigitalU32(taskHandle::TaskHandle, numSampsPerChan::Integer, autoStart::UInt32, timeout::Real, dataLayout::UInt32, writeArray::Vector{UInt32}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxWriteDigitalU32, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cuint}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
 end
 
-function WriteDigitalScalarU32(taskHandle::TaskHandle, autoStart::UInt32, timeout::Float64, value::UInt32, reserved=C_NULL)
+function WriteDigitalScalarU32(taskHandle::TaskHandle, autoStart::UInt32, timeout::Real, value::UInt32, reserved=C_NULL)
     ccall((:DAQmxWriteDigitalScalarU32, :libnidaqmx), Cint, (TaskHandle, Cuint, Cdouble, Cuint, Ref{Cvoid}), taskHandle, autoStart, timeout, value, reserved)
 end
 
-function WriteDigitalLines(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, writeArray::Vector{Cuchar}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
+function WriteDigitalLines(taskHandle::TaskHandle, numSampsPerChan::Integer, autoStart::UInt32, timeout::Real, dataLayout::UInt32, writeArray::Vector{Cuchar}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxWriteDigitalLines, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cuchar}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, writeArray, sampsPerChanWritten, reserved)
 end
 
-function WriteCtrFreq(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, frequency::Ref{Cdouble}, dutyCycle::Ref{Cdouble}, numSampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
+function WriteCtrFreq(taskHandle::TaskHandle, numSampsPerChan::Integer, autoStart::UInt32, timeout::Real, dataLayout::UInt32, frequency::Ref{Cdouble}, dutyCycle::Ref{Cdouble}, numSampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxWriteCtrFreq, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cdouble}, Ref{Cdouble}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, frequency, dutyCycle, numSampsPerChanWritten, reserved)
 end
 
-function WriteCtrFreqScalar(taskHandle::TaskHandle, autoStart::UInt32, timeout::Float64, frequency::Float64, dutyCycle::Float64, reserved=C_NULL)
+function WriteCtrFreqScalar(taskHandle::TaskHandle, autoStart::UInt32, timeout::Real, frequency::Real, dutyCycle::Real, reserved=C_NULL)
     ccall((:DAQmxWriteCtrFreqScalar, :libnidaqmx), Cint, (TaskHandle, Cuint, Cdouble, Cdouble, Cdouble, Ref{Cvoid}), taskHandle, autoStart, timeout, frequency, dutyCycle, reserved)
 end
 
-function WriteCtrTime(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, highTime::Ref{Cdouble}, lowTime::Ref{Cdouble}, numSampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
+function WriteCtrTime(taskHandle::TaskHandle, numSampsPerChan::Integer, autoStart::UInt32, timeout::Real, dataLayout::UInt32, highTime::Ref{Cdouble}, lowTime::Ref{Cdouble}, numSampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxWriteCtrTime, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cdouble}, Ref{Cdouble}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, highTime, lowTime, numSampsPerChanWritten, reserved)
 end
 
-function WriteCtrTimeScalar(taskHandle::TaskHandle, autoStart::UInt32, timeout::Float64, highTime::Float64, lowTime::Float64, reserved=C_NULL)
+function WriteCtrTimeScalar(taskHandle::TaskHandle, autoStart::UInt32, timeout::Real, highTime::Real, lowTime::Real, reserved=C_NULL)
     ccall((:DAQmxWriteCtrTimeScalar, :libnidaqmx), Cint, (TaskHandle, Cuint, Cdouble, Cdouble, Cdouble, Ref{Cvoid}), taskHandle, autoStart, timeout, highTime, lowTime, reserved)
 end
 
-function WriteCtrTicks(taskHandle::TaskHandle, numSampsPerChan::Int32, autoStart::UInt32, timeout::Float64, dataLayout::UInt32, highTicks::Ref{UInt32}, lowTicks::Ref{UInt32}, numSampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
+function WriteCtrTicks(taskHandle::TaskHandle, numSampsPerChan::Integer, autoStart::UInt32, timeout::Real, dataLayout::UInt32, highTicks::Ref{UInt32}, lowTicks::Ref{UInt32}, numSampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxWriteCtrTicks, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Cuint, Ref{Cuint}, Ref{Cuint}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSampsPerChan, autoStart, timeout, dataLayout, highTicks, lowTicks, numSampsPerChanWritten, reserved)
 end
 
-function WriteCtrTicksScalar(taskHandle::TaskHandle, autoStart::UInt32, timeout::Float64, highTicks::UInt32, lowTicks::UInt32, reserved=C_NULL)
+function WriteCtrTicksScalar(taskHandle::TaskHandle, autoStart::UInt32, timeout::Real, highTicks::UInt32, lowTicks::UInt32, reserved=C_NULL)
     ccall((:DAQmxWriteCtrTicksScalar, :libnidaqmx), Cint, (TaskHandle, Cuint, Cdouble, Cuint, Cuint, Ref{Cvoid}), taskHandle, autoStart, timeout, highTicks, lowTicks, reserved)
 end
 
-function WriteRaw(taskHandle::TaskHandle, numSamps::Int32, autoStart::UInt32, timeout::Float64, writeArray::Vector{Cvoid}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
+function WriteRaw(taskHandle::TaskHandle, numSamps::Integer, autoStart::UInt32, timeout::Real, writeArray::Vector{Cvoid}, sampsPerChanWritten::Ref{Int32}, reserved=C_NULL)
     ccall((:DAQmxWriteRaw, :libnidaqmx), Cint, (TaskHandle, Cint, Cuint, Cdouble, Ref{Cvoid}, Ref{Cint}, Ref{Cvoid}), taskHandle, numSamps, autoStart, timeout, writeArray, sampsPerChanWritten, reserved)
 end
 
-function GetWriteAttribute(taskHandle::TaskHandle, attribute::Int32, value::Ref{Cvoid})
+function GetWriteAttribute(taskHandle::TaskHandle, attribute::Integer, value::Ref{Cvoid})
     ccall((:DAQmxGetWriteAttribute, :libnidaqmx), Cint, (TaskHandle, Cint, Ref{Cvoid}), taskHandle, attribute, value)
 end
 
-function SetWriteAttribute(taskHandle::TaskHandle, attribute::Int32)
+function SetWriteAttribute(taskHandle::TaskHandle, attribute::Integer)
     ccall((:DAQmxSetWriteAttribute, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, attribute)
 end
 
-function ResetWriteAttribute(taskHandle::TaskHandle, attribute::Int32)
+function ResetWriteAttribute(taskHandle::TaskHandle, attribute::Integer)
     ccall((:DAQmxResetWriteAttribute, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, attribute)
 end
 
-function ExportSignal(taskHandle::TaskHandle, signalID::Int32, outputTerminal::String)
+function ExportSignal(taskHandle::TaskHandle, signalID::Integer, outputTerminal::String)
     ccall((:DAQmxExportSignal, :libnidaqmx), Cint, (TaskHandle, Cint, Ref{UInt8}), taskHandle, signalID, outputTerminal)
 end
 
-function GetExportedSignalAttribute(taskHandle::TaskHandle, attribute::Int32, value::Ref{Cvoid})
+function GetExportedSignalAttribute(taskHandle::TaskHandle, attribute::Integer, value::Ref{Cvoid})
     ccall((:DAQmxGetExportedSignalAttribute, :libnidaqmx), Cint, (TaskHandle, Cint, Ref{Cvoid}), taskHandle, attribute, value)
 end
 
-function SetExportedSignalAttribute(taskHandle::TaskHandle, attribute::Int32)
+function SetExportedSignalAttribute(taskHandle::TaskHandle, attribute::Integer)
     ccall((:DAQmxSetExportedSignalAttribute, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, attribute)
 end
 
-function ResetExportedSignalAttribute(taskHandle::TaskHandle, attribute::Int32)
+function ResetExportedSignalAttribute(taskHandle::TaskHandle, attribute::Integer)
     ccall((:DAQmxResetExportedSignalAttribute, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, attribute)
 end
 
-function CreateLinScale(name::String, slope::Float64, yIntercept::Float64, preScaledUnits::Int32, scaledUnits::String)
+function CreateLinScale(name::String, slope::Real, yIntercept::Real, preScaledUnits::Integer, scaledUnits::String)
     ccall((:DAQmxCreateLinScale, :libnidaqmx), Cint, (Ref{UInt8}, Cdouble, Cdouble, Cint, Ref{UInt8}), name, slope, yIntercept, preScaledUnits, scaledUnits)
 end
 
-function CreateMapScale(name::String, prescaledMin::Float64, prescaledMax::Float64, scaledMin::Float64, scaledMax::Float64, preScaledUnits::Int32, scaledUnits::String)
+function CreateMapScale(name::String, prescaledMin::Real, prescaledMax::Real, scaledMin::Real, scaledMax::Real, preScaledUnits::Integer, scaledUnits::String)
     ccall((:DAQmxCreateMapScale, :libnidaqmx), Cint, (Ref{UInt8}, Cdouble, Cdouble, Cdouble, Cdouble, Cint, Ref{UInt8}), name, prescaledMin, prescaledMax, scaledMin, scaledMax, preScaledUnits, scaledUnits)
 end
 
-function CreatePolynomialScale(name::String, forwardCoeffs::Ref{Cdouble}, numForwardCoeffsIn::UInt32, reverseCoeffs::Ref{Cdouble}, numReverseCoeffsIn::UInt32, preScaledUnits::Int32, scaledUnits::String)
+function CreatePolynomialScale(name::String, forwardCoeffs::Ref{Cdouble}, numForwardCoeffsIn::UInt32, reverseCoeffs::Ref{Cdouble}, numReverseCoeffsIn::UInt32, preScaledUnits::Integer, scaledUnits::String)
     ccall((:DAQmxCreatePolynomialScale, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Cuint, Ref{Cdouble}, Cuint, Cint, Ref{UInt8}), name, forwardCoeffs, numForwardCoeffsIn, reverseCoeffs, numReverseCoeffsIn, preScaledUnits, scaledUnits)
 end
 
-function CreateTableScale(name::String, prescaledVals::Ref{Cdouble}, numPrescaledValsIn::UInt32, scaledVals::Ref{Cdouble}, numScaledValsIn::UInt32, preScaledUnits::Int32, scaledUnits::String)
+function CreateTableScale(name::String, prescaledVals::Ref{Cdouble}, numPrescaledValsIn::UInt32, scaledVals::Ref{Cdouble}, numScaledValsIn::UInt32, preScaledUnits::Integer, scaledUnits::String)
     ccall((:DAQmxCreateTableScale, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Cuint, Ref{Cdouble}, Cuint, Cint, Ref{UInt8}), name, prescaledVals, numPrescaledValsIn, scaledVals, numScaledValsIn, preScaledUnits, scaledUnits)
 end
 
-function CalculateReversePolyCoeff(forwardCoeffs::Ref{Cdouble}, numForwardCoeffsIn::UInt32, minValX::Float64, maxValX::Float64, numPointsToCompute::Int32, reversePolyOrder::Int32, reverseCoeffs::Ref{Cdouble})
+function CalculateReversePolyCoeff(forwardCoeffs::Ref{Cdouble}, numForwardCoeffsIn::UInt32, minValX::Real, maxValX::Real, numPointsToCompute::Integer, reversePolyOrder::Integer, reverseCoeffs::Ref{Cdouble})
     ccall((:DAQmxCalculateReversePolyCoeff, :libnidaqmx), Cint, (Ref{Cdouble}, Cuint, Cdouble, Cdouble, Cint, Cint, Ref{Cdouble}), forwardCoeffs, numForwardCoeffsIn, minValX, maxValX, numPointsToCompute, reversePolyOrder, reverseCoeffs)
 end
 
-function GetScaleAttribute(scaleName::String, attribute::Int32, value::Ref{Cvoid})
+function GetScaleAttribute(scaleName::String, attribute::Integer, value::Ref{Cvoid})
     ccall((:DAQmxGetScaleAttribute, :libnidaqmx), Cint, (Ref{UInt8}, Cint, Ref{Cvoid}), scaleName, attribute, value)
 end
 
-function SetScaleAttribute(scaleName::String, attribute::Int32)
+function SetScaleAttribute(scaleName::String, attribute::Integer)
     ccall((:DAQmxSetScaleAttribute, :libnidaqmx), Cint, (Ref{UInt8}, Cint), scaleName, attribute)
 end
 
@@ -826,18 +826,19 @@ function CfgOutputBuffer(taskHandle::TaskHandle, numSampsPerChan::UInt32)
     ccall((:DAQmxCfgOutputBuffer, :libnidaqmx), Cint, (TaskHandle, Cuint), taskHandle, numSampsPerChan)
 end
 
-function GetBufferAttribute(taskHandle::TaskHandle, attribute::Int32, value::Ref{Cvoid})
+function GetBufferAttribute(taskHandle::TaskHandle, attribute::Integer, value::Ref{Cvoid})
     ccall((:DAQmxGetBufferAttribute, :libnidaqmx), Cint, (TaskHandle, Cint, Ref{Cvoid}), taskHandle, attribute, value)
 end
 
-function SetBufferAttribute(taskHandle::TaskHandle, attribute::Int32)
+function SetBufferAttribute(taskHandle::TaskHandle, attribute::Integer)
     ccall((:DAQmxSetBufferAttribute, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, attribute)
 end
 
-function ResetBufferAttribute(taskHandle::TaskHandle, attribute::Int32)
+function ResetBufferAttribute(taskHandle::TaskHandle, attribute::Integer)
     ccall((:DAQmxResetBufferAttribute, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, attribute)
 end
-
+# Switch functions are depracated
+#=
 function SwitchCreateScanList(scanList::String, taskHandle::Ref{TaskHandle})
     ccall((:DAQmxSwitchCreateScanList, :libnidaqmx), Cint, (Ref{UInt8}, Ref{TaskHandle}), scanList, taskHandle)
 end
@@ -898,47 +899,47 @@ function SwitchWaitForSettling(deviceName::String)
     ccall((:DAQmxSwitchWaitForSettling, :libnidaqmx), Cint, (Ref{UInt8},), deviceName)
 end
 
-function GetSwitchChanAttribute(switchChannelName::String, attribute::Int32, value::Ref{Cvoid})
+function GetSwitchChanAttribute(switchChannelName::String, attribute::Integer, value::Ref{Cvoid})
     ccall((:DAQmxGetSwitchChanAttribute, :libnidaqmx), Cint, (Ref{UInt8}, Cint, Ref{Cvoid}), switchChannelName, attribute, value)
 end
 
-function SetSwitchChanAttribute(switchChannelName::String, attribute::Int32)
+function SetSwitchChanAttribute(switchChannelName::String, attribute::Integer)
     ccall((:DAQmxSetSwitchChanAttribute, :libnidaqmx), Cint, (Ref{UInt8}, Cint), switchChannelName, attribute)
 end
 
-function GetSwitchDeviceAttribute(deviceName::String, attribute::Int32, value::Ref{Cvoid})
+function GetSwitchDeviceAttribute(deviceName::String, attribute::Integer, value::Ref{Cvoid})
     ccall((:DAQmxGetSwitchDeviceAttribute, :libnidaqmx), Cint, (Ref{UInt8}, Cint, Ref{Cvoid}), deviceName, attribute, value)
 end
 
-function SetSwitchDeviceAttribute(deviceName::String, attribute::Int32)
+function SetSwitchDeviceAttribute(deviceName::String, attribute::Integer)
     ccall((:DAQmxSetSwitchDeviceAttribute, :libnidaqmx), Cint, (Ref{UInt8}, Cint), deviceName, attribute)
 end
 
-function GetSwitchScanAttribute(taskHandle::TaskHandle, attribute::Int32, value::Ref{Cvoid})
+function GetSwitchScanAttribute(taskHandle::TaskHandle, attribute::Integer, value::Ref{Cvoid})
     ccall((:DAQmxGetSwitchScanAttribute, :libnidaqmx), Cint, (TaskHandle, Cint, Ref{Cvoid}), taskHandle, attribute, value)
 end
 
-function SetSwitchScanAttribute(taskHandle::TaskHandle, attribute::Int32)
+function SetSwitchScanAttribute(taskHandle::TaskHandle, attribute::Integer)
     ccall((:DAQmxSetSwitchScanAttribute, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, attribute)
 end
 
-function ResetSwitchScanAttribute(taskHandle::TaskHandle, attribute::Int32)
+function ResetSwitchScanAttribute(taskHandle::TaskHandle, attribute::Integer)
     ccall((:DAQmxResetSwitchScanAttribute, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, attribute)
 end
-
+=#
 function DisableAdvTrig(taskHandle::TaskHandle)
     ccall((:DAQmxDisableAdvTrig, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function CfgDigEdgeAdvTrig(taskHandle::TaskHandle, triggerSource::String, triggerEdge::Int32)
+function CfgDigEdgeAdvTrig(taskHandle::TaskHandle, triggerSource::String, triggerEdge::Integer)
     ccall((:DAQmxCfgDigEdgeAdvTrig, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cint), taskHandle, triggerSource, triggerEdge)
 end
 
-function SendSoftwareTrigger(taskHandle::TaskHandle, triggerID::Int32)
+function SendSoftwareTrigger(taskHandle::TaskHandle, triggerID::Integer)
     ccall((:DAQmxSendSoftwareTrigger, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, triggerID)
 end
 
-function ConnectTerms(sourceTerminal::String, destinationTerminal::String, signalModifiers::Int32)
+function ConnectTerms(sourceTerminal::String, destinationTerminal::String, signalModifiers::Integer)
     ccall((:DAQmxConnectTerms, :libnidaqmx), Cint, (Ref{UInt8}, Ref{UInt8}, Cint), sourceTerminal, destinationTerminal, signalModifiers)
 end
 
@@ -958,19 +959,19 @@ function SelfTestDevice(deviceName::String)
     ccall((:DAQmxSelfTestDevice, :libnidaqmx), Cint, (Ref{UInt8},), deviceName)
 end
 
-function GetDeviceAttribute(deviceName::String, attribute::Int32, value::Ref{Cvoid})
+function GetDeviceAttribute(deviceName::String, attribute::Integer, value::Ref{Cvoid})
     ccall((:DAQmxGetDeviceAttribute, :libnidaqmx), Cint, (Ref{UInt8}, Cint, Ref{Cvoid}), deviceName, attribute, value)
 end
 
-function CreateWatchdogTimerTask(deviceName::String, taskName::String, taskHandle::Ref{TaskHandle}, timeout::Float64, lines::String, expState::Int32)
+function CreateWatchdogTimerTask(deviceName::String, taskName::String, taskHandle::Ref{TaskHandle}, timeout::Real, lines::String, expState::Integer)
     ccall((:DAQmxCreateWatchdogTimerTask, :libnidaqmx), Cint, (Ref{UInt8}, Ref{UInt8}, Ref{TaskHandle}, Cdouble, Ref{UInt8}, Cint), deviceName, taskName, taskHandle, timeout, lines, expState)
 end
 
-function CreateWatchdogTimerTaskEx(deviceName::String, taskName::String, taskHandle::Ref{TaskHandle}, timeout::Float64)
+function CreateWatchdogTimerTaskEx(deviceName::String, taskName::String, taskHandle::Ref{TaskHandle}, timeout::Real)
     ccall((:DAQmxCreateWatchdogTimerTaskEx, :libnidaqmx), Cint, (Ref{UInt8}, Ref{UInt8}, Ref{TaskHandle}, Cdouble), deviceName, taskName, taskHandle, timeout)
 end
 
-function ControlWatchdogTask(taskHandle::TaskHandle, action::Int32)
+function ControlWatchdogTask(taskHandle::TaskHandle, action::Integer)
     ccall((:DAQmxControlWatchdogTask, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, action)
 end
 
@@ -986,15 +987,15 @@ function CfgWatchdogDOExpirStates(taskHandle::TaskHandle, channelNames::String, 
     ccall((:DAQmxCfgWatchdogDOExpirStates, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{Cint}, Cuint), taskHandle, channelNames, expirStateArray, arraySize)
 end
 
-function GetWatchdogAttribute(taskHandle::TaskHandle, lines::String, attribute::Int32, value::Ref{Cvoid})
+function GetWatchdogAttribute(taskHandle::TaskHandle, lines::String, attribute::Integer, value::Ref{Cvoid})
     ccall((:DAQmxGetWatchdogAttribute, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cint, Ref{Cvoid}), taskHandle, lines, attribute, value)
 end
 
-function SetWatchdogAttribute(taskHandle::TaskHandle, lines::String, attribute::Int32)
+function SetWatchdogAttribute(taskHandle::TaskHandle, lines::String, attribute::Integer)
     ccall((:DAQmxSetWatchdogAttribute, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cint), taskHandle, lines, attribute)
 end
 
-function ResetWatchdogAttribute(taskHandle::TaskHandle, lines::String, attribute::Int32)
+function ResetWatchdogAttribute(taskHandle::TaskHandle, lines::String, attribute::Integer)
     ccall((:DAQmxResetWatchdogAttribute, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cint), taskHandle, lines, attribute)
 end
 
@@ -1014,19 +1015,19 @@ function PerformThrmcplLeadOffsetNullingCal(taskHandle::TaskHandle, channel::Str
     ccall((:DAQmxPerformThrmcplLeadOffsetNullingCal, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, channel, skipUnsupportedChannels)
 end
 
-function PerformStrainShuntCal(taskHandle::TaskHandle, channel::String, shuntResistorValue::Float64, shuntResistorLocation::Int32, skipUnsupportedChannels::UInt32)
+function PerformStrainShuntCal(taskHandle::TaskHandle, channel::String, shuntResistorValue::Real, shuntResistorLocation::Integer, skipUnsupportedChannels::UInt32)
     ccall((:DAQmxPerformStrainShuntCal, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble, Cint, Cuint), taskHandle, channel, shuntResistorValue, shuntResistorLocation, skipUnsupportedChannels)
 end
 
-function PerformStrainShuntCalEx(taskHandle::TaskHandle, channel::String, shuntResistorValue::Float64, shuntResistorLocation::Int32, shuntResistorSelect::Int32, shuntResistorSource::Int32, skipUnsupportedChannels::UInt32)
+function PerformStrainShuntCalEx(taskHandle::TaskHandle, channel::String, shuntResistorValue::Real, shuntResistorLocation::Integer, shuntResistorSelect::Integer, shuntResistorSource::Integer, skipUnsupportedChannels::UInt32)
     ccall((:DAQmxPerformStrainShuntCalEx, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble, Cint, Cint, Cint, Cuint), taskHandle, channel, shuntResistorValue, shuntResistorLocation, shuntResistorSelect, shuntResistorSource, skipUnsupportedChannels)
 end
 
-function PerformBridgeShuntCal(taskHandle::TaskHandle, channel::String, shuntResistorValue::Float64, shuntResistorLocation::Int32, bridgeResistance::Float64, skipUnsupportedChannels::UInt32)
+function PerformBridgeShuntCal(taskHandle::TaskHandle, channel::String, shuntResistorValue::Real, shuntResistorLocation::Integer, bridgeResistance::Real, skipUnsupportedChannels::UInt32)
     ccall((:DAQmxPerformBridgeShuntCal, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble, Cint, Cdouble, Cuint), taskHandle, channel, shuntResistorValue, shuntResistorLocation, bridgeResistance, skipUnsupportedChannels)
 end
 
-function PerformBridgeShuntCalEx(taskHandle::TaskHandle, channel::String, shuntResistorValue::Float64, shuntResistorLocation::Int32, shuntResistorSelect::Int32, shuntResistorSource::Int32, bridgeResistance::Float64, skipUnsupportedChannels::UInt32)
+function PerformBridgeShuntCalEx(taskHandle::TaskHandle, channel::String, shuntResistorValue::Real, shuntResistorLocation::Integer, shuntResistorSelect::Integer, shuntResistorSource::Integer, bridgeResistance::Real, skipUnsupportedChannels::UInt32)
     ccall((:DAQmxPerformBridgeShuntCalEx, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble, Cint, Cint, Cint, Cdouble, Cuint), taskHandle, channel, shuntResistorValue, shuntResistorLocation, shuntResistorSelect, shuntResistorSource, bridgeResistance, skipUnsupportedChannels)
 end
 
@@ -1042,27 +1043,27 @@ function RestoreLastExtCalConst(deviceName::String)
     ccall((:DAQmxRestoreLastExtCalConst, :libnidaqmx), Cint, (Ref{UInt8},), deviceName)
 end
 
-function ESeriesCalAdjust(calHandle::CalHandle, referenceVoltage::Float64)
+function ESeriesCalAdjust(calHandle::CalHandle, referenceVoltage::Real)
     ccall((:DAQmxESeriesCalAdjust, :libnidaqmx), Cint, (CalHandle, Cdouble), calHandle, referenceVoltage)
 end
 
-function MSeriesCalAdjust(calHandle::CalHandle, referenceVoltage::Float64)
+function MSeriesCalAdjust(calHandle::CalHandle, referenceVoltage::Real)
     ccall((:DAQmxMSeriesCalAdjust, :libnidaqmx), Cint, (CalHandle, Cdouble), calHandle, referenceVoltage)
 end
 
-function SSeriesCalAdjust(calHandle::CalHandle, referenceVoltage::Float64)
+function SSeriesCalAdjust(calHandle::CalHandle, referenceVoltage::Real)
     ccall((:DAQmxSSeriesCalAdjust, :libnidaqmx), Cint, (CalHandle, Cdouble), calHandle, referenceVoltage)
 end
 
-function SCBaseboardCalAdjust(calHandle::CalHandle, referenceVoltage::Float64)
+function SCBaseboardCalAdjust(calHandle::CalHandle, referenceVoltage::Real)
     ccall((:DAQmxSCBaseboardCalAdjust, :libnidaqmx), Cint, (CalHandle, Cdouble), calHandle, referenceVoltage)
 end
 
-function AOSeriesCalAdjust(calHandle::CalHandle, referenceVoltage::Float64)
+function AOSeriesCalAdjust(calHandle::CalHandle, referenceVoltage::Real)
     ccall((:DAQmxAOSeriesCalAdjust, :libnidaqmx), Cint, (CalHandle, Cdouble), calHandle, referenceVoltage)
 end
 
-function XSeriesCalAdjust(calHandle::CalHandle, referenceVoltage::Float64)
+function XSeriesCalAdjust(calHandle::CalHandle, referenceVoltage::Real)
     ccall((:DAQmxXSeriesCalAdjust, :libnidaqmx), Cint, (CalHandle, Cdouble), calHandle, referenceVoltage)
 end
 
@@ -1070,11 +1071,11 @@ function DeviceSupportsCal(deviceName::String, calSupported::Ref{UInt32})
     ccall((:DAQmxDeviceSupportsCal, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), deviceName, calSupported)
 end
 
-function GetCalInfoAttribute(deviceName::String, attribute::Int32, value::Ref{Cvoid})
+function GetCalInfoAttribute(deviceName::String, attribute::Integer, value::Ref{Cvoid})
     ccall((:DAQmxGetCalInfoAttribute, :libnidaqmx), Cint, (Ref{UInt8}, Cint, Ref{Cvoid}), deviceName, attribute, value)
 end
 
-function SetCalInfoAttribute(deviceName::String, attribute::Int32)
+function SetCalInfoAttribute(deviceName::String, attribute::Integer)
     ccall((:DAQmxSetCalInfoAttribute, :libnidaqmx), Cint, (Ref{UInt8}, Cint), deviceName, attribute)
 end
 
@@ -1082,7 +1083,7 @@ function InitExtCal(deviceName::String, password::String, calHandle::Ref{CalHand
     ccall((:DAQmxInitExtCal, :libnidaqmx), Cint, (Ref{UInt8}, Ref{UInt8}, Ref{CalHandle}), deviceName, password, calHandle)
 end
 
-function CloseExtCal(calHandle::CalHandle, action::Int32)
+function CloseExtCal(calHandle::CalHandle, action::Integer)
     ccall((:DAQmxCloseExtCal, :libnidaqmx), Cint, (CalHandle, Cint), calHandle, action)
 end
 
@@ -1090,35 +1091,35 @@ function ChangeExtCalPassword(deviceName::String, password::String, newPassword:
     ccall((:DAQmxChangeExtCalPassword, :libnidaqmx), Cint, (Ref{UInt8}, Ref{UInt8}, Ref{UInt8}), deviceName, password, newPassword)
 end
 
-function DSASetCalTemp(calHandle::CalHandle, temperature::Float64)
+function DSASetCalTemp(calHandle::CalHandle, temperature::Real)
     ccall((:DAQmxDSASetCalTemp, :libnidaqmx), Cint, (CalHandle, Cdouble), calHandle, temperature)
 end
 
-function AdjustDSAAICal(calHandle::CalHandle, referenceVoltage::Float64)
+function AdjustDSAAICal(calHandle::CalHandle, referenceVoltage::Real)
     ccall((:DAQmxAdjustDSAAICal, :libnidaqmx), Cint, (CalHandle, Cdouble), calHandle, referenceVoltage)
 end
 
-function AdjustDSAAICalEx(calHandle::CalHandle, referenceVoltage::Float64, inputsShorted::UInt32)
+function AdjustDSAAICalEx(calHandle::CalHandle, referenceVoltage::Real, inputsShorted::UInt32)
     ccall((:DAQmxAdjustDSAAICalEx, :libnidaqmx), Cint, (CalHandle, Cdouble, Cuint), calHandle, referenceVoltage, inputsShorted)
 end
 
-function AdjustDSAAICalWithGainAndCoupling(calHandle::CalHandle, coupling::Int32, gain::Float64, referenceVoltage::Float64)
+function AdjustDSAAICalWithGainAndCoupling(calHandle::CalHandle, coupling::Integer, gain::Real, referenceVoltage::Real)
     ccall((:DAQmxAdjustDSAAICalWithGainAndCoupling, :libnidaqmx), Cint, (CalHandle, Cint, Cdouble, Cdouble), calHandle, coupling, gain, referenceVoltage)
 end
 
-function AdjustDSAAOCal(calHandle::CalHandle, channel::UInt32, requestedLowVoltage::Float64, actualLowVoltage::Float64, requestedHighVoltage::Float64, actualHighVoltage::Float64, gainSetting::Float64)
+function AdjustDSAAOCal(calHandle::CalHandle, channel::UInt32, requestedLowVoltage::Real, actualLowVoltage::Real, requestedHighVoltage::Real, actualHighVoltage::Real, gainSetting::Real)
     ccall((:DAQmxAdjustDSAAOCal, :libnidaqmx), Cint, (CalHandle, Cuint, Cdouble, Cdouble, Cdouble, Cdouble, Cdouble), calHandle, channel, requestedLowVoltage, actualLowVoltage, requestedHighVoltage, actualHighVoltage, gainSetting)
 end
 
-function Adjust4610Cal(calHandle::CalHandle, channelName::String, gain::Float64, offset::Float64)
+function Adjust4610Cal(calHandle::CalHandle, channelName::String, gain::Real, offset::Real)
     ccall((:DAQmxAdjust4610Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble, Cdouble), calHandle, channelName, gain, offset)
 end
 
-function AdjustDSATimebaseCal(calHandle::CalHandle, referenceFrequency::Float64)
+function AdjustDSATimebaseCal(calHandle::CalHandle, referenceFrequency::Real)
     ccall((:DAQmxAdjustDSATimebaseCal, :libnidaqmx), Cint, (CalHandle, Cdouble), calHandle, referenceFrequency)
 end
 
-function AdjustDSAAOTimebaseCal(calHandle::CalHandle, measuredFrequency::Float64, calComplete::Ref{UInt32})
+function AdjustDSAAOTimebaseCal(calHandle::CalHandle, measuredFrequency::Real, calComplete::Ref{UInt32})
     ccall((:DAQmxAdjustDSAAOTimebaseCal, :libnidaqmx), Cint, (CalHandle, Cdouble, Ref{Cuint}), calHandle, measuredFrequency, calComplete)
 end
 
@@ -1126,55 +1127,55 @@ function SetupDSAAOTimebaseCal(calHandle::CalHandle, expectedFrequency::Ref{Cdou
     ccall((:DAQmxSetupDSAAOTimebaseCal, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}), calHandle, expectedFrequency)
 end
 
-function Get4463AdjustPoints(calHandle::CalHandle, terminalConfig::Int32, gain::Float64, adjustmentPoints::Ref{Cdouble}, bufferSize::UInt32)
+function Get4463AdjustPoints(calHandle::CalHandle, terminalConfig::Integer, gain::Real, adjustmentPoints::Ref{Cdouble}, bufferSize::UInt32)
     ccall((:DAQmxGet4463AdjustPoints, :libnidaqmx), Cint, (CalHandle, Cint, Cdouble, Ref{Cdouble}, Cuint), calHandle, terminalConfig, gain, adjustmentPoints, bufferSize)
 end
 
-function Adjust4463Cal(calHandle::CalHandle, channelNames::String, referenceVoltage::Float64)
+function Adjust4463Cal(calHandle::CalHandle, channelNames::String, referenceVoltage::Real)
     ccall((:DAQmxAdjust4463Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, referenceVoltage)
 end
 
-function Setup4463Cal(calHandle::CalHandle, channelNames::String, terminalConfig::Int32, gain::Float64, outputVoltage::Float64)
+function Setup4463Cal(calHandle::CalHandle, channelNames::String, terminalConfig::Integer, gain::Real, outputVoltage::Real)
     ccall((:DAQmxSetup4463Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cint, Cdouble, Cdouble), calHandle, channelNames, terminalConfig, gain, outputVoltage)
 end
 
-function Setup4480Cal(calHandle::CalHandle, channelNames::String, calMode::Int32)
+function Setup4480Cal(calHandle::CalHandle, channelNames::String, calMode::Integer)
     ccall((:DAQmxSetup4480Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cint), calHandle, channelNames, calMode)
 end
 
-function AdjustTIOTimebaseCal(calHandle::CalHandle, referenceFrequency::Float64)
+function AdjustTIOTimebaseCal(calHandle::CalHandle, referenceFrequency::Real)
     ccall((:DAQmxAdjustTIOTimebaseCal, :libnidaqmx), Cint, (CalHandle, Cdouble), calHandle, referenceFrequency)
 end
 
-function Adjust4204Cal(calHandle::CalHandle, channelNames::String, lowPassFreq::Float64, trackHoldEnabled::UInt32, inputVal::Float64)
+function Adjust4204Cal(calHandle::CalHandle, channelNames::String, lowPassFreq::Real, trackHoldEnabled::UInt32, inputVal::Real)
     ccall((:DAQmxAdjust4204Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble, Cuint, Cdouble), calHandle, channelNames, lowPassFreq, trackHoldEnabled, inputVal)
 end
 
-function Adjust4220Cal(calHandle::CalHandle, channelNames::String, gain::Float64, inputVal::Float64)
+function Adjust4220Cal(calHandle::CalHandle, channelNames::String, gain::Real, inputVal::Real)
     ccall((:DAQmxAdjust4220Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble, Cdouble), calHandle, channelNames, gain, inputVal)
 end
 
-function Adjust4224Cal(calHandle::CalHandle, channelNames::String, gain::Float64, inputVal::Float64)
+function Adjust4224Cal(calHandle::CalHandle, channelNames::String, gain::Real, inputVal::Real)
     ccall((:DAQmxAdjust4224Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble, Cdouble), calHandle, channelNames, gain, inputVal)
 end
 
-function Adjust4225Cal(calHandle::CalHandle, channelNames::String, gain::Float64, inputVal::Float64)
+function Adjust4225Cal(calHandle::CalHandle, channelNames::String, gain::Real, inputVal::Real)
     ccall((:DAQmxAdjust4225Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble, Cdouble), calHandle, channelNames, gain, inputVal)
 end
 
-function Setup433xCal(calHandle::CalHandle, channelNames::String, excitationVoltage::Float64)
+function Setup433xCal(calHandle::CalHandle, channelNames::String, excitationVoltage::Real)
     ccall((:DAQmxSetup433xCal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, excitationVoltage)
 end
 
-function Adjust433xCal(calHandle::CalHandle, refVoltage::Float64, refExcitation::Float64, shuntLocation::Int32)
+function Adjust433xCal(calHandle::CalHandle, refVoltage::Real, refExcitation::Real, shuntLocation::Integer)
     ccall((:DAQmxAdjust433xCal, :libnidaqmx), Cint, (CalHandle, Cdouble, Cdouble, Cint), calHandle, refVoltage, refExcitation, shuntLocation)
 end
 
-function Setup4339Cal(calHandle::CalHandle, channelNames::String, calMode::Int32, rangeMax::Float64, rangeMin::Float64, excitationVoltage::Float64)
+function Setup4339Cal(calHandle::CalHandle, channelNames::String, calMode::Integer, rangeMax::Real, rangeMin::Real, excitationVoltage::Real)
     ccall((:DAQmxSetup4339Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cint, Cdouble, Cdouble, Cdouble), calHandle, channelNames, calMode, rangeMax, rangeMin, excitationVoltage)
 end
 
-function Adjust4339Cal(calHandle::CalHandle, refVoltage::Float64)
+function Adjust4339Cal(calHandle::CalHandle, refVoltage::Real)
     ccall((:DAQmxAdjust4339Cal, :libnidaqmx), Cint, (CalHandle, Cdouble), calHandle, refVoltage)
 end
 
@@ -1182,11 +1183,11 @@ function Get4339CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet4339CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust4300Cal(calHandle::CalHandle, refVoltage::Float64)
+function Adjust4300Cal(calHandle::CalHandle, refVoltage::Real)
     ccall((:DAQmxAdjust4300Cal, :libnidaqmx), Cint, (CalHandle, Cdouble), calHandle, refVoltage)
 end
 
-function Setup4302Cal(calHandle::CalHandle, channelNames::String, rangeMin::Float64, rangeMax::Float64)
+function Setup4302Cal(calHandle::CalHandle, channelNames::String, rangeMin::Real, rangeMax::Real)
     ccall((:DAQmxSetup4302Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble, Cdouble), calHandle, channelNames, rangeMin, rangeMax)
 end
 
@@ -1194,11 +1195,11 @@ function Get4302CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet4302CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust4302Cal(calHandle::CalHandle, refVoltage::Float64)
+function Adjust4302Cal(calHandle::CalHandle, refVoltage::Real)
     ccall((:DAQmxAdjust4302Cal, :libnidaqmx), Cint, (CalHandle, Cdouble), calHandle, refVoltage)
 end
 
-function Setup4303Cal(calHandle::CalHandle, channelNames::String, rangeMin::Float64, rangeMax::Float64)
+function Setup4303Cal(calHandle::CalHandle, channelNames::String, rangeMin::Real, rangeMax::Real)
     ccall((:DAQmxSetup4303Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble, Cdouble), calHandle, channelNames, rangeMin, rangeMax)
 end
 
@@ -1206,11 +1207,11 @@ function Get4303CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet4303CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust4303Cal(calHandle::CalHandle, refVoltage::Float64)
+function Adjust4303Cal(calHandle::CalHandle, refVoltage::Real)
     ccall((:DAQmxAdjust4303Cal, :libnidaqmx), Cint, (CalHandle, Cdouble), calHandle, refVoltage)
 end
 
-function Setup4304Cal(calHandle::CalHandle, channelNames::String, rangeMin::Float64, rangeMax::Float64)
+function Setup4304Cal(calHandle::CalHandle, channelNames::String, rangeMin::Real, rangeMax::Real)
     ccall((:DAQmxSetup4304Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble, Cdouble), calHandle, channelNames, rangeMin, rangeMax)
 end
 
@@ -1218,11 +1219,11 @@ function Get4304CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet4304CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust4304Cal(calHandle::CalHandle, refVoltage::Float64)
+function Adjust4304Cal(calHandle::CalHandle, refVoltage::Real)
     ccall((:DAQmxAdjust4304Cal, :libnidaqmx), Cint, (CalHandle, Cdouble), calHandle, refVoltage)
 end
 
-function Setup4305Cal(calHandle::CalHandle, channelNames::String, rangeMin::Float64, rangeMax::Float64)
+function Setup4305Cal(calHandle::CalHandle, channelNames::String, rangeMin::Real, rangeMax::Real)
     ccall((:DAQmxSetup4305Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble, Cdouble), calHandle, channelNames, rangeMin, rangeMax)
 end
 
@@ -1230,35 +1231,35 @@ function Get4305CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet4305CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust4305Cal(calHandle::CalHandle, refVoltage::Float64)
+function Adjust4305Cal(calHandle::CalHandle, refVoltage::Real)
     ccall((:DAQmxAdjust4305Cal, :libnidaqmx), Cint, (CalHandle, Cdouble), calHandle, refVoltage)
 end
 
-function Adjust4309Cal(calHandle::CalHandle, refVoltage::Float64)
+function Adjust4309Cal(calHandle::CalHandle, refVoltage::Real)
     ccall((:DAQmxAdjust4309Cal, :libnidaqmx), Cint, (CalHandle, Cdouble), calHandle, refVoltage)
 end
 
-function Adjust4310Cal(calHandle::CalHandle, refVoltage::Float64)
+function Adjust4310Cal(calHandle::CalHandle, refVoltage::Real)
     ccall((:DAQmxAdjust4310Cal, :libnidaqmx), Cint, (CalHandle, Cdouble), calHandle, refVoltage)
 end
 
-function Adjust4353Cal(calHandle::CalHandle, channelNames::String, refVal::Float64)
+function Adjust4353Cal(calHandle::CalHandle, channelNames::String, refVal::Real)
     ccall((:DAQmxAdjust4353Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, refVal)
 end
 
-function Adjust4357Cal(calHandle::CalHandle, channelNames::String, refVals::Ref{Cdouble}, numRefVals::Int32)
+function Adjust4357Cal(calHandle::CalHandle, channelNames::String, refVals::Ref{Cdouble}, numRefVals::Integer)
     ccall((:DAQmxAdjust4357Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Ref{Cdouble}, Cint), calHandle, channelNames, refVals, numRefVals)
 end
 
-function Setup4322Cal(calHandle::CalHandle, channelNames::String, outputType::Int32, outputVal::Float64)
+function Setup4322Cal(calHandle::CalHandle, channelNames::String, outputType::Integer, outputVal::Real)
     ccall((:DAQmxSetup4322Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cint, Cdouble), calHandle, channelNames, outputType, outputVal)
 end
 
-function Adjust4322Cal(calHandle::CalHandle, channelNames::String, refVal::Float64)
+function Adjust4322Cal(calHandle::CalHandle, channelNames::String, refVal::Real)
     ccall((:DAQmxAdjust4322Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, refVal)
 end
 
-function Get4322CalAdjustPoints(calHandle::CalHandle, outputType::Int32, adjustmentPoints::Ref{Cdouble}, bufferSize::UInt32)
+function Get4322CalAdjustPoints(calHandle::CalHandle, outputType::Integer, adjustmentPoints::Ref{Cdouble}, bufferSize::UInt32)
     ccall((:DAQmxGet4322CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Cint, Ref{Cdouble}, Cuint), calHandle, outputType, adjustmentPoints, bufferSize)
 end
 
@@ -1274,11 +1275,11 @@ function GetPossibleSCExpressCalAccConnections(deviceName::String, channelNames:
     ccall((:DAQmxGetPossibleSCExpressCalAccConnections, :libnidaqmx), Cint, (Ref{UInt8}, Cstring, Ref{UInt8}, Cuint), deviceName, channelNames, connections, connectionsBufferSize)
 end
 
-function SetSCExpressCalAccBridgeOutput(calHandle::CalHandle, voltsPerVolt::Float64)
+function SetSCExpressCalAccBridgeOutput(calHandle::CalHandle, voltsPerVolt::Real)
     ccall((:DAQmxSetSCExpressCalAccBridgeOutput, :libnidaqmx), Cint, (CalHandle, Cdouble), calHandle, voltsPerVolt)
 end
 
-function FieldDAQSetCalTemp(calHandle::CalHandle, temperature::Float64)
+function FieldDAQSetCalTemp(calHandle::CalHandle, temperature::Real)
     ccall((:DAQmxFieldDAQSetCalTemp, :libnidaqmx), Cint, (CalHandle, Cdouble), calHandle, temperature)
 end
 
@@ -1286,7 +1287,7 @@ function Get11603CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdo
     ccall((:DAQmxGet11603CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust11603Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust11603Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust11603Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1294,7 +1295,7 @@ function Get11613CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdo
     ccall((:DAQmxGet11613CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust11613Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust11613Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust11613Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1302,11 +1303,11 @@ function Get11614CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdo
     ccall((:DAQmxGet11614CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust11614Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust11614Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust11614Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
-function Setup11634Cal(calHandle::CalHandle, rangeMin::Float64, rangeMax::Float64)
+function Setup11634Cal(calHandle::CalHandle, rangeMin::Real, rangeMax::Real)
     ccall((:DAQmxSetup11634Cal, :libnidaqmx), Cint, (CalHandle, Cdouble, Cdouble), calHandle, rangeMin, rangeMax)
 end
 
@@ -1314,15 +1315,15 @@ function Get11634CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdo
     ccall((:DAQmxGet11634CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust11634Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust11634Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust11634Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
-function Setup11637Cal(calHandle::CalHandle, channelNames::String, bridgeConfig::Int32, voltageExcitation::Float64)
+function Setup11637Cal(calHandle::CalHandle, channelNames::String, bridgeConfig::Integer, voltageExcitation::Real)
     ccall((:DAQmxSetup11637Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cint, Cdouble), calHandle, channelNames, bridgeConfig, voltageExcitation)
 end
 
-function Adjust11637Cal(calHandle::CalHandle, value::Float64, actualReading::Ref{Cdouble}, asFoundGainError::Ref{Cdouble}, asFoundOffsetError::Ref{Cdouble})
+function Adjust11637Cal(calHandle::CalHandle, value::Real, actualReading::Ref{Cdouble}, asFoundGainError::Ref{Cdouble}, asFoundOffsetError::Ref{Cdouble})
     ccall((:DAQmxAdjust11637Cal, :libnidaqmx), Cint, (CalHandle, Cdouble, Ref{Cdouble}, Ref{Cdouble}, Ref{Cdouble}), calHandle, value, actualReading, asFoundGainError, asFoundOffsetError)
 end
 
@@ -1330,11 +1331,11 @@ function Get9201CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9201CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function CSeriesSetCalTemp(calHandle::CalHandle, temperature::Float64)
+function CSeriesSetCalTemp(calHandle::CalHandle, temperature::Real)
     ccall((:DAQmxCSeriesSetCalTemp, :libnidaqmx), Cint, (CalHandle, Cdouble), calHandle, temperature)
 end
 
-function Adjust9201Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9201Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9201Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1342,27 +1343,27 @@ function Get9202CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9202CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9202Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9202Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9202Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
-function Get9203CalAdjustPoints(calHandle::CalHandle, rangeMin::Float64, rangeMax::Float64, adjustmentPoints::Ref{Cdouble}, bufferSize::UInt32)
+function Get9203CalAdjustPoints(calHandle::CalHandle, rangeMin::Real, rangeMax::Real, adjustmentPoints::Ref{Cdouble}, bufferSize::UInt32)
     ccall((:DAQmxGet9203CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Cdouble, Cdouble, Ref{Cdouble}, Cuint), calHandle, rangeMin, rangeMax, adjustmentPoints, bufferSize)
 end
 
-function Adjust9203GainCal(calHandle::CalHandle, channelNames::String, rangeMin::Float64, rangeMax::Float64, value::Float64)
+function Adjust9203GainCal(calHandle::CalHandle, channelNames::String, rangeMin::Real, rangeMax::Real, value::Real)
     ccall((:DAQmxAdjust9203GainCal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble, Cdouble, Cdouble), calHandle, channelNames, rangeMin, rangeMax, value)
 end
 
-function Adjust9203OffsetCal(calHandle::CalHandle, channelNames::String, rangeMin::Float64, rangeMax::Float64)
+function Adjust9203OffsetCal(calHandle::CalHandle, channelNames::String, rangeMin::Real, rangeMax::Real)
     ccall((:DAQmxAdjust9203OffsetCal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble, Cdouble), calHandle, channelNames, rangeMin, rangeMax)
 end
 
-function Adjust9205Cal(calHandle::CalHandle, value::Float64)
+function Adjust9205Cal(calHandle::CalHandle, value::Real)
     ccall((:DAQmxAdjust9205Cal, :libnidaqmx), Cint, (CalHandle, Cdouble), calHandle, value)
 end
 
-function Adjust9206Cal(calHandle::CalHandle, value::Float64)
+function Adjust9206Cal(calHandle::CalHandle, value::Real)
     ccall((:DAQmxAdjust9206Cal, :libnidaqmx), Cint, (CalHandle, Cdouble), calHandle, value)
 end
 
@@ -1370,7 +1371,7 @@ function Get9207CalAdjustPoints(calHandle::CalHandle, channelNames::String, adju
     ccall((:DAQmxGet9207CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Ref{Cdouble}, Cuint), calHandle, channelNames, adjustmentPoints, bufferSize)
 end
 
-function Adjust9207GainCal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9207GainCal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9207GainCal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1382,7 +1383,7 @@ function Get9208CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9208CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9208GainCal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9208GainCal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9208GainCal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1394,7 +1395,7 @@ function Get9209CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9209CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9209GainCal(calHandle::CalHandle, channelNames::String, terminalConfig::Int32, value::Float64)
+function Adjust9209GainCal(calHandle::CalHandle, channelNames::String, terminalConfig::Integer, value::Real)
     ccall((:DAQmxAdjust9209GainCal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cint, Cdouble), calHandle, channelNames, terminalConfig, value)
 end
 
@@ -1402,11 +1403,11 @@ function Adjust9209OffsetCal(calHandle::CalHandle, channelNames::String)
     ccall((:DAQmxAdjust9209OffsetCal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}), calHandle, channelNames)
 end
 
-function Adjust9210Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9210Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9210Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
-function Adjust9211Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9211Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9211Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1414,15 +1415,15 @@ function Get9212CalAdjustPoints(calHandle::CalHandle, channelNames::String, adju
     ccall((:DAQmxGet9212CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Ref{Cdouble}, Cuint), calHandle, channelNames, adjustmentPoints, bufferSize)
 end
 
-function Adjust9212Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9212Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9212Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
-function Get9213CalAdjustPoints(calHandle::CalHandle, rangeMin::Float64, rangeMax::Float64, adjustmentPoints::Ref{Cdouble}, bufferSize::UInt32)
+function Get9213CalAdjustPoints(calHandle::CalHandle, rangeMin::Real, rangeMax::Real, adjustmentPoints::Ref{Cdouble}, bufferSize::UInt32)
     ccall((:DAQmxGet9213CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Cdouble, Cdouble, Ref{Cdouble}, Cuint), calHandle, rangeMin, rangeMax, adjustmentPoints, bufferSize)
 end
 
-function Adjust9213Cal(calHandle::CalHandle, channelNames::String, rangeMin::Float64, rangeMax::Float64, value::Float64)
+function Adjust9213Cal(calHandle::CalHandle, channelNames::String, rangeMin::Real, rangeMax::Real, value::Real)
     ccall((:DAQmxAdjust9213Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble, Cdouble, Cdouble), calHandle, channelNames, rangeMin, rangeMax, value)
 end
 
@@ -1430,7 +1431,7 @@ function Get9214CalAdjustPoints(calHandle::CalHandle, channelNames::String, adju
     ccall((:DAQmxGet9214CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Ref{Cdouble}, Cuint), calHandle, channelNames, adjustmentPoints, bufferSize)
 end
 
-function Adjust9214Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9214Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9214Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1438,7 +1439,7 @@ function Get9215CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9215CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9215Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9215Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9215Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1446,7 +1447,7 @@ function Get9216CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9216CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9216Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9216Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9216Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1454,11 +1455,11 @@ function Get9217CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9217CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9217Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9217Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9217Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
-function Setup9218Cal(calHandle::CalHandle, channelNames::String, rangeMin::Float64, rangeMax::Float64, measType::Int32)
+function Setup9218Cal(calHandle::CalHandle, channelNames::String, rangeMin::Real, rangeMax::Real, measType::Integer)
     ccall((:DAQmxSetup9218Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble, Cdouble, Cint), calHandle, channelNames, rangeMin, rangeMax, measType)
 end
 
@@ -1466,11 +1467,11 @@ function Get9218CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9218CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9218Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9218Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9218Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
-function Setup9219Cal(calHandle::CalHandle, channelNames::String, rangeMin::Float64, rangeMax::Float64, measType::Int32, bridgeConfig::Int32)
+function Setup9219Cal(calHandle::CalHandle, channelNames::String, rangeMin::Real, rangeMax::Real, measType::Integer, bridgeConfig::Integer)
     ccall((:DAQmxSetup9219Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble, Cdouble, Cint, Cint), calHandle, channelNames, rangeMin, rangeMax, measType, bridgeConfig)
 end
 
@@ -1478,7 +1479,7 @@ function Get9219CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9219CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9219Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9219Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9219Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1486,7 +1487,7 @@ function Get9220CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9220CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9220Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9220Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9220Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1494,7 +1495,7 @@ function Get9221CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9221CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9221Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9221Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9221Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1502,7 +1503,7 @@ function Get9222CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9222CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9222Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9222Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9222Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1510,7 +1511,7 @@ function Get9223CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9223CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9223Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9223Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9223Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1518,7 +1519,7 @@ function Get9224CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9224CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9224Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9224Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9224Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1526,7 +1527,7 @@ function Get9225CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9225CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9225Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9225Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9225Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1534,7 +1535,7 @@ function Get9226CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9226CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9226Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9226Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9226Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1542,7 +1543,7 @@ function Get9227CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9227CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9227Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9227Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9227Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1550,7 +1551,7 @@ function Get9228CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9228CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9228Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9228Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9228Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1558,7 +1559,7 @@ function Get9229CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9229CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9229Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9229Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9229Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1566,7 +1567,7 @@ function Get9230CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9230CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9230Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9230Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9230Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1574,7 +1575,7 @@ function Get9231CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9231CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9231Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9231Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9231Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1582,7 +1583,7 @@ function Get9232CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9232CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9232Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9232Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9232Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1590,7 +1591,7 @@ function Get9234CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9234CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9234GainCal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9234GainCal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9234GainCal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1602,7 +1603,7 @@ function Get9238CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9238CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9238Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9238Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9238Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1610,7 +1611,7 @@ function Get9239CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9239CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9239Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9239Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9239Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1618,11 +1619,11 @@ function Get9242CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9242CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Setup9242Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Setup9242Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxSetup9242Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
-function Adjust9242Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9242Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9242Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1630,11 +1631,11 @@ function Get9244CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9244CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Setup9244Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Setup9244Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxSetup9244Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
-function Adjust9244Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9244Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9244Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1642,7 +1643,7 @@ function Get9246CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9246CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9246Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9246Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9246Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1650,7 +1651,7 @@ function Get9247CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9247CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9247Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9247Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9247Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1658,7 +1659,7 @@ function Get9250CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9250CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9250Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9250Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9250Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1666,7 +1667,7 @@ function Get9251CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Cdou
     ccall((:DAQmxGet9251CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cdouble}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Adjust9251Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9251Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9251Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1674,11 +1675,11 @@ function Get9260CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Int3
     ccall((:DAQmxGet9260CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cint}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Setup9260Cal(calHandle::CalHandle, channelNames::String, value::Int32)
+function Setup9260Cal(calHandle::CalHandle, channelNames::String, value::Integer)
     ccall((:DAQmxSetup9260Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cint), calHandle, channelNames, value)
 end
 
-function Adjust9260Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9260Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9260Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1686,11 +1687,11 @@ function Get9263CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Int3
     ccall((:DAQmxGet9263CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cint}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Setup9263Cal(calHandle::CalHandle, channelNames::String, value::Int32)
+function Setup9263Cal(calHandle::CalHandle, channelNames::String, value::Integer)
     ccall((:DAQmxSetup9263Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cint), calHandle, channelNames, value)
 end
 
-function Adjust9263Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9263Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9263Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1698,11 +1699,11 @@ function Get9264CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Int3
     ccall((:DAQmxGet9264CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cint}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Setup9264Cal(calHandle::CalHandle, channelNames::String, value::Int32)
+function Setup9264Cal(calHandle::CalHandle, channelNames::String, value::Integer)
     ccall((:DAQmxSetup9264Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cint), calHandle, channelNames, value)
 end
 
-function Adjust9264Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9264Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9264Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1710,11 +1711,11 @@ function Get9265CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Int3
     ccall((:DAQmxGet9265CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cint}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Setup9265Cal(calHandle::CalHandle, channelNames::String, value::Int32)
+function Setup9265Cal(calHandle::CalHandle, channelNames::String, value::Integer)
     ccall((:DAQmxSetup9265Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cint), calHandle, channelNames, value)
 end
 
-function Adjust9265Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9265Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9265Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1722,11 +1723,11 @@ function Get9266CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Int3
     ccall((:DAQmxGet9266CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cint}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Setup9266Cal(calHandle::CalHandle, channelNames::String, value::Int32)
+function Setup9266Cal(calHandle::CalHandle, channelNames::String, value::Integer)
     ccall((:DAQmxSetup9266Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cint), calHandle, channelNames, value)
 end
 
-function Adjust9266Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9266Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9266Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1734,11 +1735,11 @@ function Get9269CalAdjustPoints(calHandle::CalHandle, adjustmentPoints::Ref{Int3
     ccall((:DAQmxGet9269CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Ref{Cint}, Cuint), calHandle, adjustmentPoints, bufferSize)
 end
 
-function Setup9269Cal(calHandle::CalHandle, channelNames::String, value::Int32)
+function Setup9269Cal(calHandle::CalHandle, channelNames::String, value::Integer)
     ccall((:DAQmxSetup9269Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cint), calHandle, channelNames, value)
 end
 
-function Adjust9269Cal(calHandle::CalHandle, channelNames::String, value::Float64)
+function Adjust9269Cal(calHandle::CalHandle, channelNames::String, value::Real)
     ccall((:DAQmxAdjust9269Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelNames, value)
 end
 
@@ -1746,15 +1747,15 @@ function Get9775CalAdjustPoints(calHandle::CalHandle, coupling::UInt32, adjustme
     ccall((:DAQmxGet9775CalAdjustPoints, :libnidaqmx), Cint, (CalHandle, Cuint, Ref{Cdouble}, Cuint), calHandle, coupling, adjustmentPoints, bufferSize)
 end
 
-function Adjust9775Cal(calHandle::CalHandle, channelNames::String, value::Float64, coupling::UInt32)
+function Adjust9775Cal(calHandle::CalHandle, channelNames::String, value::Real, coupling::UInt32)
     ccall((:DAQmxAdjust9775Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble, Cuint), calHandle, channelNames, value, coupling)
 end
 
-function Setup1102Cal(calHandle::CalHandle, channelName::String, gain::Float64)
+function Setup1102Cal(calHandle::CalHandle, channelName::String, gain::Real)
     ccall((:DAQmxSetup1102Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelName, gain)
 end
 
-function Adjust1102Cal(calHandle::CalHandle, refVoltage::Float64, measOutput::Float64)
+function Adjust1102Cal(calHandle::CalHandle, refVoltage::Real, measOutput::Real)
     ccall((:DAQmxAdjust1102Cal, :libnidaqmx), Cint, (CalHandle, Cdouble, Cdouble), calHandle, refVoltage, measOutput)
 end
 
@@ -1762,7 +1763,7 @@ function Setup1104Cal(calHandle::CalHandle, channelName::String)
     ccall((:DAQmxSetup1104Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}), calHandle, channelName)
 end
 
-function Adjust1104Cal(calHandle::CalHandle, refVoltage::Float64, measOutput::Float64)
+function Adjust1104Cal(calHandle::CalHandle, refVoltage::Real, measOutput::Real)
     ccall((:DAQmxAdjust1104Cal, :libnidaqmx), Cint, (CalHandle, Cdouble, Cdouble), calHandle, refVoltage, measOutput)
 end
 
@@ -1770,91 +1771,91 @@ function Setup1112Cal(calHandle::CalHandle, channelName::String)
     ccall((:DAQmxSetup1112Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}), calHandle, channelName)
 end
 
-function Adjust1112Cal(calHandle::CalHandle, refVoltage::Float64, measOutput::Float64)
+function Adjust1112Cal(calHandle::CalHandle, refVoltage::Real, measOutput::Real)
     ccall((:DAQmxAdjust1112Cal, :libnidaqmx), Cint, (CalHandle, Cdouble, Cdouble), calHandle, refVoltage, measOutput)
 end
 
-function Setup1122Cal(calHandle::CalHandle, channelName::String, gain::Float64)
+function Setup1122Cal(calHandle::CalHandle, channelName::String, gain::Real)
     ccall((:DAQmxSetup1122Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelName, gain)
 end
 
-function Adjust1122Cal(calHandle::CalHandle, refVoltage::Float64, measOutput::Float64)
+function Adjust1122Cal(calHandle::CalHandle, refVoltage::Real, measOutput::Real)
     ccall((:DAQmxAdjust1122Cal, :libnidaqmx), Cint, (CalHandle, Cdouble, Cdouble), calHandle, refVoltage, measOutput)
 end
 
-function Setup1124Cal(calHandle::CalHandle, channelName::String, range::Int32, dacValue::UInt32)
+function Setup1124Cal(calHandle::CalHandle, channelName::String, range::Integer, dacValue::UInt32)
     ccall((:DAQmxSetup1124Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cint, Cuint), calHandle, channelName, range, dacValue)
 end
 
-function Adjust1124Cal(calHandle::CalHandle, measOutput::Float64)
+function Adjust1124Cal(calHandle::CalHandle, measOutput::Real)
     ccall((:DAQmxAdjust1124Cal, :libnidaqmx), Cint, (CalHandle, Cdouble), calHandle, measOutput)
 end
 
-function Setup1125Cal(calHandle::CalHandle, channelName::String, gain::Float64)
+function Setup1125Cal(calHandle::CalHandle, channelName::String, gain::Real)
     ccall((:DAQmxSetup1125Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelName, gain)
 end
 
-function Adjust1125Cal(calHandle::CalHandle, refVoltage::Float64, measOutput::Float64)
+function Adjust1125Cal(calHandle::CalHandle, refVoltage::Real, measOutput::Real)
     ccall((:DAQmxAdjust1125Cal, :libnidaqmx), Cint, (CalHandle, Cdouble, Cdouble), calHandle, refVoltage, measOutput)
 end
 
-function Setup1126Cal(calHandle::CalHandle, channelName::String, upperFreqLimit::Float64)
+function Setup1126Cal(calHandle::CalHandle, channelName::String, upperFreqLimit::Real)
     ccall((:DAQmxSetup1126Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelName, upperFreqLimit)
 end
 
-function Adjust1126Cal(calHandle::CalHandle, refFreq::Float64, measOutput::Float64)
+function Adjust1126Cal(calHandle::CalHandle, refFreq::Real, measOutput::Real)
     ccall((:DAQmxAdjust1126Cal, :libnidaqmx), Cint, (CalHandle, Cdouble, Cdouble), calHandle, refFreq, measOutput)
 end
 
-function Setup1141Cal(calHandle::CalHandle, channelName::String, gain::Float64)
+function Setup1141Cal(calHandle::CalHandle, channelName::String, gain::Real)
     ccall((:DAQmxSetup1141Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelName, gain)
 end
 
-function Adjust1141Cal(calHandle::CalHandle, refVoltage::Float64, measOutput::Float64)
+function Adjust1141Cal(calHandle::CalHandle, refVoltage::Real, measOutput::Real)
     ccall((:DAQmxAdjust1141Cal, :libnidaqmx), Cint, (CalHandle, Cdouble, Cdouble), calHandle, refVoltage, measOutput)
 end
 
-function Setup1142Cal(calHandle::CalHandle, channelName::String, gain::Float64)
+function Setup1142Cal(calHandle::CalHandle, channelName::String, gain::Real)
     ccall((:DAQmxSetup1142Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelName, gain)
 end
 
-function Adjust1142Cal(calHandle::CalHandle, refVoltage::Float64, measOutput::Float64)
+function Adjust1142Cal(calHandle::CalHandle, refVoltage::Real, measOutput::Real)
     ccall((:DAQmxAdjust1142Cal, :libnidaqmx), Cint, (CalHandle, Cdouble, Cdouble), calHandle, refVoltage, measOutput)
 end
 
-function Setup1143Cal(calHandle::CalHandle, channelName::String, gain::Float64)
+function Setup1143Cal(calHandle::CalHandle, channelName::String, gain::Real)
     ccall((:DAQmxSetup1143Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelName, gain)
 end
 
-function Adjust1143Cal(calHandle::CalHandle, refVoltage::Float64, measOutput::Float64)
+function Adjust1143Cal(calHandle::CalHandle, refVoltage::Real, measOutput::Real)
     ccall((:DAQmxAdjust1143Cal, :libnidaqmx), Cint, (CalHandle, Cdouble, Cdouble), calHandle, refVoltage, measOutput)
 end
 
-function Setup1502Cal(calHandle::CalHandle, channelName::String, gain::Float64)
+function Setup1502Cal(calHandle::CalHandle, channelName::String, gain::Real)
     ccall((:DAQmxSetup1502Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelName, gain)
 end
 
-function Adjust1502Cal(calHandle::CalHandle, refVoltage::Float64, measOutput::Float64)
+function Adjust1502Cal(calHandle::CalHandle, refVoltage::Real, measOutput::Real)
     ccall((:DAQmxAdjust1502Cal, :libnidaqmx), Cint, (CalHandle, Cdouble, Cdouble), calHandle, refVoltage, measOutput)
 end
 
-function Setup1503Cal(calHandle::CalHandle, channelName::String, gain::Float64)
+function Setup1503Cal(calHandle::CalHandle, channelName::String, gain::Real)
     ccall((:DAQmxSetup1503Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelName, gain)
 end
 
-function Adjust1503Cal(calHandle::CalHandle, refVoltage::Float64, measOutput::Float64)
+function Adjust1503Cal(calHandle::CalHandle, refVoltage::Real, measOutput::Real)
     ccall((:DAQmxAdjust1503Cal, :libnidaqmx), Cint, (CalHandle, Cdouble, Cdouble), calHandle, refVoltage, measOutput)
 end
 
-function Adjust1503CurrentCal(calHandle::CalHandle, channelName::String, measCurrent::Float64)
+function Adjust1503CurrentCal(calHandle::CalHandle, channelName::String, measCurrent::Real)
     ccall((:DAQmxAdjust1503CurrentCal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelName, measCurrent)
 end
 
-function Setup1520Cal(calHandle::CalHandle, channelName::String, gain::Float64)
+function Setup1520Cal(calHandle::CalHandle, channelName::String, gain::Real)
     ccall((:DAQmxSetup1520Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelName, gain)
 end
 
-function Adjust1520Cal(calHandle::CalHandle, refVoltage::Float64, measOutput::Float64)
+function Adjust1520Cal(calHandle::CalHandle, refVoltage::Real, measOutput::Real)
     ccall((:DAQmxAdjust1520Cal, :libnidaqmx), Cint, (CalHandle, Cdouble, Cdouble), calHandle, refVoltage, measOutput)
 end
 
@@ -1862,23 +1863,23 @@ function Setup1521Cal(calHandle::CalHandle, channelName::String)
     ccall((:DAQmxSetup1521Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}), calHandle, channelName)
 end
 
-function Adjust1521Cal(calHandle::CalHandle, refVoltage::Float64, measOutput::Float64)
+function Adjust1521Cal(calHandle::CalHandle, refVoltage::Real, measOutput::Real)
     ccall((:DAQmxAdjust1521Cal, :libnidaqmx), Cint, (CalHandle, Cdouble, Cdouble), calHandle, refVoltage, measOutput)
 end
 
-function Setup153xCal(calHandle::CalHandle, channelName::String, gain::Float64)
+function Setup153xCal(calHandle::CalHandle, channelName::String, gain::Real)
     ccall((:DAQmxSetup153xCal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble), calHandle, channelName, gain)
 end
 
-function Adjust153xCal(calHandle::CalHandle, refVoltage::Float64, measOutput::Float64)
+function Adjust153xCal(calHandle::CalHandle, refVoltage::Real, measOutput::Real)
     ccall((:DAQmxAdjust153xCal, :libnidaqmx), Cint, (CalHandle, Cdouble, Cdouble), calHandle, refVoltage, measOutput)
 end
 
-function Setup1540Cal(calHandle::CalHandle, channelName::String, excitationVoltage::Float64, excitationFreq::Float64)
+function Setup1540Cal(calHandle::CalHandle, channelName::String, excitationVoltage::Real, excitationFreq::Real)
     ccall((:DAQmxSetup1540Cal, :libnidaqmx), Cint, (CalHandle, Ref{UInt8}, Cdouble, Cdouble), calHandle, channelName, excitationVoltage, excitationFreq)
 end
 
-function Adjust1540Cal(calHandle::CalHandle, refVoltage::Float64, measOutput::Float64, inputCalSource::Int32)
+function Adjust1540Cal(calHandle::CalHandle, refVoltage::Real, measOutput::Real, inputCalSource::Integer)
     ccall((:DAQmxAdjust1540Cal, :libnidaqmx), Cint, (CalHandle, Cdouble, Cdouble, Cint), calHandle, refVoltage, measOutput, inputCalSource)
 end
 
@@ -1890,35 +1891,35 @@ function ClearTEDS(physicalChannel::String)
     ccall((:DAQmxClearTEDS, :libnidaqmx), Cint, (Ref{UInt8},), physicalChannel)
 end
 
-function WriteToTEDSFromArray(physicalChannel::String, bitStream::Ref{Cuchar}, arraySize::UInt32, basicTEDSOptions::Int32)
+function WriteToTEDSFromArray(physicalChannel::String, bitStream::Ref{Cuchar}, arraySize::UInt32, basicTEDSOptions::Integer)
     ccall((:DAQmxWriteToTEDSFromArray, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuchar}, Cuint, Cint), physicalChannel, bitStream, arraySize, basicTEDSOptions)
 end
 
-function WriteToTEDSFromFile(physicalChannel::String, filePath::String, basicTEDSOptions::Int32)
+function WriteToTEDSFromFile(physicalChannel::String, filePath::String, basicTEDSOptions::Integer)
     ccall((:DAQmxWriteToTEDSFromFile, :libnidaqmx), Cint, (Ref{UInt8}, Ref{UInt8}, Cint), physicalChannel, filePath, basicTEDSOptions)
 end
 
-function GetPhysicalChanAttribute(physicalChannel::String, attribute::Int32, value::Ref{Cvoid})
+function GetPhysicalChanAttribute(physicalChannel::String, attribute::Integer, value::Ref{Cvoid})
     ccall((:DAQmxGetPhysicalChanAttribute, :libnidaqmx), Cint, (Ref{UInt8}, Cint, Ref{Cvoid}), physicalChannel, attribute, value)
 end
 
-function WaitForNextSampleClock(taskHandle::TaskHandle, timeout::Float64, isLate::Ref{UInt32})
+function WaitForNextSampleClock(taskHandle::TaskHandle, timeout::Real, isLate::Ref{UInt32})
     ccall((:DAQmxWaitForNextSampleClock, :libnidaqmx), Cint, (TaskHandle, Cdouble, Ref{Cuint}), taskHandle, timeout, isLate)
 end
 
-function GetRealTimeAttribute(taskHandle::TaskHandle, attribute::Int32, value::Ref{Cvoid})
+function GetRealTimeAttribute(taskHandle::TaskHandle, attribute::Integer, value::Ref{Cvoid})
     ccall((:DAQmxGetRealTimeAttribute, :libnidaqmx), Cint, (TaskHandle, Cint, Ref{Cvoid}), taskHandle, attribute, value)
 end
 
-function SetRealTimeAttribute(taskHandle::TaskHandle, attribute::Int32)
+function SetRealTimeAttribute(taskHandle::TaskHandle, attribute::Integer)
     ccall((:DAQmxSetRealTimeAttribute, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, attribute)
 end
 
-function ResetRealTimeAttribute(taskHandle::TaskHandle, attribute::Int32)
+function ResetRealTimeAttribute(taskHandle::TaskHandle, attribute::Integer)
     ccall((:DAQmxResetRealTimeAttribute, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, attribute)
 end
 
-function IsReadOrWriteLate(errorCode::Int32)
+function IsReadOrWriteLate(errorCode::Integer)
     ccall((:DAQmxIsReadOrWriteLate, :libnidaqmx), Cint, (Cint,), errorCode)
 end
 
@@ -1946,23 +1947,23 @@ function DeleteSavedScale(scaleName::String)
     ccall((:DAQmxDeleteSavedScale, :libnidaqmx), Cint, (Ref{UInt8},), scaleName)
 end
 
-function GetPersistedTaskAttribute(taskName::String, attribute::Int32, value::Ref{Cvoid})
+function GetPersistedTaskAttribute(taskName::String, attribute::Integer, value::Ref{Cvoid})
     ccall((:DAQmxGetPersistedTaskAttribute, :libnidaqmx), Cint, (Ref{UInt8}, Cint, Ref{Cvoid}), taskName, attribute, value)
 end
 
-function GetPersistedChanAttribute(channel::String, attribute::Int32, value::Ref{Cvoid})
+function GetPersistedChanAttribute(channel::String, attribute::Integer, value::Ref{Cvoid})
     ccall((:DAQmxGetPersistedChanAttribute, :libnidaqmx), Cint, (Ref{UInt8}, Cint, Ref{Cvoid}), channel, attribute, value)
 end
 
-function GetPersistedScaleAttribute(scaleName::String, attribute::Int32, value::Ref{Cvoid})
+function GetPersistedScaleAttribute(scaleName::String, attribute::Integer, value::Ref{Cvoid})
     ccall((:DAQmxGetPersistedScaleAttribute, :libnidaqmx), Cint, (Ref{UInt8}, Cint, Ref{Cvoid}), scaleName, attribute, value)
 end
 
-function GetSystemInfoAttribute(attribute::Int32, value::Ref{Cvoid})
+function GetSystemInfoAttribute(attribute::Integer, value::Ref{Cvoid})
     ccall((:DAQmxGetSystemInfoAttribute, :libnidaqmx), Cint, (Cint, Ref{Cvoid}), attribute, value)
 end
 
-function SetDigitalPowerUpStates(deviceName::String, channelNames::String, state::Int32)
+function SetDigitalPowerUpStates(deviceName::String, channelNames::String, state::Integer)
     ccall((:DAQmxSetDigitalPowerUpStates, :libnidaqmx), Cint, (Ref{UInt8}, Ref{UInt8}, Cint), deviceName, channelNames, state)
 end
 
@@ -1970,7 +1971,7 @@ function GetDigitalPowerUpStates(deviceName::String, channelName::String, state:
     ccall((:DAQmxGetDigitalPowerUpStates, :libnidaqmx), Cint, (Ref{UInt8}, Ref{UInt8}, Ref{Cint}), deviceName, channelName, state)
 end
 
-function SetDigitalPullUpPullDownStates(deviceName::String, channelName::String, state::Int32)
+function SetDigitalPullUpPullDownStates(deviceName::String, channelName::String, state::Integer)
     ccall((:DAQmxSetDigitalPullUpPullDownStates, :libnidaqmx), Cint, (Ref{UInt8}, Ref{UInt8}, Cint), deviceName, channelName, state)
 end
 
@@ -1978,7 +1979,7 @@ function GetDigitalPullUpPullDownStates(deviceName::String, channelName::String,
     ccall((:DAQmxGetDigitalPullUpPullDownStates, :libnidaqmx), Cint, (Ref{UInt8}, Ref{UInt8}, Ref{Cint}), deviceName, channelName, state)
 end
 
-function SetAnalogPowerUpStates(deviceName::String, channelNames::String, state::Float64, channelType::Int32)
+function SetAnalogPowerUpStates(deviceName::String, channelNames::String, state::Real, channelType::Integer)
     ccall((:DAQmxSetAnalogPowerUpStates, :libnidaqmx), Cint, (Ref{UInt8}, Ref{UInt8}, Cdouble, Cint), deviceName, channelNames, state, channelType)
 end
 
@@ -1986,7 +1987,7 @@ function SetAnalogPowerUpStatesWithOutputType(channelNames::String, stateArray::
     ccall((:DAQmxSetAnalogPowerUpStatesWithOutputType, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Ref{Cint}, Cuint), channelNames, stateArray, channelTypeArray, arraySize)
 end
 
-function GetAnalogPowerUpStates(deviceName::String, channelName::String, state::Ref{Cdouble}, channelType::Int32)
+function GetAnalogPowerUpStates(deviceName::String, channelName::String, state::Ref{Cdouble}, channelType::Integer)
     ccall((:DAQmxGetAnalogPowerUpStates, :libnidaqmx), Cint, (Ref{UInt8}, Ref{UInt8}, Ref{Cdouble}, Cint), deviceName, channelName, state, channelType)
 end
 
@@ -1994,7 +1995,7 @@ function GetAnalogPowerUpStatesWithOutputType(channelNames::String, stateArray::
     ccall((:DAQmxGetAnalogPowerUpStatesWithOutputType, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Ref{Cint}, Ref{Cuint}), channelNames, stateArray, channelTypeArray, arraySizePtr)
 end
 
-function SetDigitalLogicFamilyPowerUpState(deviceName::String, logicFamily::Int32)
+function SetDigitalLogicFamilyPowerUpState(deviceName::String, logicFamily::Integer)
     ccall((:DAQmxSetDigitalLogicFamilyPowerUpState, :libnidaqmx), Cint, (Ref{UInt8}, Cint), deviceName, logicFamily)
 end
 
@@ -2002,7 +2003,7 @@ function GetDigitalLogicFamilyPowerUpState(deviceName::String, logicFamily::Ref{
     ccall((:DAQmxGetDigitalLogicFamilyPowerUpState, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}), deviceName, logicFamily)
 end
 
-function AddNetworkDevice(IPAddress::String, deviceName::String, attemptReservation::UInt32, timeout::Float64, deviceNameOut::String, deviceNameOutBufferSize::UInt32)
+function AddNetworkDevice(IPAddress::String, deviceName::String, attemptReservation::UInt32, timeout::Real, deviceNameOut::String, deviceNameOutBufferSize::UInt32)
     ccall((:DAQmxAddNetworkDevice, :libnidaqmx), Cint, (Ref{UInt8}, Ref{UInt8}, Cuint, Cdouble, Ref{UInt8}, Cuint), IPAddress, deviceName, attemptReservation, timeout, deviceNameOut, deviceNameOutBufferSize)
 end
 
@@ -2018,7 +2019,7 @@ function UnreserveNetworkDevice(deviceName::String)
     ccall((:DAQmxUnreserveNetworkDevice, :libnidaqmx), Cint, (Ref{UInt8},), deviceName)
 end
 
-function AutoConfigureCDAQSyncConnections(chassisDevicesPorts::String, timeout::Float64)
+function AutoConfigureCDAQSyncConnections(chassisDevicesPorts::String, timeout::Real)
     ccall((:DAQmxAutoConfigureCDAQSyncConnections, :libnidaqmx), Cint, (Ref{UInt8}, Cdouble), chassisDevicesPorts, timeout)
 end
 
@@ -2026,7 +2027,7 @@ function GetAutoConfiguredCDAQSyncConnections(portList::String, portListSize::UI
     ccall((:DAQmxGetAutoConfiguredCDAQSyncConnections, :libnidaqmx), Cint, (Ref{UInt8}, Cuint), portList, portListSize)
 end
 
-function AreConfiguredCDAQSyncPortsDisconnected(chassisDevicesPorts::String, timeout::Float64, disconnectedPortsExist::Ref{UInt32})
+function AreConfiguredCDAQSyncPortsDisconnected(chassisDevicesPorts::String, timeout::Real, disconnectedPortsExist::Ref{UInt32})
     ccall((:DAQmxAreConfiguredCDAQSyncPortsDisconnected, :libnidaqmx), Cint, (Ref{UInt8}, Cdouble, Ref{Cuint}), chassisDevicesPorts, timeout, disconnectedPortsExist)
 end
 
@@ -2042,7 +2043,7 @@ function RemoveCDAQSyncConnection(portList::String)
     ccall((:DAQmxRemoveCDAQSyncConnection, :libnidaqmx), Cint, (Ref{UInt8},), portList)
 end
 
-function GetErrorString(errorCode::Int32, errorString::Vector{UInt8}, bufferSize::UInt32)
+function GetErrorString(errorCode::Integer, errorString::Vector{UInt8}, bufferSize::UInt32)
     ccall((:DAQmxGetErrorString, :libnidaqmx), Cint, (Cint, Ref{UInt8}, Cuint), errorCode, errorString, bufferSize)
 end
 
@@ -2094,7 +2095,7 @@ function GetSelfCalSupported(deviceName::String, data::Ref{UInt32})
     ccall((:DAQmxGetSelfCalSupported, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), deviceName, data)
 end
 
-function GetSelfCalLastTemp(deviceName::String, data::Float64)
+function GetSelfCalLastTemp(deviceName::String, data::Real)
     ccall((:DAQmxGetSelfCalLastTemp, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), deviceName, data)
 end
 
@@ -2102,7 +2103,7 @@ function GetExtCalRecommendedInterval(deviceName::String, data::Ref{UInt32})
     ccall((:DAQmxGetExtCalRecommendedInterval, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), deviceName, data)
 end
 
-function GetExtCalLastTemp(deviceName::String, data::Float64)
+function GetExtCalLastTemp(deviceName::String, data::Real)
     ccall((:DAQmxGetExtCalLastTemp, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), deviceName, data)
 end
 
@@ -2118,7 +2119,7 @@ function GetCalUserDefinedInfoMaxSize(deviceName::String, data::Ref{UInt32})
     ccall((:DAQmxGetCalUserDefinedInfoMaxSize, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), deviceName, data)
 end
 
-function GetCalDevTemp(deviceName::String, data::Float64)
+function GetCalDevTemp(deviceName::String, data::Real)
     ccall((:DAQmxGetCalDevTemp, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), deviceName, data)
 end
 
@@ -2134,11 +2135,11 @@ function GetCalRecommendedAccConnectionCountLimit(deviceName::String, data::Ref{
     ccall((:DAQmxGetCalRecommendedAccConnectionCountLimit, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), deviceName, data)
 end
 
-function GetAIMax(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIMax(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIMax, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIMax(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIMax(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIMax, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2146,11 +2147,11 @@ function ResetAIMax(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIMax, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIMin(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIMin(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIMin, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIMin(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIMin(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIMin, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2174,11 +2175,11 @@ function GetAIMeasType(taskHandle::TaskHandle, channel::String, data::Ref{Int32}
     ccall((:DAQmxGetAIMeasType, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function GetAIVoltageUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIVoltageUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIVoltageUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIVoltageUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIVoltageUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIVoltageUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2186,11 +2187,11 @@ function ResetAIVoltageUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIVoltageUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIVoltagedBRef(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIVoltagedBRef(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIVoltagedBRef, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIVoltagedBRef(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIVoltagedBRef(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIVoltagedBRef, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2198,11 +2199,11 @@ function ResetAIVoltagedBRef(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIVoltagedBRef, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIVoltageACRMSUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIVoltageACRMSUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIVoltageACRMSUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIVoltageACRMSUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIVoltageACRMSUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIVoltageACRMSUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2210,11 +2211,11 @@ function ResetAIVoltageACRMSUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIVoltageACRMSUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAITempUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAITempUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAITempUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAITempUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAITempUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAITempUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2222,11 +2223,11 @@ function ResetAITempUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAITempUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIThrmcplType(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIThrmcplType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIThrmcplType, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIThrmcplType(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIThrmcplType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIThrmcplType, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2234,11 +2235,11 @@ function ResetAIThrmcplType(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIThrmcplType, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIThrmcplScaleType(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIThrmcplScaleType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIThrmcplScaleType, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIThrmcplScaleType(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIThrmcplScaleType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIThrmcplScaleType, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2246,15 +2247,15 @@ function ResetAIThrmcplScaleType(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIThrmcplScaleType, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIThrmcplCJCSrc(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIThrmcplCJCSrc(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIThrmcplCJCSrc, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function GetAIThrmcplCJCVal(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIThrmcplCJCVal(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIThrmcplCJCVal, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIThrmcplCJCVal(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIThrmcplCJCVal(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIThrmcplCJCVal, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2266,11 +2267,11 @@ function GetAIThrmcplCJCChan(taskHandle::TaskHandle, channel::String, data::Vect
     ccall((:DAQmxGetAIThrmcplCJCChan, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{UInt8}, Cuint), taskHandle, channel, data, bufferSize)
 end
 
-function GetAIRTDType(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIRTDType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIRTDType, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIRTDType(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIRTDType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIRTDType, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2278,11 +2279,11 @@ function ResetAIRTDType(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIRTDType, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIRTDR0(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIRTDR0(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIRTDR0, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIRTDR0(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIRTDR0(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIRTDR0, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2290,11 +2291,11 @@ function ResetAIRTDR0(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIRTDR0, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIRTDA(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIRTDA(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIRTDA, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIRTDA(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIRTDA(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIRTDA, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2302,11 +2303,11 @@ function ResetAIRTDA(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIRTDA, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIRTDB(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIRTDB(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIRTDB, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIRTDB(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIRTDB(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIRTDB, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2314,11 +2315,11 @@ function ResetAIRTDB(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIRTDB, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIRTDC(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIRTDC(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIRTDC, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIRTDC(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIRTDC(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIRTDC, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2326,11 +2327,11 @@ function ResetAIRTDC(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIRTDC, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIThrmstrA(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIThrmstrA(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIThrmstrA, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIThrmstrA(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIThrmstrA(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIThrmstrA, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2338,11 +2339,11 @@ function ResetAIThrmstrA(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIThrmstrA, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIThrmstrB(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIThrmstrB(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIThrmstrB, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIThrmstrB(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIThrmstrB(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIThrmstrB, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2350,11 +2351,11 @@ function ResetAIThrmstrB(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIThrmstrB, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIThrmstrC(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIThrmstrC(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIThrmstrC, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIThrmstrC(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIThrmstrC(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIThrmstrC, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2362,11 +2363,11 @@ function ResetAIThrmstrC(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIThrmstrC, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIThrmstrR1(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIThrmstrR1(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIThrmstrR1, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIThrmstrR1(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIThrmstrR1(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIThrmstrR1, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2386,11 +2387,11 @@ function ResetAIForceReadFromChan(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIForceReadFromChan, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAICurrentUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAICurrentUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAICurrentUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAICurrentUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAICurrentUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAICurrentUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2398,11 +2399,11 @@ function ResetAICurrentUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAICurrentUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAICurrentACRMSUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAICurrentACRMSUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAICurrentACRMSUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAICurrentACRMSUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAICurrentACRMSUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAICurrentACRMSUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2410,11 +2411,11 @@ function ResetAICurrentACRMSUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAICurrentACRMSUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIStrainUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIStrainUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIStrainUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIStrainUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIStrainUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIStrainUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2434,11 +2435,11 @@ function ResetAIStrainGageForceReadFromChan(taskHandle::TaskHandle, channel::Str
     ccall((:DAQmxResetAIStrainGageForceReadFromChan, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIStrainGageGageFactor(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIStrainGageGageFactor(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIStrainGageGageFactor, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIStrainGageGageFactor(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIStrainGageGageFactor(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIStrainGageGageFactor, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2446,11 +2447,11 @@ function ResetAIStrainGageGageFactor(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIStrainGageGageFactor, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIStrainGagePoissonRatio(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIStrainGagePoissonRatio(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIStrainGagePoissonRatio, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIStrainGagePoissonRatio(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIStrainGagePoissonRatio(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIStrainGagePoissonRatio, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2458,11 +2459,11 @@ function ResetAIStrainGagePoissonRatio(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIStrainGagePoissonRatio, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIStrainGageCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIStrainGageCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIStrainGageCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIStrainGageCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIStrainGageCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIStrainGageCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2470,15 +2471,15 @@ function ResetAIStrainGageCfg(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIStrainGageCfg, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIRosetteStrainGageRosetteType(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIRosetteStrainGageRosetteType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIRosetteStrainGageRosetteType, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function GetAIRosetteStrainGageOrientation(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIRosetteStrainGageOrientation(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIRosetteStrainGageOrientation, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIRosetteStrainGageOrientation(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIRosetteStrainGageOrientation(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIRosetteStrainGageOrientation, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2490,11 +2491,11 @@ function GetAIRosetteStrainGageStrainChans(taskHandle::TaskHandle, channel::Stri
     ccall((:DAQmxGetAIRosetteStrainGageStrainChans, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{UInt8}, Cuint), taskHandle, channel, data, bufferSize)
 end
 
-function GetAIRosetteStrainGageRosetteMeasType(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIRosetteStrainGageRosetteMeasType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIRosetteStrainGageRosetteMeasType, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIRosetteStrainGageRosetteMeasType(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIRosetteStrainGageRosetteMeasType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIRosetteStrainGageRosetteMeasType, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2502,11 +2503,11 @@ function ResetAIRosetteStrainGageRosetteMeasType(taskHandle::TaskHandle, channel
     ccall((:DAQmxResetAIRosetteStrainGageRosetteMeasType, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIResistanceUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIResistanceUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIResistanceUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIResistanceUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIResistanceUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIResistanceUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2514,11 +2515,11 @@ function ResetAIResistanceUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIResistanceUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIFreqUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIFreqUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIFreqUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIFreqUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIFreqUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIFreqUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2526,11 +2527,11 @@ function ResetAIFreqUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIFreqUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIFreqThreshVoltage(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIFreqThreshVoltage(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIFreqThreshVoltage, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIFreqThreshVoltage(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIFreqThreshVoltage(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIFreqThreshVoltage, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2538,11 +2539,11 @@ function ResetAIFreqThreshVoltage(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIFreqThreshVoltage, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIFreqHyst(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIFreqHyst(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIFreqHyst, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIFreqHyst(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIFreqHyst(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIFreqHyst, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2550,11 +2551,11 @@ function ResetAIFreqHyst(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIFreqHyst, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAILVDTUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAILVDTUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAILVDTUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAILVDTUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAILVDTUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAILVDTUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2562,11 +2563,11 @@ function ResetAILVDTUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAILVDTUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAILVDTSensitivity(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAILVDTSensitivity(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAILVDTSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAILVDTSensitivity(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAILVDTSensitivity(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAILVDTSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2574,11 +2575,11 @@ function ResetAILVDTSensitivity(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAILVDTSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAILVDTSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAILVDTSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAILVDTSensitivityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAILVDTSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAILVDTSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAILVDTSensitivityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2586,11 +2587,11 @@ function ResetAILVDTSensitivityUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAILVDTSensitivityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIRVDTUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIRVDTUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIRVDTUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIRVDTUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIRVDTUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIRVDTUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2598,11 +2599,11 @@ function ResetAIRVDTUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIRVDTUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIRVDTSensitivity(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIRVDTSensitivity(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIRVDTSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIRVDTSensitivity(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIRVDTSensitivity(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIRVDTSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2610,11 +2611,11 @@ function ResetAIRVDTSensitivity(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIRVDTSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIRVDTSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIRVDTSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIRVDTSensitivityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIRVDTSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIRVDTSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIRVDTSensitivityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2622,11 +2623,11 @@ function ResetAIRVDTSensitivityUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIRVDTSensitivityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIEddyCurrentProxProbeUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIEddyCurrentProxProbeUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIEddyCurrentProxProbeUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIEddyCurrentProxProbeUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIEddyCurrentProxProbeUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIEddyCurrentProxProbeUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2634,11 +2635,11 @@ function ResetAIEddyCurrentProxProbeUnits(taskHandle::TaskHandle, channel::Strin
     ccall((:DAQmxResetAIEddyCurrentProxProbeUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIEddyCurrentProxProbeSensitivity(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIEddyCurrentProxProbeSensitivity(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIEddyCurrentProxProbeSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIEddyCurrentProxProbeSensitivity(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIEddyCurrentProxProbeSensitivity(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIEddyCurrentProxProbeSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2646,11 +2647,11 @@ function ResetAIEddyCurrentProxProbeSensitivity(taskHandle::TaskHandle, channel:
     ccall((:DAQmxResetAIEddyCurrentProxProbeSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIEddyCurrentProxProbeSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIEddyCurrentProxProbeSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIEddyCurrentProxProbeSensitivityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIEddyCurrentProxProbeSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIEddyCurrentProxProbeSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIEddyCurrentProxProbeSensitivityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2658,11 +2659,11 @@ function ResetAIEddyCurrentProxProbeSensitivityUnits(taskHandle::TaskHandle, cha
     ccall((:DAQmxResetAIEddyCurrentProxProbeSensitivityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAISoundPressureMaxSoundPressureLvl(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAISoundPressureMaxSoundPressureLvl(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAISoundPressureMaxSoundPressureLvl, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAISoundPressureMaxSoundPressureLvl(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAISoundPressureMaxSoundPressureLvl(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAISoundPressureMaxSoundPressureLvl, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2670,11 +2671,11 @@ function ResetAISoundPressureMaxSoundPressureLvl(taskHandle::TaskHandle, channel
     ccall((:DAQmxResetAISoundPressureMaxSoundPressureLvl, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAISoundPressureUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAISoundPressureUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAISoundPressureUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAISoundPressureUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAISoundPressureUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAISoundPressureUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2682,11 +2683,11 @@ function ResetAISoundPressureUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAISoundPressureUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAISoundPressuredBRef(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAISoundPressuredBRef(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAISoundPressuredBRef, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAISoundPressuredBRef(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAISoundPressuredBRef(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAISoundPressuredBRef, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2694,11 +2695,11 @@ function ResetAISoundPressuredBRef(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAISoundPressuredBRef, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIMicrophoneSensitivity(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIMicrophoneSensitivity(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIMicrophoneSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIMicrophoneSensitivity(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIMicrophoneSensitivity(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIMicrophoneSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2706,11 +2707,11 @@ function ResetAIMicrophoneSensitivity(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIMicrophoneSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIAccelUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIAccelUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIAccelUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIAccelUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIAccelUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIAccelUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2718,11 +2719,11 @@ function ResetAIAccelUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIAccelUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIAcceldBRef(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIAcceldBRef(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIAcceldBRef, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIAcceldBRef(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIAcceldBRef(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIAcceldBRef, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2730,11 +2731,11 @@ function ResetAIAcceldBRef(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIAcceldBRef, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIAccel4WireDCVoltageSensitivity(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIAccel4WireDCVoltageSensitivity(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIAccel4WireDCVoltageSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIAccel4WireDCVoltageSensitivity(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIAccel4WireDCVoltageSensitivity(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIAccel4WireDCVoltageSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2742,11 +2743,11 @@ function ResetAIAccel4WireDCVoltageSensitivity(taskHandle::TaskHandle, channel::
     ccall((:DAQmxResetAIAccel4WireDCVoltageSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIAccel4WireDCVoltageSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIAccel4WireDCVoltageSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIAccel4WireDCVoltageSensitivityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIAccel4WireDCVoltageSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIAccel4WireDCVoltageSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIAccel4WireDCVoltageSensitivityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2754,11 +2755,11 @@ function ResetAIAccel4WireDCVoltageSensitivityUnits(taskHandle::TaskHandle, chan
     ccall((:DAQmxResetAIAccel4WireDCVoltageSensitivityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIAccelSensitivity(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIAccelSensitivity(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIAccelSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIAccelSensitivity(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIAccelSensitivity(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIAccelSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2766,11 +2767,11 @@ function ResetAIAccelSensitivity(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIAccelSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIAccelSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIAccelSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIAccelSensitivityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIAccelSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIAccelSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIAccelSensitivityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2778,11 +2779,11 @@ function ResetAIAccelSensitivityUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIAccelSensitivityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIAccelChargeSensitivity(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIAccelChargeSensitivity(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIAccelChargeSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIAccelChargeSensitivity(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIAccelChargeSensitivity(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIAccelChargeSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2790,11 +2791,11 @@ function ResetAIAccelChargeSensitivity(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIAccelChargeSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIAccelChargeSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIAccelChargeSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIAccelChargeSensitivityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIAccelChargeSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIAccelChargeSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIAccelChargeSensitivityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2802,11 +2803,11 @@ function ResetAIAccelChargeSensitivityUnits(taskHandle::TaskHandle, channel::Str
     ccall((:DAQmxResetAIAccelChargeSensitivityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIVelocityUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIVelocityUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIVelocityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIVelocityUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIVelocityUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIVelocityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2814,11 +2815,11 @@ function ResetAIVelocityUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIVelocityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIVelocityIEPESensordBRef(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIVelocityIEPESensordBRef(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIVelocityIEPESensordBRef, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIVelocityIEPESensordBRef(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIVelocityIEPESensordBRef(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIVelocityIEPESensordBRef, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2826,11 +2827,11 @@ function ResetAIVelocityIEPESensordBRef(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIVelocityIEPESensordBRef, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIVelocityIEPESensorSensitivity(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIVelocityIEPESensorSensitivity(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIVelocityIEPESensorSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIVelocityIEPESensorSensitivity(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIVelocityIEPESensorSensitivity(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIVelocityIEPESensorSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2838,11 +2839,11 @@ function ResetAIVelocityIEPESensorSensitivity(taskHandle::TaskHandle, channel::S
     ccall((:DAQmxResetAIVelocityIEPESensorSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIVelocityIEPESensorSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIVelocityIEPESensorSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIVelocityIEPESensorSensitivityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIVelocityIEPESensorSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIVelocityIEPESensorSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIVelocityIEPESensorSensitivityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2850,11 +2851,11 @@ function ResetAIVelocityIEPESensorSensitivityUnits(taskHandle::TaskHandle, chann
     ccall((:DAQmxResetAIVelocityIEPESensorSensitivityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIForceUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIForceUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIForceUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIForceUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIForceUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIForceUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2862,11 +2863,11 @@ function ResetAIForceUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIForceUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIForceIEPESensorSensitivity(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIForceIEPESensorSensitivity(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIForceIEPESensorSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIForceIEPESensorSensitivity(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIForceIEPESensorSensitivity(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIForceIEPESensorSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2874,11 +2875,11 @@ function ResetAIForceIEPESensorSensitivity(taskHandle::TaskHandle, channel::Stri
     ccall((:DAQmxResetAIForceIEPESensorSensitivity, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIForceIEPESensorSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIForceIEPESensorSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIForceIEPESensorSensitivityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIForceIEPESensorSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIForceIEPESensorSensitivityUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIForceIEPESensorSensitivityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2886,11 +2887,11 @@ function ResetAIForceIEPESensorSensitivityUnits(taskHandle::TaskHandle, channel:
     ccall((:DAQmxResetAIForceIEPESensorSensitivityUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIPressureUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIPressureUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIPressureUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIPressureUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIPressureUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIPressureUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2898,11 +2899,11 @@ function ResetAIPressureUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIPressureUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAITorqueUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAITorqueUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAITorqueUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAITorqueUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAITorqueUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAITorqueUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2910,11 +2911,11 @@ function ResetAITorqueUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAITorqueUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIBridgeUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIBridgeUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIBridgeUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIBridgeUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIBridgeUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIBridgeUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2922,11 +2923,11 @@ function ResetAIBridgeUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIBridgeUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIBridgeElectricalUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIBridgeElectricalUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIBridgeElectricalUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIBridgeElectricalUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIBridgeElectricalUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIBridgeElectricalUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2934,11 +2935,11 @@ function ResetAIBridgeElectricalUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIBridgeElectricalUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIBridgePhysicalUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIBridgePhysicalUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIBridgePhysicalUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIBridgePhysicalUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIBridgePhysicalUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIBridgePhysicalUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2946,11 +2947,11 @@ function ResetAIBridgePhysicalUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIBridgePhysicalUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIBridgeScaleType(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIBridgeScaleType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIBridgeScaleType, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIBridgeScaleType(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIBridgeScaleType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIBridgeScaleType, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -2958,11 +2959,11 @@ function ResetAIBridgeScaleType(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIBridgeScaleType, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIBridgeTwoPointLinFirstElectricalVal(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIBridgeTwoPointLinFirstElectricalVal(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIBridgeTwoPointLinFirstElectricalVal, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIBridgeTwoPointLinFirstElectricalVal(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIBridgeTwoPointLinFirstElectricalVal(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIBridgeTwoPointLinFirstElectricalVal, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2970,11 +2971,11 @@ function ResetAIBridgeTwoPointLinFirstElectricalVal(taskHandle::TaskHandle, chan
     ccall((:DAQmxResetAIBridgeTwoPointLinFirstElectricalVal, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIBridgeTwoPointLinFirstPhysicalVal(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIBridgeTwoPointLinFirstPhysicalVal(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIBridgeTwoPointLinFirstPhysicalVal, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIBridgeTwoPointLinFirstPhysicalVal(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIBridgeTwoPointLinFirstPhysicalVal(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIBridgeTwoPointLinFirstPhysicalVal, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2982,11 +2983,11 @@ function ResetAIBridgeTwoPointLinFirstPhysicalVal(taskHandle::TaskHandle, channe
     ccall((:DAQmxResetAIBridgeTwoPointLinFirstPhysicalVal, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIBridgeTwoPointLinSecondElectricalVal(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIBridgeTwoPointLinSecondElectricalVal(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIBridgeTwoPointLinSecondElectricalVal, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIBridgeTwoPointLinSecondElectricalVal(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIBridgeTwoPointLinSecondElectricalVal(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIBridgeTwoPointLinSecondElectricalVal, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -2994,11 +2995,11 @@ function ResetAIBridgeTwoPointLinSecondElectricalVal(taskHandle::TaskHandle, cha
     ccall((:DAQmxResetAIBridgeTwoPointLinSecondElectricalVal, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIBridgeTwoPointLinSecondPhysicalVal(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIBridgeTwoPointLinSecondPhysicalVal(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIBridgeTwoPointLinSecondPhysicalVal, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIBridgeTwoPointLinSecondPhysicalVal(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIBridgeTwoPointLinSecondPhysicalVal(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIBridgeTwoPointLinSecondPhysicalVal, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3054,11 +3055,11 @@ function ResetAIBridgePolyReverseCoeff(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIBridgePolyReverseCoeff, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIChargeUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIChargeUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIChargeUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIChargeUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIChargeUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIChargeUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -3074,11 +3075,11 @@ function GetAITEDSUnits(taskHandle::TaskHandle, channel::String, data::Vector{UI
     ccall((:DAQmxGetAITEDSUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{UInt8}, Cuint), taskHandle, channel, data, bufferSize)
 end
 
-function GetAICoupling(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAICoupling(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAICoupling, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAICoupling(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAICoupling(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAICoupling, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -3086,11 +3087,11 @@ function ResetAICoupling(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAICoupling, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIImpedance(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIImpedance(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIImpedance, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIImpedance(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIImpedance(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIImpedance, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3098,11 +3099,11 @@ function ResetAIImpedance(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIImpedance, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAITermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAITermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAITermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAITermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAITermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAITermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -3122,11 +3123,11 @@ function ResetAIInputSrc(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIInputSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIResistanceCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIResistanceCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIResistanceCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIResistanceCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIResistanceCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIResistanceCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -3134,11 +3135,11 @@ function ResetAIResistanceCfg(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIResistanceCfg, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAILeadWireResistance(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAILeadWireResistance(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAILeadWireResistance, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAILeadWireResistance(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAILeadWireResistance(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAILeadWireResistance, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3146,11 +3147,11 @@ function ResetAILeadWireResistance(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAILeadWireResistance, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIBridgeCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIBridgeCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIBridgeCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIBridgeCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIBridgeCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIBridgeCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -3158,11 +3159,11 @@ function ResetAIBridgeCfg(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIBridgeCfg, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIBridgeNomResistance(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIBridgeNomResistance(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIBridgeNomResistance, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIBridgeNomResistance(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIBridgeNomResistance(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIBridgeNomResistance, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3170,11 +3171,11 @@ function ResetAIBridgeNomResistance(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIBridgeNomResistance, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIBridgeInitialVoltage(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIBridgeInitialVoltage(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIBridgeInitialVoltage, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIBridgeInitialVoltage(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIBridgeInitialVoltage(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIBridgeInitialVoltage, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3182,11 +3183,11 @@ function ResetAIBridgeInitialVoltage(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIBridgeInitialVoltage, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIBridgeInitialRatio(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIBridgeInitialRatio(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIBridgeInitialRatio, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIBridgeInitialRatio(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIBridgeInitialRatio(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIBridgeInitialRatio, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3206,11 +3207,11 @@ function ResetAIBridgeShuntCalEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIBridgeShuntCalEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIBridgeShuntCalSelect(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIBridgeShuntCalSelect(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIBridgeShuntCalSelect, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIBridgeShuntCalSelect(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIBridgeShuntCalSelect(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIBridgeShuntCalSelect, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -3218,11 +3219,11 @@ function ResetAIBridgeShuntCalSelect(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIBridgeShuntCalSelect, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIBridgeShuntCalShuntCalASrc(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIBridgeShuntCalShuntCalASrc(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIBridgeShuntCalShuntCalASrc, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIBridgeShuntCalShuntCalASrc(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIBridgeShuntCalShuntCalASrc(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIBridgeShuntCalShuntCalASrc, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -3230,11 +3231,11 @@ function ResetAIBridgeShuntCalShuntCalASrc(taskHandle::TaskHandle, channel::Stri
     ccall((:DAQmxResetAIBridgeShuntCalShuntCalASrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIBridgeShuntCalGainAdjust(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIBridgeShuntCalGainAdjust(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIBridgeShuntCalGainAdjust, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIBridgeShuntCalGainAdjust(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIBridgeShuntCalGainAdjust(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIBridgeShuntCalGainAdjust, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3242,11 +3243,11 @@ function ResetAIBridgeShuntCalGainAdjust(taskHandle::TaskHandle, channel::String
     ccall((:DAQmxResetAIBridgeShuntCalGainAdjust, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIBridgeShuntCalShuntCalAResistance(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIBridgeShuntCalShuntCalAResistance(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIBridgeShuntCalShuntCalAResistance, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIBridgeShuntCalShuntCalAResistance(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIBridgeShuntCalShuntCalAResistance(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIBridgeShuntCalShuntCalAResistance, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3254,11 +3255,11 @@ function ResetAIBridgeShuntCalShuntCalAResistance(taskHandle::TaskHandle, channe
     ccall((:DAQmxResetAIBridgeShuntCalShuntCalAResistance, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIBridgeShuntCalShuntCalAActualResistance(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIBridgeShuntCalShuntCalAActualResistance(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIBridgeShuntCalShuntCalAActualResistance, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIBridgeShuntCalShuntCalAActualResistance(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIBridgeShuntCalShuntCalAActualResistance(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIBridgeShuntCalShuntCalAActualResistance, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3266,11 +3267,11 @@ function ResetAIBridgeShuntCalShuntCalAActualResistance(taskHandle::TaskHandle, 
     ccall((:DAQmxResetAIBridgeShuntCalShuntCalAActualResistance, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIBridgeShuntCalShuntCalBResistance(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIBridgeShuntCalShuntCalBResistance(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIBridgeShuntCalShuntCalBResistance, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIBridgeShuntCalShuntCalBResistance(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIBridgeShuntCalShuntCalBResistance(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIBridgeShuntCalShuntCalBResistance, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3278,11 +3279,11 @@ function ResetAIBridgeShuntCalShuntCalBResistance(taskHandle::TaskHandle, channe
     ccall((:DAQmxResetAIBridgeShuntCalShuntCalBResistance, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIBridgeShuntCalShuntCalBActualResistance(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIBridgeShuntCalShuntCalBActualResistance(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIBridgeShuntCalShuntCalBActualResistance, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIBridgeShuntCalShuntCalBActualResistance(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIBridgeShuntCalShuntCalBActualResistance(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIBridgeShuntCalShuntCalBActualResistance, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3290,11 +3291,11 @@ function ResetAIBridgeShuntCalShuntCalBActualResistance(taskHandle::TaskHandle, 
     ccall((:DAQmxResetAIBridgeShuntCalShuntCalBActualResistance, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIBridgeBalanceCoarsePot(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIBridgeBalanceCoarsePot(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIBridgeBalanceCoarsePot, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIBridgeBalanceCoarsePot(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIBridgeBalanceCoarsePot(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIBridgeBalanceCoarsePot, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -3302,11 +3303,11 @@ function ResetAIBridgeBalanceCoarsePot(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIBridgeBalanceCoarsePot, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIBridgeBalanceFinePot(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIBridgeBalanceFinePot(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIBridgeBalanceFinePot, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIBridgeBalanceFinePot(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIBridgeBalanceFinePot(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIBridgeBalanceFinePot, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -3314,11 +3315,11 @@ function ResetAIBridgeBalanceFinePot(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIBridgeBalanceFinePot, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAICurrentShuntLoc(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAICurrentShuntLoc(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAICurrentShuntLoc, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAICurrentShuntLoc(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAICurrentShuntLoc(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAICurrentShuntLoc, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -3326,11 +3327,11 @@ function ResetAICurrentShuntLoc(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAICurrentShuntLoc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAICurrentShuntResistance(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAICurrentShuntResistance(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAICurrentShuntResistance, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAICurrentShuntResistance(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAICurrentShuntResistance(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAICurrentShuntResistance, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3338,11 +3339,11 @@ function ResetAICurrentShuntResistance(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAICurrentShuntResistance, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIExcitSense(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIExcitSense(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIExcitSense, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIExcitSense(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIExcitSense(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIExcitSense, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -3350,11 +3351,11 @@ function ResetAIExcitSense(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIExcitSense, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIExcitSrc(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIExcitSrc(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIExcitSrc, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIExcitSrc(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIExcitSrc(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIExcitSrc, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -3362,11 +3363,11 @@ function ResetAIExcitSrc(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIExcitSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIExcitVal(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIExcitVal(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIExcitVal, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIExcitVal(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIExcitVal(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIExcitVal, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3398,11 +3399,11 @@ function ResetAIExcitUseMultiplexed(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIExcitUseMultiplexed, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIExcitActualVal(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIExcitActualVal(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIExcitActualVal, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIExcitActualVal(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIExcitActualVal(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIExcitActualVal, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3410,11 +3411,11 @@ function ResetAIExcitActualVal(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIExcitActualVal, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIExcitDCorAC(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIExcitDCorAC(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIExcitDCorAC, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIExcitDCorAC(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIExcitDCorAC(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIExcitDCorAC, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -3422,11 +3423,11 @@ function ResetAIExcitDCorAC(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIExcitDCorAC, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIExcitVoltageOrCurrent(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIExcitVoltageOrCurrent(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIExcitVoltageOrCurrent, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIExcitVoltageOrCurrent(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIExcitVoltageOrCurrent(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIExcitVoltageOrCurrent, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -3434,11 +3435,11 @@ function ResetAIExcitVoltageOrCurrent(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIExcitVoltageOrCurrent, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIExcitIdleOutputBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIExcitIdleOutputBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIExcitIdleOutputBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIExcitIdleOutputBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIExcitIdleOutputBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIExcitIdleOutputBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -3446,11 +3447,11 @@ function ResetAIExcitIdleOutputBehavior(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIExcitIdleOutputBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIACExcitFreq(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIACExcitFreq(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIACExcitFreq, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIACExcitFreq(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIACExcitFreq(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIACExcitFreq, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3470,11 +3471,11 @@ function ResetAIACExcitSyncEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIACExcitSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIACExcitWireMode(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIACExcitWireMode(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIACExcitWireMode, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIACExcitWireMode(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIACExcitWireMode(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIACExcitWireMode, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -3482,11 +3483,11 @@ function ResetAIACExcitWireMode(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIACExcitWireMode, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAISensorPowerVoltage(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAISensorPowerVoltage(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAISensorPowerVoltage, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAISensorPowerVoltage(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAISensorPowerVoltage(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAISensorPowerVoltage, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3494,11 +3495,11 @@ function ResetAISensorPowerVoltage(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAISensorPowerVoltage, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAISensorPowerCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAISensorPowerCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAISensorPowerCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAISensorPowerCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAISensorPowerCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAISensorPowerCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -3506,11 +3507,11 @@ function ResetAISensorPowerCfg(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAISensorPowerCfg, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAISensorPowerType(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAISensorPowerType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAISensorPowerType, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAISensorPowerType(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAISensorPowerType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAISensorPowerType, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -3530,11 +3531,11 @@ function ResetAIOpenThrmcplDetectEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIOpenThrmcplDetectEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIThrmcplLeadOffsetVoltage(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIThrmcplLeadOffsetVoltage(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIThrmcplLeadOffsetVoltage, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIThrmcplLeadOffsetVoltage(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIThrmcplLeadOffsetVoltage(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIThrmcplLeadOffsetVoltage, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3542,11 +3543,11 @@ function ResetAIThrmcplLeadOffsetVoltage(taskHandle::TaskHandle, channel::String
     ccall((:DAQmxResetAIThrmcplLeadOffsetVoltage, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIAtten(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIAtten(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIAtten, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIAtten(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIAtten(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIAtten, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3554,11 +3555,11 @@ function ResetAIAtten(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIAtten, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIProbeAtten(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIProbeAtten(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIProbeAtten, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIProbeAtten(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIProbeAtten(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIProbeAtten, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3578,11 +3579,11 @@ function ResetAILowpassEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAILowpassEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAILowpassCutoffFreq(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAILowpassCutoffFreq(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAILowpassCutoffFreq, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAILowpassCutoffFreq(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAILowpassCutoffFreq(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAILowpassCutoffFreq, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3590,11 +3591,11 @@ function ResetAILowpassCutoffFreq(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAILowpassCutoffFreq, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAILowpassSwitchCapClkSrc(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAILowpassSwitchCapClkSrc(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAILowpassSwitchCapClkSrc, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAILowpassSwitchCapClkSrc(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAILowpassSwitchCapClkSrc(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAILowpassSwitchCapClkSrc, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -3602,11 +3603,11 @@ function ResetAILowpassSwitchCapClkSrc(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAILowpassSwitchCapClkSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAILowpassSwitchCapExtClkFreq(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAILowpassSwitchCapExtClkFreq(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAILowpassSwitchCapExtClkFreq, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAILowpassSwitchCapExtClkFreq(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAILowpassSwitchCapExtClkFreq(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAILowpassSwitchCapExtClkFreq, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3650,11 +3651,11 @@ function ResetAIDigFltrEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIDigFltrType(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIDigFltrType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIDigFltrType, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIDigFltrType(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIDigFltrType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIDigFltrType, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -3662,11 +3663,11 @@ function ResetAIDigFltrType(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIDigFltrType, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIDigFltrResponse(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIDigFltrResponse(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIDigFltrResponse, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIDigFltrResponse(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIDigFltrResponse(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIDigFltrResponse, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -3686,11 +3687,11 @@ function ResetAIDigFltrOrder(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIDigFltrOrder, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIDigFltrLowpassCutoffFreq(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIDigFltrLowpassCutoffFreq(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIDigFltrLowpassCutoffFreq, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIDigFltrLowpassCutoffFreq(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIDigFltrLowpassCutoffFreq(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIDigFltrLowpassCutoffFreq, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3698,11 +3699,11 @@ function ResetAIDigFltrLowpassCutoffFreq(taskHandle::TaskHandle, channel::String
     ccall((:DAQmxResetAIDigFltrLowpassCutoffFreq, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIDigFltrHighpassCutoffFreq(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIDigFltrHighpassCutoffFreq(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIDigFltrHighpassCutoffFreq, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIDigFltrHighpassCutoffFreq(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIDigFltrHighpassCutoffFreq(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIDigFltrHighpassCutoffFreq, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3710,11 +3711,11 @@ function ResetAIDigFltrHighpassCutoffFreq(taskHandle::TaskHandle, channel::Strin
     ccall((:DAQmxResetAIDigFltrHighpassCutoffFreq, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIDigFltrBandpassCenterFreq(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIDigFltrBandpassCenterFreq(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIDigFltrBandpassCenterFreq, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIDigFltrBandpassCenterFreq(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIDigFltrBandpassCenterFreq(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIDigFltrBandpassCenterFreq, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3722,11 +3723,11 @@ function ResetAIDigFltrBandpassCenterFreq(taskHandle::TaskHandle, channel::Strin
     ccall((:DAQmxResetAIDigFltrBandpassCenterFreq, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIDigFltrBandpassWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIDigFltrBandpassWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIDigFltrBandpassWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIDigFltrBandpassWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIDigFltrBandpassWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIDigFltrBandpassWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3734,11 +3735,11 @@ function ResetAIDigFltrBandpassWidth(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIDigFltrBandpassWidth, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIDigFltrNotchCenterFreq(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIDigFltrNotchCenterFreq(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIDigFltrNotchCenterFreq, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIDigFltrNotchCenterFreq(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIDigFltrNotchCenterFreq(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIDigFltrNotchCenterFreq, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3746,11 +3747,11 @@ function ResetAIDigFltrNotchCenterFreq(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIDigFltrNotchCenterFreq, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIDigFltrNotchWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIDigFltrNotchWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIDigFltrNotchWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIDigFltrNotchWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIDigFltrNotchWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIDigFltrNotchWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3782,11 +3783,11 @@ function ResetAIFilterEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIFilterEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIFilterFreq(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIFilterFreq(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIFilterFreq, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIFilterFreq(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIFilterFreq(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIFilterFreq, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3794,11 +3795,11 @@ function ResetAIFilterFreq(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIFilterFreq, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIFilterResponse(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIFilterResponse(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIFilterResponse, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIFilterResponse(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIFilterResponse(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIFilterResponse, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -3818,15 +3819,15 @@ function ResetAIFilterOrder(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIFilterOrder, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIFilterDelay(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIFilterDelay(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIFilterDelay, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function GetAIFilterDelayUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIFilterDelayUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIFilterDelayUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIFilterDelayUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIFilterDelayUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIFilterDelayUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -3846,11 +3847,11 @@ function ResetAIRemoveFilterDelay(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIRemoveFilterDelay, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIFilterDelayAdjustment(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIFilterDelayAdjustment(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIFilterDelayAdjustment, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIFilterDelayAdjustment(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIFilterDelayAdjustment(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIFilterDelayAdjustment, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -3870,11 +3871,11 @@ function ResetAIAveragingWinSize(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIAveragingWinSize, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIResolutionUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIResolutionUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIResolutionUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function GetAIResolution(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIResolution(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIResolution, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
@@ -3882,15 +3883,15 @@ function GetAIRawSampSize(taskHandle::TaskHandle, channel::String, data::Ref{UIn
     ccall((:DAQmxGetAIRawSampSize, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function GetAIRawSampJustification(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIRawSampJustification(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIRawSampJustification, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function GetAIADCTimingMode(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIADCTimingMode(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIADCTimingMode, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIADCTimingMode(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIADCTimingMode(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIADCTimingMode, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -3950,11 +3951,11 @@ function ResetAIChanCalApplyCalIfExp(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIChanCalApplyCalIfExp, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIChanCalScaleType(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIChanCalScaleType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIChanCalScaleType, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIChanCalScaleType(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIChanCalScaleType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIChanCalScaleType, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -4058,11 +4059,11 @@ function ResetAIChanCalVerifAcqVals(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIChanCalVerifAcqVals, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIRngHigh(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIRngHigh(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIRngHigh, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIRngHigh(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIRngHigh(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIRngHigh, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -4070,11 +4071,11 @@ function ResetAIRngHigh(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIRngHigh, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIRngLow(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIRngLow(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIRngLow, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIRngLow(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIRngLow(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIRngLow, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -4082,11 +4083,11 @@ function ResetAIRngLow(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIRngLow, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIDCOffset(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIDCOffset(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIDCOffset, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIDCOffset(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIDCOffset(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIDCOffset, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -4094,11 +4095,11 @@ function ResetAIDCOffset(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIDCOffset, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIGain(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIGain(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIGain, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIGain(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIGain(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIGain, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -4118,11 +4119,11 @@ function ResetAISampAndHoldEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAISampAndHoldEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIAutoZeroMode(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIAutoZeroMode(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIAutoZeroMode, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIAutoZeroMode(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIAutoZeroMode(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIAutoZeroMode, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -4142,11 +4143,11 @@ function ResetAIChopEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIChopEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIDataXferMaxRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAIDataXferMaxRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAIDataXferMaxRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAIDataXferMaxRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAIDataXferMaxRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAIDataXferMaxRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -4154,11 +4155,11 @@ function ResetAIDataXferMaxRate(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIDataXferMaxRate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIDataXferMech(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIDataXferMech(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIDataXferMech, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIDataXferMech(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIDataXferMech(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIDataXferMech, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -4166,11 +4167,11 @@ function ResetAIDataXferMech(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIDataXferMech, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIDataXferReqCond(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIDataXferReqCond(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIDataXferReqCond, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIDataXferReqCond(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIDataXferReqCond(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIDataXferReqCond, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -4226,11 +4227,11 @@ function ResetAIMemMapEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIMemMapEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAIRawDataCompressionType(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAIRawDataCompressionType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAIRawDataCompressionType, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAIRawDataCompressionType(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAIRawDataCompressionType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAIRawDataCompressionType, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -4278,11 +4279,11 @@ function ResetAIOpenChanDetectEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAIOpenChanDetectEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOMax(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAOMax(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAOMax, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAOMax(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAOMax(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAOMax, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -4290,11 +4291,11 @@ function ResetAOMax(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAOMax, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOMin(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAOMin(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAOMin, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAOMin(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAOMin(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAOMin, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -4318,11 +4319,11 @@ function GetAOOutputType(taskHandle::TaskHandle, channel::String, data::Ref{Int3
     ccall((:DAQmxGetAOOutputType, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function GetAOVoltageUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAOVoltageUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAOVoltageUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAOVoltageUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAOVoltageUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAOVoltageUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -4330,11 +4331,11 @@ function ResetAOVoltageUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAOVoltageUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOVoltageCurrentLimit(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAOVoltageCurrentLimit(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAOVoltageCurrentLimit, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAOVoltageCurrentLimit(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAOVoltageCurrentLimit(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAOVoltageCurrentLimit, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -4342,11 +4343,11 @@ function ResetAOVoltageCurrentLimit(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAOVoltageCurrentLimit, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOCurrentUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAOCurrentUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAOCurrentUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAOCurrentUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAOCurrentUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAOCurrentUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -4354,11 +4355,11 @@ function ResetAOCurrentUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAOCurrentUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOFuncGenType(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAOFuncGenType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAOFuncGenType, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAOFuncGenType(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAOFuncGenType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAOFuncGenType, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -4366,11 +4367,11 @@ function ResetAOFuncGenType(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAOFuncGenType, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOFuncGenFreq(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAOFuncGenFreq(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAOFuncGenFreq, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAOFuncGenFreq(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAOFuncGenFreq(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAOFuncGenFreq, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -4378,11 +4379,11 @@ function ResetAOFuncGenFreq(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAOFuncGenFreq, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOFuncGenAmplitude(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAOFuncGenAmplitude(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAOFuncGenAmplitude, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAOFuncGenAmplitude(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAOFuncGenAmplitude(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAOFuncGenAmplitude, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -4390,11 +4391,11 @@ function ResetAOFuncGenAmplitude(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAOFuncGenAmplitude, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOFuncGenOffset(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAOFuncGenOffset(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAOFuncGenOffset, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAOFuncGenOffset(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAOFuncGenOffset(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAOFuncGenOffset, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -4402,11 +4403,11 @@ function ResetAOFuncGenOffset(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAOFuncGenOffset, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOFuncGenSquareDutyCycle(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAOFuncGenSquareDutyCycle(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAOFuncGenSquareDutyCycle, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAOFuncGenSquareDutyCycle(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAOFuncGenSquareDutyCycle(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAOFuncGenSquareDutyCycle, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -4414,11 +4415,11 @@ function ResetAOFuncGenSquareDutyCycle(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAOFuncGenSquareDutyCycle, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOFuncGenModulationType(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAOFuncGenModulationType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAOFuncGenModulationType, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAOFuncGenModulationType(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAOFuncGenModulationType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAOFuncGenModulationType, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -4426,11 +4427,11 @@ function ResetAOFuncGenModulationType(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAOFuncGenModulationType, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOFuncGenFMDeviation(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAOFuncGenFMDeviation(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAOFuncGenFMDeviation, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAOFuncGenFMDeviation(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAOFuncGenFMDeviation(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAOFuncGenFMDeviation, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -4438,11 +4439,11 @@ function ResetAOFuncGenFMDeviation(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAOFuncGenFMDeviation, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOOutputImpedance(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAOOutputImpedance(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAOOutputImpedance, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAOOutputImpedance(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAOOutputImpedance(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAOOutputImpedance, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -4450,11 +4451,11 @@ function ResetAOOutputImpedance(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAOOutputImpedance, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOLoadImpedance(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAOLoadImpedance(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAOLoadImpedance, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAOLoadImpedance(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAOLoadImpedance(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAOLoadImpedance, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -4462,11 +4463,11 @@ function ResetAOLoadImpedance(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAOLoadImpedance, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOIdleOutputBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAOIdleOutputBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAOIdleOutputBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAOIdleOutputBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAOIdleOutputBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAOIdleOutputBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -4474,11 +4475,11 @@ function ResetAOIdleOutputBehavior(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAOIdleOutputBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAOTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAOTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAOTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAOTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAOTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -4486,11 +4487,11 @@ function ResetAOTermCfg(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAOTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOResolutionUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAOResolutionUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAOResolutionUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAOResolutionUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAOResolutionUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAOResolutionUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -4498,15 +4499,15 @@ function ResetAOResolutionUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAOResolutionUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOResolution(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAOResolution(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAOResolution, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function GetAODACRngHigh(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAODACRngHigh(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAODACRngHigh, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAODACRngHigh(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAODACRngHigh(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAODACRngHigh, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -4514,11 +4515,11 @@ function ResetAODACRngHigh(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAODACRngHigh, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAODACRngLow(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAODACRngLow(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAODACRngLow, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAODACRngLow(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAODACRngLow(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAODACRngLow, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -4550,11 +4551,11 @@ function ResetAODACRefAllowConnToGnd(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAODACRefAllowConnToGnd, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAODACRefSrc(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAODACRefSrc(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAODACRefSrc, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAODACRefSrc(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAODACRefSrc(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAODACRefSrc, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -4574,11 +4575,11 @@ function ResetAODACRefExtSrc(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAODACRefExtSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAODACRefVal(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAODACRefVal(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAODACRefVal, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAODACRefVal(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAODACRefVal(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAODACRefVal, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -4586,11 +4587,11 @@ function ResetAODACRefVal(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAODACRefVal, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAODACOffsetSrc(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAODACOffsetSrc(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAODACOffsetSrc, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAODACOffsetSrc(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAODACOffsetSrc(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAODACOffsetSrc, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -4610,11 +4611,11 @@ function ResetAODACOffsetExtSrc(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAODACOffsetExtSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAODACOffsetVal(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAODACOffsetVal(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAODACOffsetVal, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAODACOffsetVal(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAODACOffsetVal(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAODACOffsetVal, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -4634,11 +4635,11 @@ function ResetAOReglitchEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAOReglitchEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOFilterDelay(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAOFilterDelay(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAOFilterDelay, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAOFilterDelay(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAOFilterDelay(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAOFilterDelay, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -4646,11 +4647,11 @@ function ResetAOFilterDelay(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAOFilterDelay, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOFilterDelayUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAOFilterDelayUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAOFilterDelayUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAOFilterDelayUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAOFilterDelayUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAOFilterDelayUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -4658,11 +4659,11 @@ function ResetAOFilterDelayUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAOFilterDelayUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOFilterDelayAdjustment(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAOFilterDelayAdjustment(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAOFilterDelayAdjustment, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAOFilterDelayAdjustment(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAOFilterDelayAdjustment(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAOFilterDelayAdjustment, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -4670,11 +4671,11 @@ function ResetAOFilterDelayAdjustment(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAOFilterDelayAdjustment, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAOGain(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetAOGain(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetAOGain, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetAOGain(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetAOGain(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetAOGain, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -4694,11 +4695,11 @@ function ResetAOUseOnlyOnBrdMem(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAOUseOnlyOnBrdMem, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAODataXferMech(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAODataXferMech(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAODataXferMech, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAODataXferMech(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAODataXferMech(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAODataXferMech, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -4706,11 +4707,11 @@ function ResetAODataXferMech(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetAODataXferMech, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetAODataXferReqCond(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetAODataXferReqCond(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetAODataXferReqCond, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetAODataXferReqCond(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetAODataXferReqCond(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetAODataXferReqCond, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -4798,11 +4799,11 @@ function ResetDIDigFltrEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDIDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDIDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetDIDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetDIDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetDIDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetDIDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetDIDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -4834,11 +4835,11 @@ function ResetDIDigFltrTimebaseSrc(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDIDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDIDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetDIDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetDIDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetDIDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetDIDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetDIDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -4870,11 +4871,11 @@ function ResetDITristate(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDITristate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDILogicFamily(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetDILogicFamily(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetDILogicFamily, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetDILogicFamily(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetDILogicFamily(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetDILogicFamily, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -4882,11 +4883,11 @@ function ResetDILogicFamily(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDILogicFamily, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDIDataXferMech(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetDIDataXferMech(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetDIDataXferMech, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetDIDataXferMech(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetDIDataXferMech(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetDIDataXferMech, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -4894,11 +4895,11 @@ function ResetDIDataXferMech(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDIDataXferMech, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDIDataXferReqCond(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetDIDataXferReqCond(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetDIDataXferReqCond, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetDIDataXferReqCond(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetDIDataXferReqCond(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetDIDataXferReqCond, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -4942,11 +4943,11 @@ function ResetDIMemMapEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDIMemMapEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDIAcquireOn(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetDIAcquireOn(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetDIAcquireOn, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetDIAcquireOn(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetDIAcquireOn(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetDIAcquireOn, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -4954,11 +4955,11 @@ function ResetDIAcquireOn(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDIAcquireOn, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDOOutputDriveType(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetDOOutputDriveType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetDOOutputDriveType, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetDOOutputDriveType(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetDOOutputDriveType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetDOOutputDriveType, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -4994,11 +4995,11 @@ function ResetDOTristate(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDOTristate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDOLineStatesStartState(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetDOLineStatesStartState(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetDOLineStatesStartState, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetDOLineStatesStartState(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetDOLineStatesStartState(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetDOLineStatesStartState, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5006,11 +5007,11 @@ function ResetDOLineStatesStartState(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDOLineStatesStartState, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDOLineStatesPausedState(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetDOLineStatesPausedState(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetDOLineStatesPausedState, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetDOLineStatesPausedState(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetDOLineStatesPausedState(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetDOLineStatesPausedState, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5018,11 +5019,11 @@ function ResetDOLineStatesPausedState(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDOLineStatesPausedState, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDOLineStatesDoneState(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetDOLineStatesDoneState(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetDOLineStatesDoneState, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetDOLineStatesDoneState(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetDOLineStatesDoneState(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetDOLineStatesDoneState, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5030,11 +5031,11 @@ function ResetDOLineStatesDoneState(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDOLineStatesDoneState, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDOLogicFamily(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetDOLogicFamily(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetDOLogicFamily, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetDOLogicFamily(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetDOLogicFamily(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetDOLogicFamily, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5042,11 +5043,11 @@ function ResetDOLogicFamily(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDOLogicFamily, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDOOvercurrentLimit(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetDOOvercurrentLimit(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetDOOvercurrentLimit, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetDOOvercurrentLimit(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetDOOvercurrentLimit(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetDOOvercurrentLimit, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -5066,11 +5067,11 @@ function ResetDOOvercurrentAutoReenable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDOOvercurrentAutoReenable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDOOvercurrentReenablePeriod(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetDOOvercurrentReenablePeriod(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetDOOvercurrentReenablePeriod, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetDOOvercurrentReenablePeriod(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetDOOvercurrentReenablePeriod(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetDOOvercurrentReenablePeriod, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -5090,11 +5091,11 @@ function ResetDOUseOnlyOnBrdMem(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDOUseOnlyOnBrdMem, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDODataXferMech(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetDODataXferMech(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetDODataXferMech, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetDODataXferMech(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetDODataXferMech(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetDODataXferMech, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5102,11 +5103,11 @@ function ResetDODataXferMech(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDODataXferMech, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDODataXferReqCond(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetDODataXferReqCond(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetDODataXferReqCond, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetDODataXferReqCond(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetDODataXferReqCond(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetDODataXferReqCond, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5150,11 +5151,11 @@ function ResetDOMemMapEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDOMemMapEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetDOGenerateOn(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetDOGenerateOn(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetDOGenerateOn, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetDOGenerateOn(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetDOGenerateOn(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetDOGenerateOn, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5162,11 +5163,11 @@ function ResetDOGenerateOn(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetDOGenerateOn, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIMax(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIMax(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIMax, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIMax(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIMax(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIMax, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -5174,11 +5175,11 @@ function ResetCIMax(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIMax, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIMin(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIMin(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIMin, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIMin(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIMin(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIMin, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -5202,11 +5203,11 @@ function GetCIMeasType(taskHandle::TaskHandle, channel::String, data::Ref{Int32}
     ccall((:DAQmxGetCIMeasType, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function GetCIFreqUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIFreqUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIFreqUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIFreqUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIFreqUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIFreqUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5226,11 +5227,11 @@ function ResetCIFreqTerm(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIFreqTerm, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIFreqTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIFreqTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIFreqTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIFreqTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIFreqTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIFreqTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5238,11 +5239,11 @@ function ResetCIFreqTermCfg(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIFreqTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIFreqLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIFreqLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIFreqLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIFreqLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIFreqLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIFreqLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5262,11 +5263,11 @@ function ResetCIFreqDigFltrEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIFreqDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIFreqDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIFreqDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIFreqDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIFreqDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIFreqDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIFreqDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -5286,11 +5287,11 @@ function ResetCIFreqDigFltrTimebaseSrc(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIFreqDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIFreqDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIFreqDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIFreqDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIFreqDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIFreqDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIFreqDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -5310,11 +5311,11 @@ function ResetCIFreqDigSyncEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIFreqDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIFreqStartingEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIFreqStartingEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIFreqStartingEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIFreqStartingEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIFreqStartingEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIFreqStartingEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5322,11 +5323,11 @@ function ResetCIFreqStartingEdge(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIFreqStartingEdge, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIFreqMeasMeth(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIFreqMeasMeth(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIFreqMeasMeth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIFreqMeasMeth(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIFreqMeasMeth(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIFreqMeasMeth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5346,11 +5347,11 @@ function ResetCIFreqEnableAveraging(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIFreqEnableAveraging, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIFreqMeasTime(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIFreqMeasTime(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIFreqMeasTime, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIFreqMeasTime(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIFreqMeasTime(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIFreqMeasTime, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -5370,11 +5371,11 @@ function ResetCIFreqDiv(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIFreqDiv, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPeriodUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIPeriodUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIPeriodUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIPeriodUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIPeriodUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIPeriodUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5394,11 +5395,11 @@ function ResetCIPeriodTerm(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPeriodTerm, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPeriodTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIPeriodTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIPeriodTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIPeriodTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIPeriodTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIPeriodTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5406,11 +5407,11 @@ function ResetCIPeriodTermCfg(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPeriodTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPeriodLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIPeriodLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIPeriodLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIPeriodLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIPeriodLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIPeriodLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5430,11 +5431,11 @@ function ResetCIPeriodDigFltrEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPeriodDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPeriodDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIPeriodDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIPeriodDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIPeriodDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIPeriodDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIPeriodDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -5454,11 +5455,11 @@ function ResetCIPeriodDigFltrTimebaseSrc(taskHandle::TaskHandle, channel::String
     ccall((:DAQmxResetCIPeriodDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPeriodDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIPeriodDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIPeriodDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIPeriodDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIPeriodDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIPeriodDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -5478,11 +5479,11 @@ function ResetCIPeriodDigSyncEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPeriodDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPeriodStartingEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIPeriodStartingEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIPeriodStartingEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIPeriodStartingEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIPeriodStartingEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIPeriodStartingEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5490,11 +5491,11 @@ function ResetCIPeriodStartingEdge(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPeriodStartingEdge, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPeriodMeasMeth(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIPeriodMeasMeth(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIPeriodMeasMeth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIPeriodMeasMeth(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIPeriodMeasMeth(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIPeriodMeasMeth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5514,11 +5515,11 @@ function ResetCIPeriodEnableAveraging(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPeriodEnableAveraging, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPeriodMeasTime(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIPeriodMeasTime(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIPeriodMeasTime, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIPeriodMeasTime(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIPeriodMeasTime(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIPeriodMeasTime, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -5550,11 +5551,11 @@ function ResetCICountEdgesTerm(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCICountEdgesTerm, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCICountEdgesTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCICountEdgesTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCICountEdgesTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCICountEdgesTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5562,11 +5563,11 @@ function ResetCICountEdgesTermCfg(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCICountEdgesTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCICountEdgesLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCICountEdgesLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCICountEdgesLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCICountEdgesLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5586,11 +5587,11 @@ function ResetCICountEdgesDigFltrEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCICountEdgesDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCICountEdgesDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCICountEdgesDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCICountEdgesDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCICountEdgesDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -5610,11 +5611,11 @@ function ResetCICountEdgesDigFltrTimebaseSrc(taskHandle::TaskHandle, channel::St
     ccall((:DAQmxResetCICountEdgesDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCICountEdgesDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCICountEdgesDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCICountEdgesDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCICountEdgesDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -5634,11 +5635,11 @@ function ResetCICountEdgesDigSyncEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCICountEdgesDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesDir(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCICountEdgesDir(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCICountEdgesDir, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesDir(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCICountEdgesDir(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCICountEdgesDir, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5658,11 +5659,11 @@ function ResetCICountEdgesDirTerm(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCICountEdgesDirTerm, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesCountDirTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCICountEdgesCountDirTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCICountEdgesCountDirTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesCountDirTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCICountEdgesCountDirTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCICountEdgesCountDirTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5670,11 +5671,11 @@ function ResetCICountEdgesCountDirTermCfg(taskHandle::TaskHandle, channel::Strin
     ccall((:DAQmxResetCICountEdgesCountDirTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesCountDirLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCICountEdgesCountDirLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCICountEdgesCountDirLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesCountDirLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCICountEdgesCountDirLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCICountEdgesCountDirLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5694,11 +5695,11 @@ function ResetCICountEdgesCountDirDigFltrEnable(taskHandle::TaskHandle, channel:
     ccall((:DAQmxResetCICountEdgesCountDirDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesCountDirDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCICountEdgesCountDirDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCICountEdgesCountDirDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesCountDirDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCICountEdgesCountDirDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCICountEdgesCountDirDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -5718,11 +5719,11 @@ function ResetCICountEdgesCountDirDigFltrTimebaseSrc(taskHandle::TaskHandle, cha
     ccall((:DAQmxResetCICountEdgesCountDirDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesCountDirDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCICountEdgesCountDirDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCICountEdgesCountDirDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesCountDirDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCICountEdgesCountDirDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCICountEdgesCountDirDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -5754,11 +5755,11 @@ function ResetCICountEdgesInitialCnt(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCICountEdgesInitialCnt, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesActiveEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCICountEdgesActiveEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCICountEdgesActiveEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesActiveEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCICountEdgesActiveEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCICountEdgesActiveEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5802,11 +5803,11 @@ function ResetCICountEdgesCountResetTerm(taskHandle::TaskHandle, channel::String
     ccall((:DAQmxResetCICountEdgesCountResetTerm, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesCountResetTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCICountEdgesCountResetTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCICountEdgesCountResetTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesCountResetTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCICountEdgesCountResetTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCICountEdgesCountResetTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5814,11 +5815,11 @@ function ResetCICountEdgesCountResetTermCfg(taskHandle::TaskHandle, channel::Str
     ccall((:DAQmxResetCICountEdgesCountResetTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesCountResetLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCICountEdgesCountResetLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCICountEdgesCountResetLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesCountResetLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCICountEdgesCountResetLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCICountEdgesCountResetLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5838,11 +5839,11 @@ function ResetCICountEdgesCountResetDigFltrEnable(taskHandle::TaskHandle, channe
     ccall((:DAQmxResetCICountEdgesCountResetDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesCountResetDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCICountEdgesCountResetDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCICountEdgesCountResetDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesCountResetDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCICountEdgesCountResetDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCICountEdgesCountResetDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -5862,11 +5863,11 @@ function ResetCICountEdgesCountResetDigFltrTimebaseSrc(taskHandle::TaskHandle, c
     ccall((:DAQmxResetCICountEdgesCountResetDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesCountResetDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCICountEdgesCountResetDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCICountEdgesCountResetDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesCountResetDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCICountEdgesCountResetDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCICountEdgesCountResetDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -5886,11 +5887,11 @@ function ResetCICountEdgesCountResetDigSyncEnable(taskHandle::TaskHandle, channe
     ccall((:DAQmxResetCICountEdgesCountResetDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesCountResetActiveEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCICountEdgesCountResetActiveEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCICountEdgesCountResetActiveEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesCountResetActiveEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCICountEdgesCountResetActiveEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCICountEdgesCountResetActiveEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5922,11 +5923,11 @@ function ResetCICountEdgesGateTerm(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCICountEdgesGateTerm, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesGateTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCICountEdgesGateTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCICountEdgesGateTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesGateTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCICountEdgesGateTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCICountEdgesGateTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5934,11 +5935,11 @@ function ResetCICountEdgesGateTermCfg(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCICountEdgesGateTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesGateLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCICountEdgesGateLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCICountEdgesGateLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesGateLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCICountEdgesGateLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCICountEdgesGateLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -5958,11 +5959,11 @@ function ResetCICountEdgesGateDigFltrEnable(taskHandle::TaskHandle, channel::Str
     ccall((:DAQmxResetCICountEdgesGateDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesGateDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCICountEdgesGateDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCICountEdgesGateDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesGateDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCICountEdgesGateDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCICountEdgesGateDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -5982,11 +5983,11 @@ function ResetCICountEdgesGateDigFltrTimebaseSrc(taskHandle::TaskHandle, channel
     ccall((:DAQmxResetCICountEdgesGateDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesGateDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCICountEdgesGateDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCICountEdgesGateDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesGateDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCICountEdgesGateDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCICountEdgesGateDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -5994,11 +5995,11 @@ function ResetCICountEdgesGateDigFltrTimebaseRate(taskHandle::TaskHandle, channe
     ccall((:DAQmxResetCICountEdgesGateDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICountEdgesGateWhen(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCICountEdgesGateWhen(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCICountEdgesGateWhen, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCICountEdgesGateWhen(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCICountEdgesGateWhen(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCICountEdgesGateWhen, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6018,11 +6019,11 @@ function ResetCIDutyCycleTerm(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIDutyCycleTerm, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIDutyCycleTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIDutyCycleTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIDutyCycleTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIDutyCycleTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIDutyCycleTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIDutyCycleTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6030,11 +6031,11 @@ function ResetCIDutyCycleTermCfg(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIDutyCycleTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIDutyCycleLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIDutyCycleLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIDutyCycleLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIDutyCycleLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIDutyCycleLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIDutyCycleLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6054,11 +6055,11 @@ function ResetCIDutyCycleDigFltrEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIDutyCycleDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIDutyCycleDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIDutyCycleDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIDutyCycleDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIDutyCycleDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIDutyCycleDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIDutyCycleDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -6078,11 +6079,11 @@ function ResetCIDutyCycleDigFltrTimebaseSrc(taskHandle::TaskHandle, channel::Str
     ccall((:DAQmxResetCIDutyCycleDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIDutyCycleDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIDutyCycleDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIDutyCycleDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIDutyCycleDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIDutyCycleDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIDutyCycleDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -6090,11 +6091,11 @@ function ResetCIDutyCycleDigFltrTimebaseRate(taskHandle::TaskHandle, channel::St
     ccall((:DAQmxResetCIDutyCycleDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIDutyCycleStartingEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIDutyCycleStartingEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIDutyCycleStartingEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIDutyCycleStartingEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIDutyCycleStartingEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIDutyCycleStartingEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6102,11 +6103,11 @@ function ResetCIDutyCycleStartingEdge(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIDutyCycleStartingEdge, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIAngEncoderUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIAngEncoderUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIAngEncoderUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIAngEncoderUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIAngEncoderUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIAngEncoderUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6126,11 +6127,11 @@ function ResetCIAngEncoderPulsesPerRev(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIAngEncoderPulsesPerRev, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIAngEncoderInitialAngle(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIAngEncoderInitialAngle(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIAngEncoderInitialAngle, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIAngEncoderInitialAngle(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIAngEncoderInitialAngle(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIAngEncoderInitialAngle, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -6138,11 +6139,11 @@ function ResetCIAngEncoderInitialAngle(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIAngEncoderInitialAngle, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCILinEncoderUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCILinEncoderUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCILinEncoderUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCILinEncoderUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCILinEncoderUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCILinEncoderUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6150,11 +6151,11 @@ function ResetCILinEncoderUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCILinEncoderUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCILinEncoderDistPerPulse(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCILinEncoderDistPerPulse(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCILinEncoderDistPerPulse, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCILinEncoderDistPerPulse(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCILinEncoderDistPerPulse(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCILinEncoderDistPerPulse, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -6162,11 +6163,11 @@ function ResetCILinEncoderDistPerPulse(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCILinEncoderDistPerPulse, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCILinEncoderInitialPos(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCILinEncoderInitialPos(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCILinEncoderInitialPos, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCILinEncoderInitialPos(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCILinEncoderInitialPos(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCILinEncoderInitialPos, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -6174,11 +6175,11 @@ function ResetCILinEncoderInitialPos(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCILinEncoderInitialPos, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIEncoderDecodingType(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIEncoderDecodingType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIEncoderDecodingType, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIEncoderDecodingType(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIEncoderDecodingType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIEncoderDecodingType, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6198,11 +6199,11 @@ function ResetCIEncoderAInputTerm(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIEncoderAInputTerm, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIEncoderAInputTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIEncoderAInputTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIEncoderAInputTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIEncoderAInputTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIEncoderAInputTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIEncoderAInputTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6210,11 +6211,11 @@ function ResetCIEncoderAInputTermCfg(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIEncoderAInputTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIEncoderAInputLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIEncoderAInputLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIEncoderAInputLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIEncoderAInputLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIEncoderAInputLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIEncoderAInputLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6234,11 +6235,11 @@ function ResetCIEncoderAInputDigFltrEnable(taskHandle::TaskHandle, channel::Stri
     ccall((:DAQmxResetCIEncoderAInputDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIEncoderAInputDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIEncoderAInputDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIEncoderAInputDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIEncoderAInputDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIEncoderAInputDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIEncoderAInputDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -6258,11 +6259,11 @@ function ResetCIEncoderAInputDigFltrTimebaseSrc(taskHandle::TaskHandle, channel:
     ccall((:DAQmxResetCIEncoderAInputDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIEncoderAInputDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIEncoderAInputDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIEncoderAInputDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIEncoderAInputDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIEncoderAInputDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIEncoderAInputDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -6294,11 +6295,11 @@ function ResetCIEncoderBInputTerm(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIEncoderBInputTerm, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIEncoderBInputTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIEncoderBInputTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIEncoderBInputTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIEncoderBInputTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIEncoderBInputTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIEncoderBInputTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6306,11 +6307,11 @@ function ResetCIEncoderBInputTermCfg(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIEncoderBInputTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIEncoderBInputLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIEncoderBInputLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIEncoderBInputLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIEncoderBInputLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIEncoderBInputLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIEncoderBInputLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6330,11 +6331,11 @@ function ResetCIEncoderBInputDigFltrEnable(taskHandle::TaskHandle, channel::Stri
     ccall((:DAQmxResetCIEncoderBInputDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIEncoderBInputDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIEncoderBInputDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIEncoderBInputDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIEncoderBInputDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIEncoderBInputDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIEncoderBInputDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -6354,11 +6355,11 @@ function ResetCIEncoderBInputDigFltrTimebaseSrc(taskHandle::TaskHandle, channel:
     ccall((:DAQmxResetCIEncoderBInputDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIEncoderBInputDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIEncoderBInputDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIEncoderBInputDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIEncoderBInputDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIEncoderBInputDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIEncoderBInputDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -6390,11 +6391,11 @@ function ResetCIEncoderZInputTerm(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIEncoderZInputTerm, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIEncoderZInputTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIEncoderZInputTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIEncoderZInputTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIEncoderZInputTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIEncoderZInputTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIEncoderZInputTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6402,11 +6403,11 @@ function ResetCIEncoderZInputTermCfg(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIEncoderZInputTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIEncoderZInputLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIEncoderZInputLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIEncoderZInputLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIEncoderZInputLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIEncoderZInputLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIEncoderZInputLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6426,11 +6427,11 @@ function ResetCIEncoderZInputDigFltrEnable(taskHandle::TaskHandle, channel::Stri
     ccall((:DAQmxResetCIEncoderZInputDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIEncoderZInputDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIEncoderZInputDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIEncoderZInputDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIEncoderZInputDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIEncoderZInputDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIEncoderZInputDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -6450,11 +6451,11 @@ function ResetCIEncoderZInputDigFltrTimebaseSrc(taskHandle::TaskHandle, channel:
     ccall((:DAQmxResetCIEncoderZInputDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIEncoderZInputDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIEncoderZInputDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIEncoderZInputDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIEncoderZInputDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIEncoderZInputDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIEncoderZInputDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -6486,11 +6487,11 @@ function ResetCIEncoderZIndexEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIEncoderZIndexEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIEncoderZIndexVal(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIEncoderZIndexVal(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIEncoderZIndexVal, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIEncoderZIndexVal(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIEncoderZIndexVal(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIEncoderZIndexVal, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -6498,11 +6499,11 @@ function ResetCIEncoderZIndexVal(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIEncoderZIndexVal, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIEncoderZIndexPhase(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIEncoderZIndexPhase(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIEncoderZIndexPhase, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIEncoderZIndexPhase(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIEncoderZIndexPhase(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIEncoderZIndexPhase, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6510,11 +6511,11 @@ function ResetCIEncoderZIndexPhase(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIEncoderZIndexPhase, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseWidthUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIPulseWidthUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIPulseWidthUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIPulseWidthUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIPulseWidthUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIPulseWidthUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6534,11 +6535,11 @@ function ResetCIPulseWidthTerm(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPulseWidthTerm, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseWidthTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIPulseWidthTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIPulseWidthTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIPulseWidthTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIPulseWidthTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIPulseWidthTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6546,11 +6547,11 @@ function ResetCIPulseWidthTermCfg(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPulseWidthTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseWidthLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIPulseWidthLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIPulseWidthLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIPulseWidthLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIPulseWidthLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIPulseWidthLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6570,11 +6571,11 @@ function ResetCIPulseWidthDigFltrEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPulseWidthDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseWidthDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIPulseWidthDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIPulseWidthDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIPulseWidthDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIPulseWidthDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIPulseWidthDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -6594,11 +6595,11 @@ function ResetCIPulseWidthDigFltrTimebaseSrc(taskHandle::TaskHandle, channel::St
     ccall((:DAQmxResetCIPulseWidthDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseWidthDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIPulseWidthDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIPulseWidthDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIPulseWidthDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIPulseWidthDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIPulseWidthDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -6618,11 +6619,11 @@ function ResetCIPulseWidthDigSyncEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPulseWidthDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseWidthStartingEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIPulseWidthStartingEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIPulseWidthStartingEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIPulseWidthStartingEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIPulseWidthStartingEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIPulseWidthStartingEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6630,11 +6631,11 @@ function ResetCIPulseWidthStartingEdge(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPulseWidthStartingEdge, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCITimestampUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCITimestampUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCITimestampUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCITimestampUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCITimestampUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCITimestampUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6654,11 +6655,11 @@ function ResetCITimestampInitialSeconds(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCITimestampInitialSeconds, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIGPSSyncMethod(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIGPSSyncMethod(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIGPSSyncMethod, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIGPSSyncMethod(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIGPSSyncMethod(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIGPSSyncMethod, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6678,11 +6679,11 @@ function ResetCIGPSSyncSrc(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIGPSSyncSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIVelocityAngEncoderUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIVelocityAngEncoderUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIVelocityAngEncoderUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIVelocityAngEncoderUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIVelocityAngEncoderUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIVelocityAngEncoderUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6702,11 +6703,11 @@ function ResetCIVelocityAngEncoderPulsesPerRev(taskHandle::TaskHandle, channel::
     ccall((:DAQmxResetCIVelocityAngEncoderPulsesPerRev, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIVelocityLinEncoderUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIVelocityLinEncoderUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIVelocityLinEncoderUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIVelocityLinEncoderUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIVelocityLinEncoderUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIVelocityLinEncoderUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6714,11 +6715,11 @@ function ResetCIVelocityLinEncoderUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIVelocityLinEncoderUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIVelocityLinEncoderDistPerPulse(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIVelocityLinEncoderDistPerPulse(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIVelocityLinEncoderDistPerPulse, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIVelocityLinEncoderDistPerPulse(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIVelocityLinEncoderDistPerPulse(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIVelocityLinEncoderDistPerPulse, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -6726,11 +6727,11 @@ function ResetCIVelocityLinEncoderDistPerPulse(taskHandle::TaskHandle, channel::
     ccall((:DAQmxResetCIVelocityLinEncoderDistPerPulse, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIVelocityEncoderDecodingType(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIVelocityEncoderDecodingType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIVelocityEncoderDecodingType, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIVelocityEncoderDecodingType(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIVelocityEncoderDecodingType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIVelocityEncoderDecodingType, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6750,11 +6751,11 @@ function ResetCIVelocityEncoderAInputTerm(taskHandle::TaskHandle, channel::Strin
     ccall((:DAQmxResetCIVelocityEncoderAInputTerm, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIVelocityEncoderAInputTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIVelocityEncoderAInputTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIVelocityEncoderAInputTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIVelocityEncoderAInputTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIVelocityEncoderAInputTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIVelocityEncoderAInputTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6762,11 +6763,11 @@ function ResetCIVelocityEncoderAInputTermCfg(taskHandle::TaskHandle, channel::St
     ccall((:DAQmxResetCIVelocityEncoderAInputTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIVelocityEncoderAInputLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIVelocityEncoderAInputLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIVelocityEncoderAInputLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIVelocityEncoderAInputLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIVelocityEncoderAInputLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIVelocityEncoderAInputLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6786,11 +6787,11 @@ function ResetCIVelocityEncoderAInputDigFltrEnable(taskHandle::TaskHandle, chann
     ccall((:DAQmxResetCIVelocityEncoderAInputDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIVelocityEncoderAInputDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIVelocityEncoderAInputDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIVelocityEncoderAInputDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIVelocityEncoderAInputDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIVelocityEncoderAInputDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIVelocityEncoderAInputDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -6810,11 +6811,11 @@ function ResetCIVelocityEncoderAInputDigFltrTimebaseSrc(taskHandle::TaskHandle, 
     ccall((:DAQmxResetCIVelocityEncoderAInputDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIVelocityEncoderAInputDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIVelocityEncoderAInputDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIVelocityEncoderAInputDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIVelocityEncoderAInputDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIVelocityEncoderAInputDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIVelocityEncoderAInputDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -6834,11 +6835,11 @@ function ResetCIVelocityEncoderBInputTerm(taskHandle::TaskHandle, channel::Strin
     ccall((:DAQmxResetCIVelocityEncoderBInputTerm, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIVelocityEncoderBInputTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIVelocityEncoderBInputTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIVelocityEncoderBInputTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIVelocityEncoderBInputTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIVelocityEncoderBInputTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIVelocityEncoderBInputTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6846,11 +6847,11 @@ function ResetCIVelocityEncoderBInputTermCfg(taskHandle::TaskHandle, channel::St
     ccall((:DAQmxResetCIVelocityEncoderBInputTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIVelocityEncoderBInputLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIVelocityEncoderBInputLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIVelocityEncoderBInputLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIVelocityEncoderBInputLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIVelocityEncoderBInputLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIVelocityEncoderBInputLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6870,11 +6871,11 @@ function ResetCIVelocityEncoderBInputDigFltrEnable(taskHandle::TaskHandle, chann
     ccall((:DAQmxResetCIVelocityEncoderBInputDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIVelocityEncoderBInputDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIVelocityEncoderBInputDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIVelocityEncoderBInputDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIVelocityEncoderBInputDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIVelocityEncoderBInputDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIVelocityEncoderBInputDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -6894,11 +6895,11 @@ function ResetCIVelocityEncoderBInputDigFltrTimebaseSrc(taskHandle::TaskHandle, 
     ccall((:DAQmxResetCIVelocityEncoderBInputDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIVelocityEncoderBInputDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIVelocityEncoderBInputDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIVelocityEncoderBInputDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIVelocityEncoderBInputDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIVelocityEncoderBInputDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIVelocityEncoderBInputDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -6906,11 +6907,11 @@ function ResetCIVelocityEncoderBInputDigFltrTimebaseRate(taskHandle::TaskHandle,
     ccall((:DAQmxResetCIVelocityEncoderBInputDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIVelocityMeasTime(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIVelocityMeasTime(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIVelocityMeasTime, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIVelocityMeasTime(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIVelocityMeasTime(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIVelocityMeasTime, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -6930,11 +6931,11 @@ function ResetCIVelocityDiv(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIVelocityDiv, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCITwoEdgeSepUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCITwoEdgeSepUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCITwoEdgeSepUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCITwoEdgeSepUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCITwoEdgeSepUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCITwoEdgeSepUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6954,11 +6955,11 @@ function ResetCITwoEdgeSepFirstTerm(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCITwoEdgeSepFirstTerm, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCITwoEdgeSepFirstTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCITwoEdgeSepFirstTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCITwoEdgeSepFirstTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCITwoEdgeSepFirstTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCITwoEdgeSepFirstTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCITwoEdgeSepFirstTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6966,11 +6967,11 @@ function ResetCITwoEdgeSepFirstTermCfg(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCITwoEdgeSepFirstTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCITwoEdgeSepFirstLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCITwoEdgeSepFirstLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCITwoEdgeSepFirstLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCITwoEdgeSepFirstLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCITwoEdgeSepFirstLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCITwoEdgeSepFirstLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -6990,11 +6991,11 @@ function ResetCITwoEdgeSepFirstDigFltrEnable(taskHandle::TaskHandle, channel::St
     ccall((:DAQmxResetCITwoEdgeSepFirstDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCITwoEdgeSepFirstDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCITwoEdgeSepFirstDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCITwoEdgeSepFirstDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCITwoEdgeSepFirstDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCITwoEdgeSepFirstDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCITwoEdgeSepFirstDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -7014,11 +7015,11 @@ function ResetCITwoEdgeSepFirstDigFltrTimebaseSrc(taskHandle::TaskHandle, channe
     ccall((:DAQmxResetCITwoEdgeSepFirstDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCITwoEdgeSepFirstDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCITwoEdgeSepFirstDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCITwoEdgeSepFirstDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCITwoEdgeSepFirstDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCITwoEdgeSepFirstDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCITwoEdgeSepFirstDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -7038,11 +7039,11 @@ function ResetCITwoEdgeSepFirstDigSyncEnable(taskHandle::TaskHandle, channel::St
     ccall((:DAQmxResetCITwoEdgeSepFirstDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCITwoEdgeSepFirstEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCITwoEdgeSepFirstEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCITwoEdgeSepFirstEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCITwoEdgeSepFirstEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCITwoEdgeSepFirstEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCITwoEdgeSepFirstEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7062,11 +7063,11 @@ function ResetCITwoEdgeSepSecondTerm(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCITwoEdgeSepSecondTerm, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCITwoEdgeSepSecondTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCITwoEdgeSepSecondTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCITwoEdgeSepSecondTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCITwoEdgeSepSecondTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCITwoEdgeSepSecondTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCITwoEdgeSepSecondTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7074,11 +7075,11 @@ function ResetCITwoEdgeSepSecondTermCfg(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCITwoEdgeSepSecondTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCITwoEdgeSepSecondLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCITwoEdgeSepSecondLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCITwoEdgeSepSecondLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCITwoEdgeSepSecondLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCITwoEdgeSepSecondLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCITwoEdgeSepSecondLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7098,11 +7099,11 @@ function ResetCITwoEdgeSepSecondDigFltrEnable(taskHandle::TaskHandle, channel::S
     ccall((:DAQmxResetCITwoEdgeSepSecondDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCITwoEdgeSepSecondDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCITwoEdgeSepSecondDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCITwoEdgeSepSecondDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCITwoEdgeSepSecondDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCITwoEdgeSepSecondDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCITwoEdgeSepSecondDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -7122,11 +7123,11 @@ function ResetCITwoEdgeSepSecondDigFltrTimebaseSrc(taskHandle::TaskHandle, chann
     ccall((:DAQmxResetCITwoEdgeSepSecondDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCITwoEdgeSepSecondDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCITwoEdgeSepSecondDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCITwoEdgeSepSecondDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCITwoEdgeSepSecondDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCITwoEdgeSepSecondDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCITwoEdgeSepSecondDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -7146,11 +7147,11 @@ function ResetCITwoEdgeSepSecondDigSyncEnable(taskHandle::TaskHandle, channel::S
     ccall((:DAQmxResetCITwoEdgeSepSecondDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCITwoEdgeSepSecondEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCITwoEdgeSepSecondEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCITwoEdgeSepSecondEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCITwoEdgeSepSecondEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCITwoEdgeSepSecondEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCITwoEdgeSepSecondEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7158,11 +7159,11 @@ function ResetCITwoEdgeSepSecondEdge(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCITwoEdgeSepSecondEdge, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCISemiPeriodUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCISemiPeriodUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCISemiPeriodUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCISemiPeriodUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCISemiPeriodUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCISemiPeriodUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7182,11 +7183,11 @@ function ResetCISemiPeriodTerm(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCISemiPeriodTerm, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCISemiPeriodTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCISemiPeriodTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCISemiPeriodTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCISemiPeriodTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCISemiPeriodTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCISemiPeriodTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7194,11 +7195,11 @@ function ResetCISemiPeriodTermCfg(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCISemiPeriodTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCISemiPeriodLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCISemiPeriodLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCISemiPeriodLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCISemiPeriodLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCISemiPeriodLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCISemiPeriodLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7218,11 +7219,11 @@ function ResetCISemiPeriodDigFltrEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCISemiPeriodDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCISemiPeriodDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCISemiPeriodDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCISemiPeriodDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCISemiPeriodDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCISemiPeriodDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCISemiPeriodDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -7242,11 +7243,11 @@ function ResetCISemiPeriodDigFltrTimebaseSrc(taskHandle::TaskHandle, channel::St
     ccall((:DAQmxResetCISemiPeriodDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCISemiPeriodDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCISemiPeriodDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCISemiPeriodDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCISemiPeriodDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCISemiPeriodDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCISemiPeriodDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -7266,11 +7267,11 @@ function ResetCISemiPeriodDigSyncEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCISemiPeriodDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCISemiPeriodStartingEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCISemiPeriodStartingEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCISemiPeriodStartingEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCISemiPeriodStartingEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCISemiPeriodStartingEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCISemiPeriodStartingEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7278,11 +7279,11 @@ function ResetCISemiPeriodStartingEdge(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCISemiPeriodStartingEdge, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseFreqUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIPulseFreqUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIPulseFreqUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIPulseFreqUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIPulseFreqUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIPulseFreqUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7302,11 +7303,11 @@ function ResetCIPulseFreqTerm(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPulseFreqTerm, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseFreqTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIPulseFreqTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIPulseFreqTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIPulseFreqTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIPulseFreqTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIPulseFreqTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7314,11 +7315,11 @@ function ResetCIPulseFreqTermCfg(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPulseFreqTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseFreqLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIPulseFreqLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIPulseFreqLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIPulseFreqLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIPulseFreqLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIPulseFreqLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7338,11 +7339,11 @@ function ResetCIPulseFreqDigFltrEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPulseFreqDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseFreqDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIPulseFreqDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIPulseFreqDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIPulseFreqDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIPulseFreqDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIPulseFreqDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -7362,11 +7363,11 @@ function ResetCIPulseFreqDigFltrTimebaseSrc(taskHandle::TaskHandle, channel::Str
     ccall((:DAQmxResetCIPulseFreqDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseFreqDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIPulseFreqDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIPulseFreqDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIPulseFreqDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIPulseFreqDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIPulseFreqDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -7386,11 +7387,11 @@ function ResetCIPulseFreqDigSyncEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPulseFreqDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseFreqStartEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIPulseFreqStartEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIPulseFreqStartEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIPulseFreqStartEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIPulseFreqStartEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIPulseFreqStartEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7398,11 +7399,11 @@ function ResetCIPulseFreqStartEdge(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPulseFreqStartEdge, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseTimeUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIPulseTimeUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIPulseTimeUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIPulseTimeUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIPulseTimeUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIPulseTimeUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7422,11 +7423,11 @@ function ResetCIPulseTimeTerm(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPulseTimeTerm, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseTimeTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIPulseTimeTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIPulseTimeTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIPulseTimeTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIPulseTimeTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIPulseTimeTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7434,11 +7435,11 @@ function ResetCIPulseTimeTermCfg(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPulseTimeTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseTimeLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIPulseTimeLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIPulseTimeLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIPulseTimeLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIPulseTimeLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIPulseTimeLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7458,11 +7459,11 @@ function ResetCIPulseTimeDigFltrEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPulseTimeDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseTimeDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIPulseTimeDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIPulseTimeDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIPulseTimeDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIPulseTimeDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIPulseTimeDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -7482,11 +7483,11 @@ function ResetCIPulseTimeDigFltrTimebaseSrc(taskHandle::TaskHandle, channel::Str
     ccall((:DAQmxResetCIPulseTimeDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseTimeDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIPulseTimeDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIPulseTimeDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIPulseTimeDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIPulseTimeDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIPulseTimeDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -7506,11 +7507,11 @@ function ResetCIPulseTimeDigSyncEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPulseTimeDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseTimeStartEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIPulseTimeStartEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIPulseTimeStartEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIPulseTimeStartEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIPulseTimeStartEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIPulseTimeStartEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7530,11 +7531,11 @@ function ResetCIPulseTicksTerm(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPulseTicksTerm, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseTicksTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIPulseTicksTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIPulseTicksTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIPulseTicksTermCfg(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIPulseTicksTermCfg(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIPulseTicksTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7542,11 +7543,11 @@ function ResetCIPulseTicksTermCfg(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPulseTicksTermCfg, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseTicksLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIPulseTicksLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIPulseTicksLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIPulseTicksLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIPulseTicksLogicLvlBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIPulseTicksLogicLvlBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7566,11 +7567,11 @@ function ResetCIPulseTicksDigFltrEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPulseTicksDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseTicksDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIPulseTicksDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIPulseTicksDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIPulseTicksDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIPulseTicksDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIPulseTicksDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -7590,11 +7591,11 @@ function ResetCIPulseTicksDigFltrTimebaseSrc(taskHandle::TaskHandle, channel::St
     ccall((:DAQmxResetCIPulseTicksDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseTicksDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIPulseTicksDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIPulseTicksDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIPulseTicksDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIPulseTicksDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIPulseTicksDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -7614,11 +7615,11 @@ function ResetCIPulseTicksDigSyncEnable(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPulseTicksDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIPulseTicksStartEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIPulseTicksStartEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIPulseTicksStartEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIPulseTicksStartEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIPulseTicksStartEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIPulseTicksStartEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7638,11 +7639,11 @@ function ResetCICtrTimebaseSrc(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCICtrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICtrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCICtrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCICtrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCICtrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCICtrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCICtrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -7650,11 +7651,11 @@ function ResetCICtrTimebaseRate(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCICtrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICtrTimebaseActiveEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCICtrTimebaseActiveEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCICtrTimebaseActiveEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCICtrTimebaseActiveEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCICtrTimebaseActiveEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCICtrTimebaseActiveEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7674,11 +7675,11 @@ function ResetCICtrTimebaseDigFltrEnable(taskHandle::TaskHandle, channel::String
     ccall((:DAQmxResetCICtrTimebaseDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICtrTimebaseDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCICtrTimebaseDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCICtrTimebaseDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCICtrTimebaseDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCICtrTimebaseDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCICtrTimebaseDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -7698,11 +7699,11 @@ function ResetCICtrTimebaseDigFltrTimebaseSrc(taskHandle::TaskHandle, channel::S
     ccall((:DAQmxResetCICtrTimebaseDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCICtrTimebaseDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCICtrTimebaseDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCICtrTimebaseDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCICtrTimebaseDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCICtrTimebaseDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCICtrTimebaseDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -7722,11 +7723,11 @@ function ResetCICtrTimebaseDigSyncEnable(taskHandle::TaskHandle, channel::String
     ccall((:DAQmxResetCICtrTimebaseDigSyncEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIThreshVoltage(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIThreshVoltage(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIThreshVoltage, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIThreshVoltage(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIThreshVoltage(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIThreshVoltage, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -7738,7 +7739,7 @@ function GetCICount(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCICount, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function GetCIOutputState(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIOutputState(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIOutputState, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
@@ -7758,11 +7759,11 @@ function ResetCICtrTimebaseMasterTimebaseDiv(taskHandle::TaskHandle, channel::St
     ccall((:DAQmxResetCICtrTimebaseMasterTimebaseDiv, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCISampClkOverrunBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCISampClkOverrunBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCISampClkOverrunBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCISampClkOverrunBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCISampClkOverrunBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCISampClkOverrunBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7770,11 +7771,11 @@ function ResetCISampClkOverrunBehavior(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCISampClkOverrunBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCISampClkOverrunSentinelVal(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCISampClkOverrunSentinelVal(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCISampClkOverrunSentinelVal, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCISampClkOverrunSentinelVal(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCISampClkOverrunSentinelVal(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCISampClkOverrunSentinelVal, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7782,11 +7783,11 @@ function ResetCISampClkOverrunSentinelVal(taskHandle::TaskHandle, channel::Strin
     ccall((:DAQmxResetCISampClkOverrunSentinelVal, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIDataXferMech(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIDataXferMech(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIDataXferMech, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIDataXferMech(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIDataXferMech(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIDataXferMech, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7794,11 +7795,11 @@ function ResetCIDataXferMech(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIDataXferMech, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIDataXferReqCond(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCIDataXferReqCond(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCIDataXferReqCond, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCIDataXferReqCond(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCIDataXferReqCond(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCIDataXferReqCond, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7870,11 +7871,11 @@ function ResetCIPrescaler(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCIPrescaler, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCIMaxMeasPeriod(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCIMaxMeasPeriod(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCIMaxMeasPeriod, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCIMaxMeasPeriod(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCIMaxMeasPeriod(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCIMaxMeasPeriod, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -7886,11 +7887,11 @@ function GetCOOutputType(taskHandle::TaskHandle, channel::String, data::Ref{Int3
     ccall((:DAQmxGetCOOutputType, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function GetCOPulseIdleState(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCOPulseIdleState(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCOPulseIdleState, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCOPulseIdleState(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCOPulseIdleState(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCOPulseIdleState, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7910,11 +7911,11 @@ function ResetCOPulseTerm(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCOPulseTerm, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOPulseTimeUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCOPulseTimeUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCOPulseTimeUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCOPulseTimeUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCOPulseTimeUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCOPulseTimeUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7922,11 +7923,11 @@ function ResetCOPulseTimeUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCOPulseTimeUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOPulseHighTime(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCOPulseHighTime(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCOPulseHighTime, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCOPulseHighTime(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCOPulseHighTime(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCOPulseHighTime, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -7934,11 +7935,11 @@ function ResetCOPulseHighTime(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCOPulseHighTime, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOPulseLowTime(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCOPulseLowTime(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCOPulseLowTime, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCOPulseLowTime(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCOPulseLowTime(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCOPulseLowTime, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -7946,11 +7947,11 @@ function ResetCOPulseLowTime(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCOPulseLowTime, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOPulseTimeInitialDelay(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCOPulseTimeInitialDelay(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCOPulseTimeInitialDelay, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCOPulseTimeInitialDelay(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCOPulseTimeInitialDelay(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCOPulseTimeInitialDelay, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -7958,11 +7959,11 @@ function ResetCOPulseTimeInitialDelay(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCOPulseTimeInitialDelay, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOPulseDutyCyc(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCOPulseDutyCyc(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCOPulseDutyCyc, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCOPulseDutyCyc(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCOPulseDutyCyc(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCOPulseDutyCyc, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -7970,11 +7971,11 @@ function ResetCOPulseDutyCyc(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCOPulseDutyCyc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOPulseFreqUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCOPulseFreqUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCOPulseFreqUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCOPulseFreqUnits(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCOPulseFreqUnits(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCOPulseFreqUnits, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -7982,11 +7983,11 @@ function ResetCOPulseFreqUnits(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCOPulseFreqUnits, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOPulseFreq(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCOPulseFreq(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCOPulseFreq, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCOPulseFreq(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCOPulseFreq(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCOPulseFreq, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -7994,11 +7995,11 @@ function ResetCOPulseFreq(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCOPulseFreq, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOPulseFreqInitialDelay(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCOPulseFreqInitialDelay(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCOPulseFreqInitialDelay, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCOPulseFreqInitialDelay(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCOPulseFreqInitialDelay(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCOPulseFreqInitialDelay, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -8054,11 +8055,11 @@ function ResetCOCtrTimebaseSrc(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCOCtrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOCtrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCOCtrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCOCtrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCOCtrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCOCtrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCOCtrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -8066,11 +8067,11 @@ function ResetCOCtrTimebaseRate(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCOCtrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOCtrTimebaseActiveEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCOCtrTimebaseActiveEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCOCtrTimebaseActiveEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCOCtrTimebaseActiveEdge(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCOCtrTimebaseActiveEdge(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCOCtrTimebaseActiveEdge, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -8090,11 +8091,11 @@ function ResetCOCtrTimebaseDigFltrEnable(taskHandle::TaskHandle, channel::String
     ccall((:DAQmxResetCOCtrTimebaseDigFltrEnable, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOCtrTimebaseDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCOCtrTimebaseDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCOCtrTimebaseDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCOCtrTimebaseDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCOCtrTimebaseDigFltrMinPulseWidth(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCOCtrTimebaseDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -8114,11 +8115,11 @@ function ResetCOCtrTimebaseDigFltrTimebaseSrc(taskHandle::TaskHandle, channel::S
     ccall((:DAQmxResetCOCtrTimebaseDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOCtrTimebaseDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function GetCOCtrTimebaseDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxGetCOCtrTimebaseDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cdouble}), taskHandle, channel, data)
 end
 
-function SetCOCtrTimebaseDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Float64)
+function SetCOCtrTimebaseDigFltrTimebaseRate(taskHandle::TaskHandle, channel::String, data::Real)
     ccall((:DAQmxSetCOCtrTimebaseDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cstring, Cdouble), taskHandle, channel, data)
 end
 
@@ -8142,7 +8143,7 @@ function GetCOCount(taskHandle::TaskHandle, channel::String, data::Ref{UInt32})
     ccall((:DAQmxGetCOCount, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function GetCOOutputState(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCOOutputState(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCOOutputState, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
@@ -8186,11 +8187,11 @@ function ResetCOEnableInitialDelayOnRetrigger(taskHandle::TaskHandle, channel::S
     ccall((:DAQmxResetCOEnableInitialDelayOnRetrigger, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCOConstrainedGenMode(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCOConstrainedGenMode(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCOConstrainedGenMode, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCOConstrainedGenMode(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCOConstrainedGenMode(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCOConstrainedGenMode, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -8210,11 +8211,11 @@ function ResetCOUseOnlyOnBrdMem(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCOUseOnlyOnBrdMem, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCODataXferMech(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCODataXferMech(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCODataXferMech, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCODataXferMech(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCODataXferMech(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCODataXferMech, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -8222,11 +8223,11 @@ function ResetCODataXferMech(taskHandle::TaskHandle, channel::String)
     ccall((:DAQmxResetCODataXferMech, :libnidaqmx), Cint, (TaskHandle, Cstring), taskHandle, channel)
 end
 
-function GetCODataXferReqCond(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetCODataXferReqCond(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetCODataXferReqCond, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetCODataXferReqCond(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetCODataXferReqCond(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetCODataXferReqCond, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -8286,7 +8287,7 @@ function GetCORdyForNewVal(taskHandle::TaskHandle, channel::String, data::Ref{UI
     ccall((:DAQmxGetCORdyForNewVal, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function GetChanType(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetChanType(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetChanType, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
@@ -8314,11 +8315,11 @@ function GetChanIsGlobal(taskHandle::TaskHandle, channel::String, data::Ref{UInt
     ccall((:DAQmxGetChanIsGlobal, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cuint}), taskHandle, channel, data)
 end
 
-function GetChanSyncUnlockBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function GetChanSyncUnlockBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxGetChanSyncUnlockBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{Cint}), taskHandle, channel, data)
 end
 
-function SetChanSyncUnlockBehavior(taskHandle::TaskHandle, channel::String, data::Int32)
+function SetChanSyncUnlockBehavior(taskHandle::TaskHandle, channel::String, data::Integer)
     ccall((:DAQmxSetChanSyncUnlockBehavior, :libnidaqmx), Cint, (TaskHandle, Cstring, Cint), taskHandle, channel, data)
 end
 
@@ -8394,15 +8395,15 @@ function GetDevAISupportedMeasTypes(device::String, data::Vector{Int32}, arraySi
     ccall((:DAQmxGetDevAISupportedMeasTypes, :libnidaqmx), Cint, (Cstring, Ref{Cint}, Cuint), device, data, arraySizeInElements)
 end
 
-function GetDevAIMaxSingleChanRate(device::String, data::Float64)
+function GetDevAIMaxSingleChanRate(device::String, data::Real)
     ccall((:DAQmxGetDevAIMaxSingleChanRate, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}), device, data)
 end
 
-function GetDevAIMaxMultiChanRate(device::String, data::Float64)
+function GetDevAIMaxMultiChanRate(device::String, data::Real)
     ccall((:DAQmxGetDevAIMaxMultiChanRate, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}), device, data)
 end
 
-function GetDevAIMinRate(device::String, data::Float64)
+function GetDevAIMinRate(device::String, data::Real)
     ccall((:DAQmxGetDevAIMinRate, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}), device, data)
 end
 
@@ -8422,7 +8423,7 @@ function GetDevAINumSyncPulseSrcs(device::String, data::Ref{UInt32})
     ccall((:DAQmxGetDevAINumSyncPulseSrcs, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
-function GetDevAITrigUsage(device::String, data::Int32)
+function GetDevAITrigUsage(device::String, data::Integer)
     ccall((:DAQmxGetDevAITrigUsage, :libnidaqmx), Cint, (Cstring, Ref{Cint}), device, data)
 end
 
@@ -8466,7 +8467,7 @@ function GetDevAIGains(device::String, data::Vector{Float64}, arraySizeInElement
     ccall((:DAQmxGetDevAIGains, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}, Cuint), device, data, arraySizeInElements)
 end
 
-function GetDevAICouplings(device::String, data::Int32)
+function GetDevAICouplings(device::String, data::Integer)
     ccall((:DAQmxGetDevAICouplings, :libnidaqmx), Cint, (Cstring, Ref{Cint}), device, data)
 end
 
@@ -8498,11 +8499,11 @@ function GetDevAOSupportedOutputTypes(device::String, data::Vector{Int32}, array
     ccall((:DAQmxGetDevAOSupportedOutputTypes, :libnidaqmx), Cint, (Cstring, Ref{Cint}, Cuint), device, data, arraySizeInElements)
 end
 
-function GetDevAOMaxRate(device::String, data::Float64)
+function GetDevAOMaxRate(device::String, data::Real)
     ccall((:DAQmxGetDevAOMaxRate, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}), device, data)
 end
 
-function GetDevAOMinRate(device::String, data::Float64)
+function GetDevAOMinRate(device::String, data::Real)
     ccall((:DAQmxGetDevAOMinRate, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}), device, data)
 end
 
@@ -8522,7 +8523,7 @@ function GetDevAONumSyncPulseSrcs(device::String, data::Ref{UInt32})
     ccall((:DAQmxGetDevAONumSyncPulseSrcs, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
-function GetDevAOTrigUsage(device::String, data::Int32)
+function GetDevAOTrigUsage(device::String, data::Integer)
     ccall((:DAQmxGetDevAOTrigUsage, :libnidaqmx), Cint, (Cstring, Ref{Cint}), device, data)
 end
 
@@ -8546,7 +8547,7 @@ function GetDevDIPorts(device::String, data::Vector{UInt8}, bufferSize::UInt32)
     ccall((:DAQmxGetDevDIPorts, :libnidaqmx), Cint, (Cstring, Ref{Cuchar}, Cuint), device, data, bufferSize)
 end
 
-function GetDevDIMaxRate(device::String, data::Float64)
+function GetDevDIMaxRate(device::String, data::Real)
     ccall((:DAQmxGetDevDIMaxRate, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}), device, data)
 end
 
@@ -8554,7 +8555,7 @@ function GetDevDINumSampTimingEngines(device::String, data::Ref{UInt32})
     ccall((:DAQmxGetDevDINumSampTimingEngines, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
-function GetDevDITrigUsage(device::String, data::Int32)
+function GetDevDITrigUsage(device::String, data::Integer)
     ccall((:DAQmxGetDevDITrigUsage, :libnidaqmx), Cint, (Cstring, Ref{Cint}), device, data)
 end
 
@@ -8566,7 +8567,7 @@ function GetDevDOPorts(device::String, data::Vector{UInt8}, bufferSize::UInt32)
     ccall((:DAQmxGetDevDOPorts, :libnidaqmx), Cint, (Cstring, Ref{Cuchar}, Cuint), device, data, bufferSize)
 end
 
-function GetDevDOMaxRate(device::String, data::Float64)
+function GetDevDOMaxRate(device::String, data::Real)
     ccall((:DAQmxGetDevDOMaxRate, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}), device, data)
 end
 
@@ -8574,7 +8575,7 @@ function GetDevDONumSampTimingEngines(device::String, data::Ref{UInt32})
     ccall((:DAQmxGetDevDONumSampTimingEngines, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
-function GetDevDOTrigUsage(device::String, data::Int32)
+function GetDevDOTrigUsage(device::String, data::Integer)
     ccall((:DAQmxGetDevDOTrigUsage, :libnidaqmx), Cint, (Cstring, Ref{Cint}), device, data)
 end
 
@@ -8586,7 +8587,7 @@ function GetDevCISupportedMeasTypes(device::String, data::Vector{Int32}, arraySi
     ccall((:DAQmxGetDevCISupportedMeasTypes, :libnidaqmx), Cint, (Cstring, Ref{Cint}, Cuint), device, data, arraySizeInElements)
 end
 
-function GetDevCITrigUsage(device::String, data::Int32)
+function GetDevCITrigUsage(device::String, data::Integer)
     ccall((:DAQmxGetDevCITrigUsage, :libnidaqmx), Cint, (Cstring, Ref{Cint}), device, data)
 end
 
@@ -8602,7 +8603,7 @@ function GetDevCIMaxSize(device::String, data::Ref{UInt32})
     ccall((:DAQmxGetDevCIMaxSize, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
-function GetDevCIMaxTimebase(device::String, data::Float64)
+function GetDevCIMaxTimebase(device::String, data::Real)
     ccall((:DAQmxGetDevCIMaxTimebase, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}), device, data)
 end
 
@@ -8622,7 +8623,7 @@ function GetDevCOSampModes(device::String, data::Vector{Int32}, arraySizeInEleme
     ccall((:DAQmxGetDevCOSampModes, :libnidaqmx), Cint, (Cstring, Ref{Cint}, Cuint), device, data, arraySizeInElements)
 end
 
-function GetDevCOTrigUsage(device::String, data::Int32)
+function GetDevCOTrigUsage(device::String, data::Integer)
     ccall((:DAQmxGetDevCOTrigUsage, :libnidaqmx), Cint, (Cstring, Ref{Cint}), device, data)
 end
 
@@ -8630,7 +8631,7 @@ function GetDevCOMaxSize(device::String, data::Ref{UInt32})
     ccall((:DAQmxGetDevCOMaxSize, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
-function GetDevCOMaxTimebase(device::String, data::Float64)
+function GetDevCOMaxTimebase(device::String, data::Real)
     ccall((:DAQmxGetDevCOMaxTimebase, :libnidaqmx), Cint, (Cstring, Ref{Cdouble}), device, data)
 end
 
@@ -8642,7 +8643,7 @@ function GetDevNumDMAChans(device::String, data::Ref{UInt32})
     ccall((:DAQmxGetDevNumDMAChans, :libnidaqmx), Cint, (Cstring, Ref{Cuint}), device, data)
 end
 
-function GetDevBusType(device::String, data::Int32)
+function GetDevBusType(device::String, data::Integer)
     ccall((:DAQmxGetDevBusType, :libnidaqmx), Cint, (Cstring, Ref{Cint}), device, data)
 end
 
@@ -8714,7 +8715,7 @@ function ResetExportedAIConvClkOutputTerm(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedAIConvClkOutputTerm, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedAIConvClkPulsePolarity(taskHandle::TaskHandle, data::Int32)
+function GetExportedAIConvClkPulsePolarity(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetExportedAIConvClkPulsePolarity, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
@@ -8742,11 +8743,11 @@ function ResetExported20MHzTimebaseOutputTerm(taskHandle::TaskHandle)
     ccall((:DAQmxResetExported20MHzTimebaseOutputTerm, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedSampClkOutputBehavior(taskHandle::TaskHandle, data::Int32)
+function GetExportedSampClkOutputBehavior(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetExportedSampClkOutputBehavior, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetExportedSampClkOutputBehavior(taskHandle::TaskHandle, data::Int32)
+function SetExportedSampClkOutputBehavior(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetExportedSampClkOutputBehavior, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -8766,11 +8767,11 @@ function ResetExportedSampClkOutputTerm(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedSampClkOutputTerm, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedSampClkDelayOffset(taskHandle::TaskHandle, data::Float64)
+function GetExportedSampClkDelayOffset(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetExportedSampClkDelayOffset, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetExportedSampClkDelayOffset(taskHandle::TaskHandle, data::Float64)
+function SetExportedSampClkDelayOffset(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetExportedSampClkDelayOffset, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -8778,11 +8779,11 @@ function ResetExportedSampClkDelayOffset(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedSampClkDelayOffset, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedSampClkPulsePolarity(taskHandle::TaskHandle, data::Int32)
+function GetExportedSampClkPulsePolarity(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetExportedSampClkPulsePolarity, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetExportedSampClkPulsePolarity(taskHandle::TaskHandle, data::Int32)
+function SetExportedSampClkPulsePolarity(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetExportedSampClkPulsePolarity, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -8826,15 +8827,15 @@ function ResetExportedAdvTrigOutputTerm(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedAdvTrigOutputTerm, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedAdvTrigPulsePolarity(taskHandle::TaskHandle, data::Int32)
+function GetExportedAdvTrigPulsePolarity(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetExportedAdvTrigPulsePolarity, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function GetExportedAdvTrigPulseWidthUnits(taskHandle::TaskHandle, data::Int32)
+function GetExportedAdvTrigPulseWidthUnits(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetExportedAdvTrigPulseWidthUnits, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetExportedAdvTrigPulseWidthUnits(taskHandle::TaskHandle, data::Int32)
+function SetExportedAdvTrigPulseWidthUnits(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetExportedAdvTrigPulseWidthUnits, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -8842,11 +8843,11 @@ function ResetExportedAdvTrigPulseWidthUnits(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedAdvTrigPulseWidthUnits, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedAdvTrigPulseWidth(taskHandle::TaskHandle, data::Float64)
+function GetExportedAdvTrigPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetExportedAdvTrigPulseWidth, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetExportedAdvTrigPulseWidth(taskHandle::TaskHandle, data::Float64)
+function SetExportedAdvTrigPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetExportedAdvTrigPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -8866,11 +8867,11 @@ function ResetExportedPauseTrigOutputTerm(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedPauseTrigOutputTerm, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedPauseTrigLvlActiveLvl(taskHandle::TaskHandle, data::Int32)
+function GetExportedPauseTrigLvlActiveLvl(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetExportedPauseTrigLvlActiveLvl, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetExportedPauseTrigLvlActiveLvl(taskHandle::TaskHandle, data::Int32)
+function SetExportedPauseTrigLvlActiveLvl(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetExportedPauseTrigLvlActiveLvl, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -8890,11 +8891,11 @@ function ResetExportedRefTrigOutputTerm(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedRefTrigOutputTerm, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedRefTrigPulsePolarity(taskHandle::TaskHandle, data::Int32)
+function GetExportedRefTrigPulsePolarity(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetExportedRefTrigPulsePolarity, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetExportedRefTrigPulsePolarity(taskHandle::TaskHandle, data::Int32)
+function SetExportedRefTrigPulsePolarity(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetExportedRefTrigPulsePolarity, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -8914,11 +8915,11 @@ function ResetExportedStartTrigOutputTerm(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedStartTrigOutputTerm, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedStartTrigPulsePolarity(taskHandle::TaskHandle, data::Int32)
+function GetExportedStartTrigPulsePolarity(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetExportedStartTrigPulsePolarity, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetExportedStartTrigPulsePolarity(taskHandle::TaskHandle, data::Int32)
+function SetExportedStartTrigPulsePolarity(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetExportedStartTrigPulsePolarity, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -8938,11 +8939,11 @@ function ResetExportedAdvCmpltEventOutputTerm(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedAdvCmpltEventOutputTerm, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedAdvCmpltEventDelay(taskHandle::TaskHandle, data::Float64)
+function GetExportedAdvCmpltEventDelay(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetExportedAdvCmpltEventDelay, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetExportedAdvCmpltEventDelay(taskHandle::TaskHandle, data::Float64)
+function SetExportedAdvCmpltEventDelay(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetExportedAdvCmpltEventDelay, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -8950,11 +8951,11 @@ function ResetExportedAdvCmpltEventDelay(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedAdvCmpltEventDelay, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedAdvCmpltEventPulsePolarity(taskHandle::TaskHandle, data::Int32)
+function GetExportedAdvCmpltEventPulsePolarity(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetExportedAdvCmpltEventPulsePolarity, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetExportedAdvCmpltEventPulsePolarity(taskHandle::TaskHandle, data::Int32)
+function SetExportedAdvCmpltEventPulsePolarity(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetExportedAdvCmpltEventPulsePolarity, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -8962,11 +8963,11 @@ function ResetExportedAdvCmpltEventPulsePolarity(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedAdvCmpltEventPulsePolarity, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedAdvCmpltEventPulseWidth(taskHandle::TaskHandle, data::Float64)
+function GetExportedAdvCmpltEventPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetExportedAdvCmpltEventPulseWidth, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetExportedAdvCmpltEventPulseWidth(taskHandle::TaskHandle, data::Float64)
+function SetExportedAdvCmpltEventPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetExportedAdvCmpltEventPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -8986,11 +8987,11 @@ function ResetExportedAIHoldCmpltEventOutputTerm(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedAIHoldCmpltEventOutputTerm, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedAIHoldCmpltEventPulsePolarity(taskHandle::TaskHandle, data::Int32)
+function GetExportedAIHoldCmpltEventPulsePolarity(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetExportedAIHoldCmpltEventPulsePolarity, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetExportedAIHoldCmpltEventPulsePolarity(taskHandle::TaskHandle, data::Int32)
+function SetExportedAIHoldCmpltEventPulsePolarity(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetExportedAIHoldCmpltEventPulsePolarity, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -9010,11 +9011,11 @@ function ResetExportedChangeDetectEventOutputTerm(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedChangeDetectEventOutputTerm, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedChangeDetectEventPulsePolarity(taskHandle::TaskHandle, data::Int32)
+function GetExportedChangeDetectEventPulsePolarity(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetExportedChangeDetectEventPulsePolarity, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetExportedChangeDetectEventPulsePolarity(taskHandle::TaskHandle, data::Int32)
+function SetExportedChangeDetectEventPulsePolarity(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetExportedChangeDetectEventPulsePolarity, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -9034,11 +9035,11 @@ function ResetExportedCtrOutEventOutputTerm(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedCtrOutEventOutputTerm, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedCtrOutEventOutputBehavior(taskHandle::TaskHandle, data::Int32)
+function GetExportedCtrOutEventOutputBehavior(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetExportedCtrOutEventOutputBehavior, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetExportedCtrOutEventOutputBehavior(taskHandle::TaskHandle, data::Int32)
+function SetExportedCtrOutEventOutputBehavior(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetExportedCtrOutEventOutputBehavior, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -9046,11 +9047,11 @@ function ResetExportedCtrOutEventOutputBehavior(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedCtrOutEventOutputBehavior, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedCtrOutEventPulsePolarity(taskHandle::TaskHandle, data::Int32)
+function GetExportedCtrOutEventPulsePolarity(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetExportedCtrOutEventPulsePolarity, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetExportedCtrOutEventPulsePolarity(taskHandle::TaskHandle, data::Int32)
+function SetExportedCtrOutEventPulsePolarity(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetExportedCtrOutEventPulsePolarity, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -9058,11 +9059,11 @@ function ResetExportedCtrOutEventPulsePolarity(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedCtrOutEventPulsePolarity, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedCtrOutEventToggleIdleState(taskHandle::TaskHandle, data::Int32)
+function GetExportedCtrOutEventToggleIdleState(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetExportedCtrOutEventToggleIdleState, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetExportedCtrOutEventToggleIdleState(taskHandle::TaskHandle, data::Int32)
+function SetExportedCtrOutEventToggleIdleState(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetExportedCtrOutEventToggleIdleState, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -9082,11 +9083,11 @@ function ResetExportedHshkEventOutputTerm(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedHshkEventOutputTerm, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedHshkEventOutputBehavior(taskHandle::TaskHandle, data::Int32)
+function GetExportedHshkEventOutputBehavior(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetExportedHshkEventOutputBehavior, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetExportedHshkEventOutputBehavior(taskHandle::TaskHandle, data::Int32)
+function SetExportedHshkEventOutputBehavior(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetExportedHshkEventOutputBehavior, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -9094,11 +9095,11 @@ function ResetExportedHshkEventOutputBehavior(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedHshkEventOutputBehavior, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedHshkEventDelay(taskHandle::TaskHandle, data::Float64)
+function GetExportedHshkEventDelay(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetExportedHshkEventDelay, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetExportedHshkEventDelay(taskHandle::TaskHandle, data::Float64)
+function SetExportedHshkEventDelay(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetExportedHshkEventDelay, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -9106,11 +9107,11 @@ function ResetExportedHshkEventDelay(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedHshkEventDelay, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedHshkEventInterlockedAssertedLvl(taskHandle::TaskHandle, data::Int32)
+function GetExportedHshkEventInterlockedAssertedLvl(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetExportedHshkEventInterlockedAssertedLvl, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetExportedHshkEventInterlockedAssertedLvl(taskHandle::TaskHandle, data::Int32)
+function SetExportedHshkEventInterlockedAssertedLvl(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetExportedHshkEventInterlockedAssertedLvl, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -9130,11 +9131,11 @@ function ResetExportedHshkEventInterlockedAssertOnStart(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedHshkEventInterlockedAssertOnStart, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedHshkEventInterlockedDeassertDelay(taskHandle::TaskHandle, data::Float64)
+function GetExportedHshkEventInterlockedDeassertDelay(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetExportedHshkEventInterlockedDeassertDelay, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetExportedHshkEventInterlockedDeassertDelay(taskHandle::TaskHandle, data::Float64)
+function SetExportedHshkEventInterlockedDeassertDelay(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetExportedHshkEventInterlockedDeassertDelay, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -9142,11 +9143,11 @@ function ResetExportedHshkEventInterlockedDeassertDelay(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedHshkEventInterlockedDeassertDelay, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedHshkEventPulsePolarity(taskHandle::TaskHandle, data::Int32)
+function GetExportedHshkEventPulsePolarity(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetExportedHshkEventPulsePolarity, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetExportedHshkEventPulsePolarity(taskHandle::TaskHandle, data::Int32)
+function SetExportedHshkEventPulsePolarity(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetExportedHshkEventPulsePolarity, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -9154,11 +9155,11 @@ function ResetExportedHshkEventPulsePolarity(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedHshkEventPulsePolarity, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedHshkEventPulseWidth(taskHandle::TaskHandle, data::Float64)
+function GetExportedHshkEventPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetExportedHshkEventPulseWidth, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetExportedHshkEventPulseWidth(taskHandle::TaskHandle, data::Float64)
+function SetExportedHshkEventPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetExportedHshkEventPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -9178,11 +9179,11 @@ function ResetExportedRdyForXferEventOutputTerm(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedRdyForXferEventOutputTerm, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedRdyForXferEventLvlActiveLvl(taskHandle::TaskHandle, data::Int32)
+function GetExportedRdyForXferEventLvlActiveLvl(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetExportedRdyForXferEventLvlActiveLvl, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetExportedRdyForXferEventLvlActiveLvl(taskHandle::TaskHandle, data::Int32)
+function SetExportedRdyForXferEventLvlActiveLvl(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetExportedRdyForXferEventLvlActiveLvl, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -9190,11 +9191,11 @@ function ResetExportedRdyForXferEventLvlActiveLvl(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedRdyForXferEventLvlActiveLvl, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedRdyForXferEventDeassertCond(taskHandle::TaskHandle, data::Int32)
+function GetExportedRdyForXferEventDeassertCond(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetExportedRdyForXferEventDeassertCond, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetExportedRdyForXferEventDeassertCond(taskHandle::TaskHandle, data::Int32)
+function SetExportedRdyForXferEventDeassertCond(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetExportedRdyForXferEventDeassertCond, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -9226,11 +9227,11 @@ function ResetExportedDataActiveEventOutputTerm(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedDataActiveEventOutputTerm, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedDataActiveEventLvlActiveLvl(taskHandle::TaskHandle, data::Int32)
+function GetExportedDataActiveEventLvlActiveLvl(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetExportedDataActiveEventLvlActiveLvl, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetExportedDataActiveEventLvlActiveLvl(taskHandle::TaskHandle, data::Int32)
+function SetExportedDataActiveEventLvlActiveLvl(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetExportedDataActiveEventLvlActiveLvl, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -9250,11 +9251,11 @@ function ResetExportedRdyForStartEventOutputTerm(taskHandle::TaskHandle)
     ccall((:DAQmxResetExportedRdyForStartEventOutputTerm, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetExportedRdyForStartEventLvlActiveLvl(taskHandle::TaskHandle, data::Int32)
+function GetExportedRdyForStartEventLvlActiveLvl(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetExportedRdyForStartEventLvlActiveLvl, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetExportedRdyForStartEventLvlActiveLvl(taskHandle::TaskHandle, data::Int32)
+function SetExportedRdyForStartEventLvlActiveLvl(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetExportedRdyForStartEventLvlActiveLvl, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -9326,7 +9327,7 @@ function GetPhysicalChanAISupportedMeasTypes(physicalChannel::String, data::Vect
     ccall((:DAQmxGetPhysicalChanAISupportedMeasTypes, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}, Cuint), physicalChannel, data, arraySizeInElements)
 end
 
-function GetPhysicalChanAITermCfgs(physicalChannel::String, data::Int32)
+function GetPhysicalChanAITermCfgs(physicalChannel::String, data::Integer)
     ccall((:DAQmxGetPhysicalChanAITermCfgs, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}), physicalChannel, data)
 end
 
@@ -9342,11 +9343,11 @@ function GetPhysicalChanAISensorPowerVoltageRangeVals(physicalChannel::String, d
     ccall((:DAQmxGetPhysicalChanAISensorPowerVoltageRangeVals, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Cuint), physicalChannel, data, arraySizeInElements)
 end
 
-function GetPhysicalChanAIPowerControlVoltage(physicalChannel::String, data::Float64)
+function GetPhysicalChanAIPowerControlVoltage(physicalChannel::String, data::Real)
     ccall((:DAQmxGetPhysicalChanAIPowerControlVoltage, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), physicalChannel, data)
 end
 
-function SetPhysicalChanAIPowerControlVoltage(physicalChannel::String, data::Float64)
+function SetPhysicalChanAIPowerControlVoltage(physicalChannel::String, data::Real)
     ccall((:DAQmxSetPhysicalChanAIPowerControlVoltage, :libnidaqmx), Cint, (Ref{UInt8}, Cdouble), physicalChannel, data)
 end
 
@@ -9366,11 +9367,11 @@ function ResetPhysicalChanAIPowerControlEnable(physicalChannel::String)
     ccall((:DAQmxResetPhysicalChanAIPowerControlEnable, :libnidaqmx), Cint, (Ref{UInt8},), physicalChannel)
 end
 
-function GetPhysicalChanAIPowerControlType(physicalChannel::String, data::Int32)
+function GetPhysicalChanAIPowerControlType(physicalChannel::String, data::Integer)
     ccall((:DAQmxGetPhysicalChanAIPowerControlType, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}), physicalChannel, data)
 end
 
-function SetPhysicalChanAIPowerControlType(physicalChannel::String, data::Int32)
+function SetPhysicalChanAIPowerControlType(physicalChannel::String, data::Integer)
     ccall((:DAQmxSetPhysicalChanAIPowerControlType, :libnidaqmx), Cint, (Ref{UInt8}, Cint), physicalChannel, data)
 end
 
@@ -9394,7 +9395,7 @@ function GetPhysicalChanAOSupportedPowerUpOutputTypes(physicalChannel::String, d
     ccall((:DAQmxGetPhysicalChanAOSupportedPowerUpOutputTypes, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}, Cuint), physicalChannel, data, arraySizeInElements)
 end
 
-function GetPhysicalChanAOTermCfgs(physicalChannel::String, data::Int32)
+function GetPhysicalChanAOTermCfgs(physicalChannel::String, data::Integer)
     ccall((:DAQmxGetPhysicalChanAOTermCfgs, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}), physicalChannel, data)
 end
 
@@ -9414,11 +9415,11 @@ function GetPhysicalChanAOManualControlShortDetected(physicalChannel::String, da
     ccall((:DAQmxGetPhysicalChanAOManualControlShortDetected, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), physicalChannel, data)
 end
 
-function GetPhysicalChanAOManualControlAmplitude(physicalChannel::String, data::Float64)
+function GetPhysicalChanAOManualControlAmplitude(physicalChannel::String, data::Real)
     ccall((:DAQmxGetPhysicalChanAOManualControlAmplitude, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), physicalChannel, data)
 end
 
-function GetPhysicalChanAOManualControlFreq(physicalChannel::String, data::Float64)
+function GetPhysicalChanAOManualControlFreq(physicalChannel::String, data::Real)
     ccall((:DAQmxGetPhysicalChanAOManualControlFreq, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), physicalChannel, data)
 end
 
@@ -9442,11 +9443,11 @@ function GetAOPowerAmpOvercurrent(physicalChannel::String, data::Ref{UInt32})
     ccall((:DAQmxGetAOPowerAmpOvercurrent, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), physicalChannel, data)
 end
 
-function GetAOPowerAmpGain(physicalChannel::String, data::Float64)
+function GetAOPowerAmpGain(physicalChannel::String, data::Real)
     ccall((:DAQmxGetAOPowerAmpGain, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), physicalChannel, data)
 end
 
-function GetAOPowerAmpOffset(physicalChannel::String, data::Float64)
+function GetAOPowerAmpOffset(physicalChannel::String, data::Real)
     ccall((:DAQmxGetAOPowerAmpOffset, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), physicalChannel, data)
 end
 
@@ -9514,11 +9515,11 @@ function GetPhysicalChanTEDSTemplateIDs(physicalChannel::String, data::Vector{UI
     ccall((:DAQmxGetPhysicalChanTEDSTemplateIDs, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}, Cuint), physicalChannel, data, arraySizeInElements)
 end
 
-function GetReadRelativeTo(taskHandle::TaskHandle, data::Int32)
+function GetReadRelativeTo(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetReadRelativeTo, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetReadRelativeTo(taskHandle::TaskHandle, data::Int32)
+function SetReadRelativeTo(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetReadRelativeTo, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -9526,11 +9527,11 @@ function ResetReadRelativeTo(taskHandle::TaskHandle)
     ccall((:DAQmxResetReadRelativeTo, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetReadOffset(taskHandle::TaskHandle, data::Int32)
+function GetReadOffset(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetReadOffset, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetReadOffset(taskHandle::TaskHandle, data::Int32)
+function SetReadOffset(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetReadOffset, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -9574,11 +9575,11 @@ function ResetReadAutoStart(taskHandle::TaskHandle)
     ccall((:DAQmxResetReadAutoStart, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetReadOverWrite(taskHandle::TaskHandle, data::Int32)
+function GetReadOverWrite(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetReadOverWrite, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetReadOverWrite(taskHandle::TaskHandle, data::Int32)
+function SetReadOverWrite(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetReadOverWrite, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -9598,11 +9599,11 @@ function ResetLoggingFilePath(taskHandle::TaskHandle)
     ccall((:DAQmxResetLoggingFilePath, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetLoggingMode(taskHandle::TaskHandle, data::Int32)
+function GetLoggingMode(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetLoggingMode, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetLoggingMode(taskHandle::TaskHandle, data::Int32)
+function SetLoggingMode(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetLoggingMode, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -9622,11 +9623,11 @@ function ResetLoggingTDMSGroupName(taskHandle::TaskHandle)
     ccall((:DAQmxResetLoggingTDMSGroupName, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetLoggingTDMSOperation(taskHandle::TaskHandle, data::Int32)
+function GetLoggingTDMSOperation(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetLoggingTDMSOperation, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetLoggingTDMSOperation(taskHandle::TaskHandle, data::Int32)
+function SetLoggingTDMSOperation(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetLoggingTDMSOperation, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -9802,11 +9803,11 @@ function GetReadDigitalLinesBytesPerChan(taskHandle::TaskHandle, data::Ref{UInt3
     ccall((:DAQmxGetReadDigitalLinesBytesPerChan, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function GetReadWaitMode(taskHandle::TaskHandle, data::Int32)
+function GetReadWaitMode(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetReadWaitMode, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetReadWaitMode(taskHandle::TaskHandle, data::Int32)
+function SetReadWaitMode(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetReadWaitMode, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -9814,11 +9815,11 @@ function ResetReadWaitMode(taskHandle::TaskHandle)
     ccall((:DAQmxResetReadWaitMode, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetReadSleepTime(taskHandle::TaskHandle, data::Float64)
+function GetReadSleepTime(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetReadSleepTime, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetReadSleepTime(taskHandle::TaskHandle, data::Float64)
+function SetReadSleepTime(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetReadSleepTime, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -9850,11 +9851,11 @@ function ResetRealTimeNumOfWarmupIters(taskHandle::TaskHandle)
     ccall((:DAQmxResetRealTimeNumOfWarmupIters, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetRealTimeWaitForNextSampClkWaitMode(taskHandle::TaskHandle, data::Int32)
+function GetRealTimeWaitForNextSampClkWaitMode(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetRealTimeWaitForNextSampClkWaitMode, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetRealTimeWaitForNextSampClkWaitMode(taskHandle::TaskHandle, data::Int32)
+function SetRealTimeWaitForNextSampClkWaitMode(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetRealTimeWaitForNextSampClkWaitMode, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -9874,11 +9875,11 @@ function ResetRealTimeReportMissedSamp(taskHandle::TaskHandle)
     ccall((:DAQmxResetRealTimeReportMissedSamp, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetRealTimeWriteRecoveryMode(taskHandle::TaskHandle, data::Int32)
+function GetRealTimeWriteRecoveryMode(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetRealTimeWriteRecoveryMode, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetRealTimeWriteRecoveryMode(taskHandle::TaskHandle, data::Int32)
+function SetRealTimeWriteRecoveryMode(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetRealTimeWriteRecoveryMode, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -9902,63 +9903,63 @@ function SetScaleScaledUnits(scaleName::String, data)
     ccall((:DAQmxSetScaleScaledUnits, :libnidaqmx), Cint, (Ref{UInt8}, Cstring), scaleName, data)
 end
 
-function GetScalePreScaledUnits(scaleName::String, data::Int32)
+function GetScalePreScaledUnits(scaleName::String, data::Integer)
     ccall((:DAQmxGetScalePreScaledUnits, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}), scaleName, data)
 end
 
-function SetScalePreScaledUnits(scaleName::String, data::Int32)
+function SetScalePreScaledUnits(scaleName::String, data::Integer)
     ccall((:DAQmxSetScalePreScaledUnits, :libnidaqmx), Cint, (Ref{UInt8}, Cint), scaleName, data)
 end
 
-function GetScaleType(scaleName::String, data::Int32)
+function GetScaleType(scaleName::String, data::Integer)
     ccall((:DAQmxGetScaleType, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}), scaleName, data)
 end
 
-function GetScaleLinSlope(scaleName::String, data::Float64)
+function GetScaleLinSlope(scaleName::String, data::Real)
     ccall((:DAQmxGetScaleLinSlope, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), scaleName, data)
 end
 
-function SetScaleLinSlope(scaleName::String, data::Float64)
+function SetScaleLinSlope(scaleName::String, data::Real)
     ccall((:DAQmxSetScaleLinSlope, :libnidaqmx), Cint, (Ref{UInt8}, Cdouble), scaleName, data)
 end
 
-function GetScaleLinYIntercept(scaleName::String, data::Float64)
+function GetScaleLinYIntercept(scaleName::String, data::Real)
     ccall((:DAQmxGetScaleLinYIntercept, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), scaleName, data)
 end
 
-function SetScaleLinYIntercept(scaleName::String, data::Float64)
+function SetScaleLinYIntercept(scaleName::String, data::Real)
     ccall((:DAQmxSetScaleLinYIntercept, :libnidaqmx), Cint, (Ref{UInt8}, Cdouble), scaleName, data)
 end
 
-function GetScaleMapScaledMax(scaleName::String, data::Float64)
+function GetScaleMapScaledMax(scaleName::String, data::Real)
     ccall((:DAQmxGetScaleMapScaledMax, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), scaleName, data)
 end
 
-function SetScaleMapScaledMax(scaleName::String, data::Float64)
+function SetScaleMapScaledMax(scaleName::String, data::Real)
     ccall((:DAQmxSetScaleMapScaledMax, :libnidaqmx), Cint, (Ref{UInt8}, Cdouble), scaleName, data)
 end
 
-function GetScaleMapPreScaledMax(scaleName::String, data::Float64)
+function GetScaleMapPreScaledMax(scaleName::String, data::Real)
     ccall((:DAQmxGetScaleMapPreScaledMax, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), scaleName, data)
 end
 
-function SetScaleMapPreScaledMax(scaleName::String, data::Float64)
+function SetScaleMapPreScaledMax(scaleName::String, data::Real)
     ccall((:DAQmxSetScaleMapPreScaledMax, :libnidaqmx), Cint, (Ref{UInt8}, Cdouble), scaleName, data)
 end
 
-function GetScaleMapScaledMin(scaleName::String, data::Float64)
+function GetScaleMapScaledMin(scaleName::String, data::Real)
     ccall((:DAQmxGetScaleMapScaledMin, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), scaleName, data)
 end
 
-function SetScaleMapScaledMin(scaleName::String, data::Float64)
+function SetScaleMapScaledMin(scaleName::String, data::Real)
     ccall((:DAQmxSetScaleMapScaledMin, :libnidaqmx), Cint, (Ref{UInt8}, Cdouble), scaleName, data)
 end
 
-function GetScaleMapPreScaledMin(scaleName::String, data::Float64)
+function GetScaleMapPreScaledMin(scaleName::String, data::Real)
     ccall((:DAQmxGetScaleMapPreScaledMin, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), scaleName, data)
 end
 
-function SetScaleMapPreScaledMin(scaleName::String, data::Float64)
+function SetScaleMapPreScaledMin(scaleName::String, data::Real)
     ccall((:DAQmxSetScaleMapPreScaledMin, :libnidaqmx), Cint, (Ref{UInt8}, Cdouble), scaleName, data)
 end
 
@@ -9994,11 +9995,11 @@ function SetScaleTablePreScaledVals(scaleName::String, data::Vector{Float64}, ar
     ccall((:DAQmxSetScaleTablePreScaledVals, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}, Cuint), scaleName, data, arraySizeInElements)
 end
 
-function GetSwitchChanUsage(switchChannelName::String, data::Int32)
+function GetSwitchChanUsage(switchChannelName::String, data::Integer)
     ccall((:DAQmxGetSwitchChanUsage, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cint}), switchChannelName, data)
 end
 
-function SetSwitchChanUsage(switchChannelName::String, data::Int32)
+function SetSwitchChanUsage(switchChannelName::String, data::Integer)
     ccall((:DAQmxSetSwitchChanUsage, :libnidaqmx), Cint, (Ref{UInt8}, Cint), switchChannelName, data)
 end
 
@@ -10010,43 +10011,43 @@ function SetSwitchChanAnlgBusSharingEnable(switchChannelName::String, data::Ref{
     ccall((:DAQmxSetSwitchChanAnlgBusSharingEnable, :libnidaqmx), Cint, (Ref{UInt8}, Cuint), switchChannelName, data)
 end
 
-function GetSwitchChanMaxACCarryCurrent(switchChannelName::String, data::Float64)
+function GetSwitchChanMaxACCarryCurrent(switchChannelName::String, data::Real)
     ccall((:DAQmxGetSwitchChanMaxACCarryCurrent, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), switchChannelName, data)
 end
 
-function GetSwitchChanMaxACSwitchCurrent(switchChannelName::String, data::Float64)
+function GetSwitchChanMaxACSwitchCurrent(switchChannelName::String, data::Real)
     ccall((:DAQmxGetSwitchChanMaxACSwitchCurrent, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), switchChannelName, data)
 end
 
-function GetSwitchChanMaxACCarryPwr(switchChannelName::String, data::Float64)
+function GetSwitchChanMaxACCarryPwr(switchChannelName::String, data::Real)
     ccall((:DAQmxGetSwitchChanMaxACCarryPwr, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), switchChannelName, data)
 end
 
-function GetSwitchChanMaxACSwitchPwr(switchChannelName::String, data::Float64)
+function GetSwitchChanMaxACSwitchPwr(switchChannelName::String, data::Real)
     ccall((:DAQmxGetSwitchChanMaxACSwitchPwr, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), switchChannelName, data)
 end
 
-function GetSwitchChanMaxDCCarryCurrent(switchChannelName::String, data::Float64)
+function GetSwitchChanMaxDCCarryCurrent(switchChannelName::String, data::Real)
     ccall((:DAQmxGetSwitchChanMaxDCCarryCurrent, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), switchChannelName, data)
 end
 
-function GetSwitchChanMaxDCSwitchCurrent(switchChannelName::String, data::Float64)
+function GetSwitchChanMaxDCSwitchCurrent(switchChannelName::String, data::Real)
     ccall((:DAQmxGetSwitchChanMaxDCSwitchCurrent, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), switchChannelName, data)
 end
 
-function GetSwitchChanMaxDCCarryPwr(switchChannelName::String, data::Float64)
+function GetSwitchChanMaxDCCarryPwr(switchChannelName::String, data::Real)
     ccall((:DAQmxGetSwitchChanMaxDCCarryPwr, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), switchChannelName, data)
 end
 
-function GetSwitchChanMaxDCSwitchPwr(switchChannelName::String, data::Float64)
+function GetSwitchChanMaxDCSwitchPwr(switchChannelName::String, data::Real)
     ccall((:DAQmxGetSwitchChanMaxDCSwitchPwr, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), switchChannelName, data)
 end
 
-function GetSwitchChanMaxACVoltage(switchChannelName::String, data::Float64)
+function GetSwitchChanMaxACVoltage(switchChannelName::String, data::Real)
     ccall((:DAQmxGetSwitchChanMaxACVoltage, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), switchChannelName, data)
 end
 
-function GetSwitchChanMaxDCVoltage(switchChannelName::String, data::Float64)
+function GetSwitchChanMaxDCVoltage(switchChannelName::String, data::Real)
     ccall((:DAQmxGetSwitchChanMaxDCVoltage, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), switchChannelName, data)
 end
 
@@ -10054,19 +10055,19 @@ function GetSwitchChanWireMode(switchChannelName::String, data::Ref{UInt32})
     ccall((:DAQmxGetSwitchChanWireMode, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cuint}), switchChannelName, data)
 end
 
-function GetSwitchChanBandwidth(switchChannelName::String, data::Float64)
+function GetSwitchChanBandwidth(switchChannelName::String, data::Real)
     ccall((:DAQmxGetSwitchChanBandwidth, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), switchChannelName, data)
 end
 
-function GetSwitchChanImpedance(switchChannelName::String, data::Float64)
+function GetSwitchChanImpedance(switchChannelName::String, data::Real)
     ccall((:DAQmxGetSwitchChanImpedance, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), switchChannelName, data)
 end
 
-function GetSwitchDevSettlingTime(deviceName::String, data::Float64)
+function GetSwitchDevSettlingTime(deviceName::String, data::Real)
     ccall((:DAQmxGetSwitchDevSettlingTime, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), deviceName, data)
 end
 
-function SetSwitchDevSettlingTime(deviceName::String, data::Float64)
+function SetSwitchDevSettlingTime(deviceName::String, data::Real)
     ccall((:DAQmxSetSwitchDevSettlingTime, :libnidaqmx), Cint, (Ref{UInt8}, Cdouble), deviceName, data)
 end
 
@@ -10118,15 +10119,15 @@ function GetSwitchDevTopology(deviceName::String, data::Vector{UInt8}, bufferSiz
     ccall((:DAQmxGetSwitchDevTopology, :libnidaqmx), Cint, (Cstring, Ref{UInt8}, Cuint), deviceName, data, bufferSize)
 end
 
-function GetSwitchDevTemperature(deviceName::String, data::Float64)
+function GetSwitchDevTemperature(deviceName::String, data::Real)
     ccall((:DAQmxGetSwitchDevTemperature, :libnidaqmx), Cint, (Ref{UInt8}, Ref{Cdouble}), deviceName, data)
 end
 
-function GetSwitchScanBreakMode(taskHandle::TaskHandle, data::Int32)
+function GetSwitchScanBreakMode(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetSwitchScanBreakMode, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetSwitchScanBreakMode(taskHandle::TaskHandle, data::Int32)
+function SetSwitchScanBreakMode(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetSwitchScanBreakMode, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -10134,11 +10135,11 @@ function ResetSwitchScanBreakMode(taskHandle::TaskHandle)
     ccall((:DAQmxResetSwitchScanBreakMode, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetSwitchScanRepeatMode(taskHandle::TaskHandle, data::Int32)
+function GetSwitchScanRepeatMode(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetSwitchScanRepeatMode, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetSwitchScanRepeatMode(taskHandle::TaskHandle, data::Int32)
+function SetSwitchScanRepeatMode(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetSwitchScanRepeatMode, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -10202,11 +10203,11 @@ function GetTaskComplete(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetTaskComplete, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function GetSampQuantSampMode(taskHandle::TaskHandle, data::Int32)
+function GetSampQuantSampMode(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetSampQuantSampMode, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetSampQuantSampMode(taskHandle::TaskHandle, data::Int32)
+function SetSampQuantSampMode(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetSampQuantSampMode, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -10226,11 +10227,11 @@ function ResetSampQuantSampPerChan(taskHandle::TaskHandle)
     ccall((:DAQmxResetSampQuantSampPerChan, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetSampTimingType(taskHandle::TaskHandle, data::Int32)
+function GetSampTimingType(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetSampTimingType, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetSampTimingType(taskHandle::TaskHandle, data::Int32)
+function SetSampTimingType(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetSampTimingType, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -10242,7 +10243,7 @@ function GetSampClkRate(taskHandle::TaskHandle, data::Ref{Float64})
     ccall((:DAQmxGetSampClkRate, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetSampClkRate(taskHandle::TaskHandle, data::Float64)
+function SetSampClkRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetSampClkRate, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -10266,11 +10267,11 @@ function ResetSampClkSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetSampClkSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetSampClkActiveEdge(taskHandle::TaskHandle, data::Int32)
+function GetSampClkActiveEdge(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetSampClkActiveEdge, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetSampClkActiveEdge(taskHandle::TaskHandle, data::Int32)
+function SetSampClkActiveEdge(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetSampClkActiveEdge, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -10278,11 +10279,11 @@ function ResetSampClkActiveEdge(taskHandle::TaskHandle)
     ccall((:DAQmxResetSampClkActiveEdge, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetSampClkOverrunBehavior(taskHandle::TaskHandle, data::Int32)
+function GetSampClkOverrunBehavior(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetSampClkOverrunBehavior, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetSampClkOverrunBehavior(taskHandle::TaskHandle, data::Int32)
+function SetSampClkOverrunBehavior(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetSampClkOverrunBehavior, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -10290,11 +10291,11 @@ function ResetSampClkOverrunBehavior(taskHandle::TaskHandle)
     ccall((:DAQmxResetSampClkOverrunBehavior, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetSampClkUnderflowBehavior(taskHandle::TaskHandle, data::Int32)
+function GetSampClkUnderflowBehavior(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetSampClkUnderflowBehavior, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetSampClkUnderflowBehavior(taskHandle::TaskHandle, data::Int32)
+function SetSampClkUnderflowBehavior(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetSampClkUnderflowBehavior, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -10318,11 +10319,11 @@ function GetSampClkTerm(taskHandle::TaskHandle, data::Vector{UInt8}, bufferSize:
     ccall((:DAQmxGetSampClkTerm, :libnidaqmx), Cint, (TaskHandle, Cstring, Cuint), taskHandle, data, bufferSize)
 end
 
-function GetSampClkTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function GetSampClkTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetSampClkTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetSampClkTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function SetSampClkTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetSampClkTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -10342,11 +10343,11 @@ function ResetSampClkTimebaseSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetSampClkTimebaseSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetSampClkTimebaseActiveEdge(taskHandle::TaskHandle, data::Int32)
+function GetSampClkTimebaseActiveEdge(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetSampClkTimebaseActiveEdge, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetSampClkTimebaseActiveEdge(taskHandle::TaskHandle, data::Int32)
+function SetSampClkTimebaseActiveEdge(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetSampClkTimebaseActiveEdge, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -10382,11 +10383,11 @@ function ResetSampClkDigFltrEnable(taskHandle::TaskHandle)
     ccall((:DAQmxResetSampClkDigFltrEnable, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetSampClkDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Float64)
+function GetSampClkDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetSampClkDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetSampClkDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Float64)
+function SetSampClkDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetSampClkDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -10406,11 +10407,11 @@ function ResetSampClkDigFltrTimebaseSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetSampClkDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetSampClkDigFltrTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function GetSampClkDigFltrTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetSampClkDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetSampClkDigFltrTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function SetSampClkDigFltrTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetSampClkDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -10442,11 +10443,11 @@ function ResetSampClkWriteWfmUseInitialWfmDT(taskHandle::TaskHandle)
     ccall((:DAQmxResetSampClkWriteWfmUseInitialWfmDT, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetHshkDelayAfterXfer(taskHandle::TaskHandle, data::Float64)
+function GetHshkDelayAfterXfer(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetHshkDelayAfterXfer, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetHshkDelayAfterXfer(taskHandle::TaskHandle, data::Float64)
+function SetHshkDelayAfterXfer(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetHshkDelayAfterXfer, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -10454,11 +10455,11 @@ function ResetHshkDelayAfterXfer(taskHandle::TaskHandle)
     ccall((:DAQmxResetHshkDelayAfterXfer, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetHshkStartCond(taskHandle::TaskHandle, data::Int32)
+function GetHshkStartCond(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetHshkStartCond, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetHshkStartCond(taskHandle::TaskHandle, data::Int32)
+function SetHshkStartCond(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetHshkStartCond, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -10466,11 +10467,11 @@ function ResetHshkStartCond(taskHandle::TaskHandle)
     ccall((:DAQmxResetHshkStartCond, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetHshkSampleInputDataWhen(taskHandle::TaskHandle, data::Int32)
+function GetHshkSampleInputDataWhen(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetHshkSampleInputDataWhen, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetHshkSampleInputDataWhen(taskHandle::TaskHandle, data::Int32)
+function SetHshkSampleInputDataWhen(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetHshkSampleInputDataWhen, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -10526,11 +10527,11 @@ function ResetOnDemandSimultaneousAOEnable(taskHandle::TaskHandle)
     ccall((:DAQmxResetOnDemandSimultaneousAOEnable, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetImplicitUnderflowBehavior(taskHandle::TaskHandle, data::Int32)
+function GetImplicitUnderflowBehavior(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetImplicitUnderflowBehavior, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetImplicitUnderflowBehavior(taskHandle::TaskHandle, data::Int32)
+function SetImplicitUnderflowBehavior(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetImplicitUnderflowBehavior, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -10538,11 +10539,11 @@ function ResetImplicitUnderflowBehavior(taskHandle::TaskHandle)
     ccall((:DAQmxResetImplicitUnderflowBehavior, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAIConvRate(taskHandle::TaskHandle, data::Float64)
+function GetAIConvRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAIConvRate, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAIConvRate(taskHandle::TaskHandle, data::Float64)
+function SetAIConvRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAIConvRate, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -10550,11 +10551,11 @@ function ResetAIConvRate(taskHandle::TaskHandle)
     ccall((:DAQmxResetAIConvRate, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAIConvRateEx(taskHandle::TaskHandle, deviceNames::String, data::Float64)
+function GetAIConvRateEx(taskHandle::TaskHandle, deviceNames::String, data::Real)
     ccall((:DAQmxGetAIConvRateEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{Cdouble}), taskHandle, deviceNames, data)
 end
 
-function SetAIConvRateEx(taskHandle::TaskHandle, deviceNames::String, data::Float64)
+function SetAIConvRateEx(taskHandle::TaskHandle, deviceNames::String, data::Real)
     ccall((:DAQmxSetAIConvRateEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cdouble), taskHandle, deviceNames, data)
 end
 
@@ -10562,11 +10563,11 @@ function ResetAIConvRateEx(taskHandle::TaskHandle, deviceNames::String)
     ccall((:DAQmxResetAIConvRateEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}), taskHandle, deviceNames)
 end
 
-function GetAIConvMaxRate(taskHandle::TaskHandle, data::Float64)
+function GetAIConvMaxRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAIConvMaxRate, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function GetAIConvMaxRateEx(taskHandle::TaskHandle, deviceNames::String, data::Float64)
+function GetAIConvMaxRateEx(taskHandle::TaskHandle, deviceNames::String, data::Real)
     ccall((:DAQmxGetAIConvMaxRateEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{Cdouble}), taskHandle, deviceNames, data)
 end
 
@@ -10594,11 +10595,11 @@ function ResetAIConvSrcEx(taskHandle::TaskHandle, deviceNames::String)
     ccall((:DAQmxResetAIConvSrcEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}), taskHandle, deviceNames)
 end
 
-function GetAIConvActiveEdge(taskHandle::TaskHandle, data::Int32)
+function GetAIConvActiveEdge(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetAIConvActiveEdge, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetAIConvActiveEdge(taskHandle::TaskHandle, data::Int32)
+function SetAIConvActiveEdge(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetAIConvActiveEdge, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -10606,11 +10607,11 @@ function ResetAIConvActiveEdge(taskHandle::TaskHandle)
     ccall((:DAQmxResetAIConvActiveEdge, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAIConvActiveEdgeEx(taskHandle::TaskHandle, deviceNames::String, data::Int32)
+function GetAIConvActiveEdgeEx(taskHandle::TaskHandle, deviceNames::String, data::Integer)
     ccall((:DAQmxGetAIConvActiveEdgeEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{Cint}), taskHandle, deviceNames, data)
 end
 
-function SetAIConvActiveEdgeEx(taskHandle::TaskHandle, deviceNames::String, data::Int32)
+function SetAIConvActiveEdgeEx(taskHandle::TaskHandle, deviceNames::String, data::Integer)
     ccall((:DAQmxSetAIConvActiveEdgeEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cint), taskHandle, deviceNames, data)
 end
 
@@ -10642,11 +10643,11 @@ function ResetAIConvTimebaseDivEx(taskHandle::TaskHandle, deviceNames::String)
     ccall((:DAQmxResetAIConvTimebaseDivEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}), taskHandle, deviceNames)
 end
 
-function GetAIConvTimebaseSrc(taskHandle::TaskHandle, data::Int32)
+function GetAIConvTimebaseSrc(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetAIConvTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetAIConvTimebaseSrc(taskHandle::TaskHandle, data::Int32)
+function SetAIConvTimebaseSrc(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetAIConvTimebaseSrc, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -10654,11 +10655,11 @@ function ResetAIConvTimebaseSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetAIConvTimebaseSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAIConvTimebaseSrcEx(taskHandle::TaskHandle, deviceNames::String, data::Int32)
+function GetAIConvTimebaseSrcEx(taskHandle::TaskHandle, deviceNames::String, data::Integer)
     ccall((:DAQmxGetAIConvTimebaseSrcEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{Cint}), taskHandle, deviceNames, data)
 end
 
-function SetAIConvTimebaseSrcEx(taskHandle::TaskHandle, deviceNames::String, data::Int32)
+function SetAIConvTimebaseSrcEx(taskHandle::TaskHandle, deviceNames::String, data::Integer)
     ccall((:DAQmxSetAIConvTimebaseSrcEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cint), taskHandle, deviceNames, data)
 end
 
@@ -10666,11 +10667,11 @@ function ResetAIConvTimebaseSrcEx(taskHandle::TaskHandle, deviceNames::String)
     ccall((:DAQmxResetAIConvTimebaseSrcEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}), taskHandle, deviceNames)
 end
 
-function GetDelayFromSampClkDelayUnits(taskHandle::TaskHandle, data::Int32)
+function GetDelayFromSampClkDelayUnits(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetDelayFromSampClkDelayUnits, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetDelayFromSampClkDelayUnits(taskHandle::TaskHandle, data::Int32)
+function SetDelayFromSampClkDelayUnits(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetDelayFromSampClkDelayUnits, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -10678,11 +10679,11 @@ function ResetDelayFromSampClkDelayUnits(taskHandle::TaskHandle)
     ccall((:DAQmxResetDelayFromSampClkDelayUnits, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDelayFromSampClkDelayUnitsEx(taskHandle::TaskHandle, deviceNames::String, data::Int32)
+function GetDelayFromSampClkDelayUnitsEx(taskHandle::TaskHandle, deviceNames::String, data::Integer)
     ccall((:DAQmxGetDelayFromSampClkDelayUnitsEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{Cint}), taskHandle, deviceNames, data)
 end
 
-function SetDelayFromSampClkDelayUnitsEx(taskHandle::TaskHandle, deviceNames::String, data::Int32)
+function SetDelayFromSampClkDelayUnitsEx(taskHandle::TaskHandle, deviceNames::String, data::Integer)
     ccall((:DAQmxSetDelayFromSampClkDelayUnitsEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cint), taskHandle, deviceNames, data)
 end
 
@@ -10690,11 +10691,11 @@ function ResetDelayFromSampClkDelayUnitsEx(taskHandle::TaskHandle, deviceNames::
     ccall((:DAQmxResetDelayFromSampClkDelayUnitsEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}), taskHandle, deviceNames)
 end
 
-function GetDelayFromSampClkDelay(taskHandle::TaskHandle, data::Float64)
+function GetDelayFromSampClkDelay(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetDelayFromSampClkDelay, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetDelayFromSampClkDelay(taskHandle::TaskHandle, data::Float64)
+function SetDelayFromSampClkDelay(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetDelayFromSampClkDelay, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -10702,11 +10703,11 @@ function ResetDelayFromSampClkDelay(taskHandle::TaskHandle)
     ccall((:DAQmxResetDelayFromSampClkDelay, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDelayFromSampClkDelayEx(taskHandle::TaskHandle, deviceNames::String, data::Float64)
+function GetDelayFromSampClkDelayEx(taskHandle::TaskHandle, deviceNames::String, data::Real)
     ccall((:DAQmxGetDelayFromSampClkDelayEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{Cdouble}), taskHandle, deviceNames, data)
 end
 
-function SetDelayFromSampClkDelayEx(taskHandle::TaskHandle, deviceNames::String, data::Float64)
+function SetDelayFromSampClkDelayEx(taskHandle::TaskHandle, deviceNames::String, data::Real)
     ccall((:DAQmxSetDelayFromSampClkDelayEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cdouble), taskHandle, deviceNames, data)
 end
 
@@ -10738,11 +10739,11 @@ function ResetAIConvDigFltrEnableEx(taskHandle::TaskHandle, deviceNames::String)
     ccall((:DAQmxResetAIConvDigFltrEnableEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}), taskHandle, deviceNames)
 end
 
-function GetAIConvDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Float64)
+function GetAIConvDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAIConvDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAIConvDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Float64)
+function SetAIConvDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAIConvDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -10750,11 +10751,11 @@ function ResetAIConvDigFltrMinPulseWidth(taskHandle::TaskHandle)
     ccall((:DAQmxResetAIConvDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAIConvDigFltrMinPulseWidthEx(taskHandle::TaskHandle, deviceNames::String, data::Float64)
+function GetAIConvDigFltrMinPulseWidthEx(taskHandle::TaskHandle, deviceNames::String, data::Real)
     ccall((:DAQmxGetAIConvDigFltrMinPulseWidthEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{Cdouble}), taskHandle, deviceNames, data)
 end
 
-function SetAIConvDigFltrMinPulseWidthEx(taskHandle::TaskHandle, deviceNames::String, data::Float64)
+function SetAIConvDigFltrMinPulseWidthEx(taskHandle::TaskHandle, deviceNames::String, data::Real)
     ccall((:DAQmxSetAIConvDigFltrMinPulseWidthEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cdouble), taskHandle, deviceNames, data)
 end
 
@@ -10786,11 +10787,11 @@ function ResetAIConvDigFltrTimebaseSrcEx(taskHandle::TaskHandle, deviceNames::St
     ccall((:DAQmxResetAIConvDigFltrTimebaseSrcEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}), taskHandle, deviceNames)
 end
 
-function GetAIConvDigFltrTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function GetAIConvDigFltrTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAIConvDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAIConvDigFltrTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function SetAIConvDigFltrTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAIConvDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -10798,11 +10799,11 @@ function ResetAIConvDigFltrTimebaseRate(taskHandle::TaskHandle)
     ccall((:DAQmxResetAIConvDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAIConvDigFltrTimebaseRateEx(taskHandle::TaskHandle, deviceNames::String, data::Float64)
+function GetAIConvDigFltrTimebaseRateEx(taskHandle::TaskHandle, deviceNames::String, data::Real)
     ccall((:DAQmxGetAIConvDigFltrTimebaseRateEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{Cdouble}), taskHandle, deviceNames, data)
 end
 
-function SetAIConvDigFltrTimebaseRateEx(taskHandle::TaskHandle, deviceNames::String, data::Float64)
+function SetAIConvDigFltrTimebaseRateEx(taskHandle::TaskHandle, deviceNames::String, data::Real)
     ccall((:DAQmxSetAIConvDigFltrTimebaseRateEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cdouble), taskHandle, deviceNames, data)
 end
 
@@ -10834,11 +10835,11 @@ function ResetAIConvDigSyncEnableEx(taskHandle::TaskHandle, deviceNames::String)
     ccall((:DAQmxResetAIConvDigSyncEnableEx, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}), taskHandle, deviceNames)
 end
 
-function GetMasterTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function GetMasterTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetMasterTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetMasterTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function SetMasterTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetMasterTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -10858,11 +10859,11 @@ function ResetMasterTimebaseSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetMasterTimebaseSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetRefClkRate(taskHandle::TaskHandle, data::Float64)
+function GetRefClkRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetRefClkRate, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetRefClkRate(taskHandle::TaskHandle, data::Float64)
+function SetRefClkRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetRefClkRate, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -10882,11 +10883,11 @@ function ResetRefClkSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetRefClkSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetSyncPulseType(taskHandle::TaskHandle, data::Int32)
+function GetSyncPulseType(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetSyncPulseType, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetSyncPulseType(taskHandle::TaskHandle, data::Int32)
+function SetSyncPulseType(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetSyncPulseType, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -10918,11 +10919,11 @@ function ResetSyncPulseTimeWhen(taskHandle::TaskHandle)
     ccall((:DAQmxResetSyncPulseTimeWhen, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetSyncPulseTimeTimescale(taskHandle::TaskHandle, data::Int32)
+function GetSyncPulseTimeTimescale(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetSyncPulseTimeTimescale, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetSyncPulseTimeTimescale(taskHandle::TaskHandle, data::Int32)
+function SetSyncPulseTimeTimescale(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetSyncPulseTimeTimescale, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -10930,15 +10931,15 @@ function ResetSyncPulseTimeTimescale(taskHandle::TaskHandle)
     ccall((:DAQmxResetSyncPulseTimeTimescale, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetSyncPulseSyncTime(taskHandle::TaskHandle, data::Float64)
+function GetSyncPulseSyncTime(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetSyncPulseSyncTime, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function GetSyncPulseMinDelayToStart(taskHandle::TaskHandle, data::Float64)
+function GetSyncPulseMinDelayToStart(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetSyncPulseMinDelayToStart, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetSyncPulseMinDelayToStart(taskHandle::TaskHandle, data::Float64)
+function SetSyncPulseMinDelayToStart(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetSyncPulseMinDelayToStart, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -10946,15 +10947,15 @@ function ResetSyncPulseMinDelayToStart(taskHandle::TaskHandle)
     ccall((:DAQmxResetSyncPulseMinDelayToStart, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetSyncPulseResetTime(taskHandle::TaskHandle, data::Float64)
+function GetSyncPulseResetTime(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetSyncPulseResetTime, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function GetSyncPulseResetDelay(taskHandle::TaskHandle, data::Float64)
+function GetSyncPulseResetDelay(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetSyncPulseResetDelay, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetSyncPulseResetDelay(taskHandle::TaskHandle, data::Float64)
+function SetSyncPulseResetDelay(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetSyncPulseResetDelay, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -11002,11 +11003,11 @@ function ResetFirstSampTimestampEnable(taskHandle::TaskHandle)
     ccall((:DAQmxResetFirstSampTimestampEnable, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetFirstSampTimestampTimescale(taskHandle::TaskHandle, data::Int32)
+function GetFirstSampTimestampTimescale(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetFirstSampTimestampTimescale, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetFirstSampTimestampTimescale(taskHandle::TaskHandle, data::Int32)
+function SetFirstSampTimestampTimescale(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetFirstSampTimestampTimescale, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -11030,11 +11031,11 @@ function ResetFirstSampClkWhen(taskHandle::TaskHandle)
     ccall((:DAQmxResetFirstSampClkWhen, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetFirstSampClkTimescale(taskHandle::TaskHandle, data::Int32)
+function GetFirstSampClkTimescale(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetFirstSampClkTimescale, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetFirstSampClkTimescale(taskHandle::TaskHandle, data::Int32)
+function SetFirstSampClkTimescale(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetFirstSampClkTimescale, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -11042,11 +11043,11 @@ function ResetFirstSampClkTimescale(taskHandle::TaskHandle)
     ccall((:DAQmxResetFirstSampClkTimescale, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetStartTrigType(taskHandle::TaskHandle, data::Int32)
+function GetStartTrigType(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetStartTrigType, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetStartTrigType(taskHandle::TaskHandle, data::Int32)
+function SetStartTrigType(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetStartTrigType, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -11070,11 +11071,11 @@ function ResetDigEdgeStartTrigSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigEdgeStartTrigSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigEdgeStartTrigEdge(taskHandle::TaskHandle, data::Int32)
+function GetDigEdgeStartTrigEdge(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetDigEdgeStartTrigEdge, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetDigEdgeStartTrigEdge(taskHandle::TaskHandle, data::Int32)
+function SetDigEdgeStartTrigEdge(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetDigEdgeStartTrigEdge, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -11094,11 +11095,11 @@ function ResetDigEdgeStartTrigDigFltrEnable(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigEdgeStartTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigEdgeStartTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Float64)
+function GetDigEdgeStartTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetDigEdgeStartTrigDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetDigEdgeStartTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Float64)
+function SetDigEdgeStartTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetDigEdgeStartTrigDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -11118,11 +11119,11 @@ function ResetDigEdgeStartTrigDigFltrTimebaseSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigEdgeStartTrigDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigEdgeStartTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function GetDigEdgeStartTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetDigEdgeStartTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetDigEdgeStartTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function SetDigEdgeStartTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetDigEdgeStartTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -11166,11 +11167,11 @@ function ResetDigPatternStartTrigPattern(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigPatternStartTrigPattern, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigPatternStartTrigWhen(taskHandle::TaskHandle, data::Int32)
+function GetDigPatternStartTrigWhen(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetDigPatternStartTrigWhen, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetDigPatternStartTrigWhen(taskHandle::TaskHandle, data::Int32)
+function SetDigPatternStartTrigWhen(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetDigPatternStartTrigWhen, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -11190,11 +11191,11 @@ function ResetAnlgEdgeStartTrigSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgEdgeStartTrigSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgEdgeStartTrigSlope(taskHandle::TaskHandle, data::Int32)
+function GetAnlgEdgeStartTrigSlope(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetAnlgEdgeStartTrigSlope, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetAnlgEdgeStartTrigSlope(taskHandle::TaskHandle, data::Int32)
+function SetAnlgEdgeStartTrigSlope(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetAnlgEdgeStartTrigSlope, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -11202,11 +11203,11 @@ function ResetAnlgEdgeStartTrigSlope(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgEdgeStartTrigSlope, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgEdgeStartTrigLvl(taskHandle::TaskHandle, data::Float64)
+function GetAnlgEdgeStartTrigLvl(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAnlgEdgeStartTrigLvl, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAnlgEdgeStartTrigLvl(taskHandle::TaskHandle, data::Float64)
+function SetAnlgEdgeStartTrigLvl(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAnlgEdgeStartTrigLvl, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -11214,11 +11215,11 @@ function ResetAnlgEdgeStartTrigLvl(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgEdgeStartTrigLvl, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgEdgeStartTrigHyst(taskHandle::TaskHandle, data::Float64)
+function GetAnlgEdgeStartTrigHyst(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAnlgEdgeStartTrigHyst, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAnlgEdgeStartTrigHyst(taskHandle::TaskHandle, data::Float64)
+function SetAnlgEdgeStartTrigHyst(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAnlgEdgeStartTrigHyst, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -11226,11 +11227,11 @@ function ResetAnlgEdgeStartTrigHyst(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgEdgeStartTrigHyst, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgEdgeStartTrigCoupling(taskHandle::TaskHandle, data::Int32)
+function GetAnlgEdgeStartTrigCoupling(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetAnlgEdgeStartTrigCoupling, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetAnlgEdgeStartTrigCoupling(taskHandle::TaskHandle, data::Int32)
+function SetAnlgEdgeStartTrigCoupling(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetAnlgEdgeStartTrigCoupling, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -11250,11 +11251,11 @@ function ResetAnlgEdgeStartTrigDigFltrEnable(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgEdgeStartTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgEdgeStartTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Float64)
+function GetAnlgEdgeStartTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAnlgEdgeStartTrigDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAnlgEdgeStartTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Float64)
+function SetAnlgEdgeStartTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAnlgEdgeStartTrigDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -11274,11 +11275,11 @@ function ResetAnlgEdgeStartTrigDigFltrTimebaseSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgEdgeStartTrigDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgEdgeStartTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function GetAnlgEdgeStartTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAnlgEdgeStartTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAnlgEdgeStartTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function SetAnlgEdgeStartTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAnlgEdgeStartTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -11370,11 +11371,11 @@ function ResetAnlgWinStartTrigSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgWinStartTrigSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgWinStartTrigWhen(taskHandle::TaskHandle, data::Int32)
+function GetAnlgWinStartTrigWhen(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetAnlgWinStartTrigWhen, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetAnlgWinStartTrigWhen(taskHandle::TaskHandle, data::Int32)
+function SetAnlgWinStartTrigWhen(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetAnlgWinStartTrigWhen, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -11382,11 +11383,11 @@ function ResetAnlgWinStartTrigWhen(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgWinStartTrigWhen, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgWinStartTrigTop(taskHandle::TaskHandle, data::Float64)
+function GetAnlgWinStartTrigTop(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAnlgWinStartTrigTop, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAnlgWinStartTrigTop(taskHandle::TaskHandle, data::Float64)
+function SetAnlgWinStartTrigTop(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAnlgWinStartTrigTop, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -11394,11 +11395,11 @@ function ResetAnlgWinStartTrigTop(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgWinStartTrigTop, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgWinStartTrigBtm(taskHandle::TaskHandle, data::Float64)
+function GetAnlgWinStartTrigBtm(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAnlgWinStartTrigBtm, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAnlgWinStartTrigBtm(taskHandle::TaskHandle, data::Float64)
+function SetAnlgWinStartTrigBtm(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAnlgWinStartTrigBtm, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -11406,11 +11407,11 @@ function ResetAnlgWinStartTrigBtm(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgWinStartTrigBtm, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgWinStartTrigCoupling(taskHandle::TaskHandle, data::Int32)
+function GetAnlgWinStartTrigCoupling(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetAnlgWinStartTrigCoupling, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetAnlgWinStartTrigCoupling(taskHandle::TaskHandle, data::Int32)
+function SetAnlgWinStartTrigCoupling(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetAnlgWinStartTrigCoupling, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -11430,11 +11431,11 @@ function ResetAnlgWinStartTrigDigFltrEnable(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgWinStartTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgWinStartTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Float64)
+function GetAnlgWinStartTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAnlgWinStartTrigDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAnlgWinStartTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Float64)
+function SetAnlgWinStartTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAnlgWinStartTrigDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -11454,11 +11455,11 @@ function ResetAnlgWinStartTrigDigFltrTimebaseSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgWinStartTrigDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgWinStartTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function GetAnlgWinStartTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAnlgWinStartTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAnlgWinStartTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function SetAnlgWinStartTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAnlgWinStartTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -11490,11 +11491,11 @@ function ResetStartTrigTrigWhen(taskHandle::TaskHandle)
     ccall((:DAQmxResetStartTrigTrigWhen, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetStartTrigTimescale(taskHandle::TaskHandle, data::Int32)
+function GetStartTrigTimescale(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetStartTrigTimescale, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetStartTrigTimescale(taskHandle::TaskHandle, data::Int32)
+function SetStartTrigTimescale(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetStartTrigTimescale, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -11514,11 +11515,11 @@ function ResetStartTrigTimestampEnable(taskHandle::TaskHandle)
     ccall((:DAQmxResetStartTrigTimestampEnable, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetStartTrigTimestampTimescale(taskHandle::TaskHandle, data::Int32)
+function GetStartTrigTimestampTimescale(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetStartTrigTimestampTimescale, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetStartTrigTimestampTimescale(taskHandle::TaskHandle, data::Int32)
+function SetStartTrigTimestampTimescale(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetStartTrigTimestampTimescale, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -11530,11 +11531,11 @@ function GetStartTrigTimestampVal(taskHandle::TaskHandle, data::Vector{CVIAbsolu
     ccall((:DAQmxGetStartTrigTimestampVal, :libnidaqmx), Cint, (TaskHandle, Ref{CVIAbsoluteTime}), taskHandle, data)
 end
 
-function GetStartTrigDelay(taskHandle::TaskHandle, data::Float64)
+function GetStartTrigDelay(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetStartTrigDelay, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetStartTrigDelay(taskHandle::TaskHandle, data::Float64)
+function SetStartTrigDelay(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetStartTrigDelay, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -11542,11 +11543,11 @@ function ResetStartTrigDelay(taskHandle::TaskHandle)
     ccall((:DAQmxResetStartTrigDelay, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetStartTrigDelayUnits(taskHandle::TaskHandle, data::Int32)
+function GetStartTrigDelayUnits(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetStartTrigDelayUnits, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetStartTrigDelayUnits(taskHandle::TaskHandle, data::Int32)
+function SetStartTrigDelayUnits(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetStartTrigDelayUnits, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -11566,11 +11567,11 @@ function ResetStartTrigRetriggerable(taskHandle::TaskHandle)
     ccall((:DAQmxResetStartTrigRetriggerable, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetStartTrigTrigWin(taskHandle::TaskHandle, data::Float64)
+function GetStartTrigTrigWin(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetStartTrigTrigWin, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetStartTrigTrigWin(taskHandle::TaskHandle, data::Float64)
+function SetStartTrigTrigWin(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetStartTrigTrigWin, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -11578,11 +11579,11 @@ function ResetStartTrigTrigWin(taskHandle::TaskHandle)
     ccall((:DAQmxResetStartTrigTrigWin, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetStartTrigRetriggerWin(taskHandle::TaskHandle, data::Float64)
+function GetStartTrigRetriggerWin(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetStartTrigRetriggerWin, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetStartTrigRetriggerWin(taskHandle::TaskHandle, data::Float64)
+function SetStartTrigRetriggerWin(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetStartTrigRetriggerWin, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -11602,11 +11603,11 @@ function ResetStartTrigMaxNumTrigsToDetect(taskHandle::TaskHandle)
     ccall((:DAQmxResetStartTrigMaxNumTrigsToDetect, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetRefTrigType(taskHandle::TaskHandle, data::Int32)
+function GetRefTrigType(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetRefTrigType, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetRefTrigType(taskHandle::TaskHandle, data::Int32)
+function SetRefTrigType(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetRefTrigType, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -11642,11 +11643,11 @@ function ResetDigEdgeRefTrigSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigEdgeRefTrigSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigEdgeRefTrigEdge(taskHandle::TaskHandle, data::Int32)
+function GetDigEdgeRefTrigEdge(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetDigEdgeRefTrigEdge, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetDigEdgeRefTrigEdge(taskHandle::TaskHandle, data::Int32)
+function SetDigEdgeRefTrigEdge(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetDigEdgeRefTrigEdge, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -11666,11 +11667,11 @@ function ResetDigEdgeRefTrigDigFltrEnable(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigEdgeRefTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigEdgeRefTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Float64)
+function GetDigEdgeRefTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetDigEdgeRefTrigDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetDigEdgeRefTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Float64)
+function SetDigEdgeRefTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetDigEdgeRefTrigDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -11690,11 +11691,11 @@ function ResetDigEdgeRefTrigDigFltrTimebaseSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigEdgeRefTrigDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigEdgeRefTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function GetDigEdgeRefTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetDigEdgeRefTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetDigEdgeRefTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function SetDigEdgeRefTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetDigEdgeRefTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -11738,11 +11739,11 @@ function ResetDigPatternRefTrigPattern(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigPatternRefTrigPattern, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigPatternRefTrigWhen(taskHandle::TaskHandle, data::Int32)
+function GetDigPatternRefTrigWhen(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetDigPatternRefTrigWhen, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetDigPatternRefTrigWhen(taskHandle::TaskHandle, data::Int32)
+function SetDigPatternRefTrigWhen(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetDigPatternRefTrigWhen, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -11762,11 +11763,11 @@ function ResetAnlgEdgeRefTrigSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgEdgeRefTrigSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgEdgeRefTrigSlope(taskHandle::TaskHandle, data::Int32)
+function GetAnlgEdgeRefTrigSlope(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetAnlgEdgeRefTrigSlope, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetAnlgEdgeRefTrigSlope(taskHandle::TaskHandle, data::Int32)
+function SetAnlgEdgeRefTrigSlope(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetAnlgEdgeRefTrigSlope, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -11774,11 +11775,11 @@ function ResetAnlgEdgeRefTrigSlope(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgEdgeRefTrigSlope, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgEdgeRefTrigLvl(taskHandle::TaskHandle, data::Float64)
+function GetAnlgEdgeRefTrigLvl(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAnlgEdgeRefTrigLvl, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAnlgEdgeRefTrigLvl(taskHandle::TaskHandle, data::Float64)
+function SetAnlgEdgeRefTrigLvl(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAnlgEdgeRefTrigLvl, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -11786,11 +11787,11 @@ function ResetAnlgEdgeRefTrigLvl(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgEdgeRefTrigLvl, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgEdgeRefTrigHyst(taskHandle::TaskHandle, data::Float64)
+function GetAnlgEdgeRefTrigHyst(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAnlgEdgeRefTrigHyst, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAnlgEdgeRefTrigHyst(taskHandle::TaskHandle, data::Float64)
+function SetAnlgEdgeRefTrigHyst(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAnlgEdgeRefTrigHyst, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -11798,11 +11799,11 @@ function ResetAnlgEdgeRefTrigHyst(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgEdgeRefTrigHyst, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgEdgeRefTrigCoupling(taskHandle::TaskHandle, data::Int32)
+function GetAnlgEdgeRefTrigCoupling(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetAnlgEdgeRefTrigCoupling, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetAnlgEdgeRefTrigCoupling(taskHandle::TaskHandle, data::Int32)
+function SetAnlgEdgeRefTrigCoupling(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetAnlgEdgeRefTrigCoupling, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -11822,11 +11823,11 @@ function ResetAnlgEdgeRefTrigDigFltrEnable(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgEdgeRefTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgEdgeRefTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Float64)
+function GetAnlgEdgeRefTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAnlgEdgeRefTrigDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAnlgEdgeRefTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Float64)
+function SetAnlgEdgeRefTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAnlgEdgeRefTrigDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -11846,11 +11847,11 @@ function ResetAnlgEdgeRefTrigDigFltrTimebaseSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgEdgeRefTrigDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgEdgeRefTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function GetAnlgEdgeRefTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAnlgEdgeRefTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAnlgEdgeRefTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function SetAnlgEdgeRefTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAnlgEdgeRefTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -11942,11 +11943,11 @@ function ResetAnlgWinRefTrigSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgWinRefTrigSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgWinRefTrigWhen(taskHandle::TaskHandle, data::Int32)
+function GetAnlgWinRefTrigWhen(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetAnlgWinRefTrigWhen, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetAnlgWinRefTrigWhen(taskHandle::TaskHandle, data::Int32)
+function SetAnlgWinRefTrigWhen(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetAnlgWinRefTrigWhen, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -11954,11 +11955,11 @@ function ResetAnlgWinRefTrigWhen(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgWinRefTrigWhen, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgWinRefTrigTop(taskHandle::TaskHandle, data::Float64)
+function GetAnlgWinRefTrigTop(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAnlgWinRefTrigTop, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAnlgWinRefTrigTop(taskHandle::TaskHandle, data::Float64)
+function SetAnlgWinRefTrigTop(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAnlgWinRefTrigTop, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -11966,11 +11967,11 @@ function ResetAnlgWinRefTrigTop(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgWinRefTrigTop, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgWinRefTrigBtm(taskHandle::TaskHandle, data::Float64)
+function GetAnlgWinRefTrigBtm(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAnlgWinRefTrigBtm, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAnlgWinRefTrigBtm(taskHandle::TaskHandle, data::Float64)
+function SetAnlgWinRefTrigBtm(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAnlgWinRefTrigBtm, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -11978,11 +11979,11 @@ function ResetAnlgWinRefTrigBtm(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgWinRefTrigBtm, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgWinRefTrigCoupling(taskHandle::TaskHandle, data::Int32)
+function GetAnlgWinRefTrigCoupling(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetAnlgWinRefTrigCoupling, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetAnlgWinRefTrigCoupling(taskHandle::TaskHandle, data::Int32)
+function SetAnlgWinRefTrigCoupling(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetAnlgWinRefTrigCoupling, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -12002,11 +12003,11 @@ function ResetAnlgWinRefTrigDigFltrEnable(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgWinRefTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgWinRefTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Float64)
+function GetAnlgWinRefTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAnlgWinRefTrigDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAnlgWinRefTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Float64)
+function SetAnlgWinRefTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAnlgWinRefTrigDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -12026,11 +12027,11 @@ function ResetAnlgWinRefTrigDigFltrTimebaseSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgWinRefTrigDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgWinRefTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function GetAnlgWinRefTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAnlgWinRefTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAnlgWinRefTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function SetAnlgWinRefTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAnlgWinRefTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -12078,11 +12079,11 @@ function ResetRefTrigTimestampEnable(taskHandle::TaskHandle)
     ccall((:DAQmxResetRefTrigTimestampEnable, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetRefTrigTimestampTimescale(taskHandle::TaskHandle, data::Int32)
+function GetRefTrigTimestampTimescale(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetRefTrigTimestampTimescale, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetRefTrigTimestampTimescale(taskHandle::TaskHandle, data::Int32)
+function SetRefTrigTimestampTimescale(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetRefTrigTimestampTimescale, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -12094,11 +12095,11 @@ function GetRefTrigTimestampVal(taskHandle::TaskHandle, data::Vector{CVIAbsolute
     ccall((:DAQmxGetRefTrigTimestampVal, :libnidaqmx), Cint, (TaskHandle, Ref{CVIAbsoluteTime}), taskHandle, data)
 end
 
-function GetRefTrigDelay(taskHandle::TaskHandle, data::Float64)
+function GetRefTrigDelay(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetRefTrigDelay, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetRefTrigDelay(taskHandle::TaskHandle, data::Float64)
+function SetRefTrigDelay(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetRefTrigDelay, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -12118,11 +12119,11 @@ function ResetRefTrigRetriggerable(taskHandle::TaskHandle)
     ccall((:DAQmxResetRefTrigRetriggerable, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetRefTrigTrigWin(taskHandle::TaskHandle, data::Float64)
+function GetRefTrigTrigWin(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetRefTrigTrigWin, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetRefTrigTrigWin(taskHandle::TaskHandle, data::Float64)
+function SetRefTrigTrigWin(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetRefTrigTrigWin, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -12130,11 +12131,11 @@ function ResetRefTrigTrigWin(taskHandle::TaskHandle)
     ccall((:DAQmxResetRefTrigTrigWin, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetRefTrigRetriggerWin(taskHandle::TaskHandle, data::Float64)
+function GetRefTrigRetriggerWin(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetRefTrigRetriggerWin, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetRefTrigRetriggerWin(taskHandle::TaskHandle, data::Float64)
+function SetRefTrigRetriggerWin(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetRefTrigRetriggerWin, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -12154,11 +12155,11 @@ function ResetRefTrigMaxNumTrigsToDetect(taskHandle::TaskHandle)
     ccall((:DAQmxResetRefTrigMaxNumTrigsToDetect, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAdvTrigType(taskHandle::TaskHandle, data::Int32)
+function GetAdvTrigType(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetAdvTrigType, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetAdvTrigType(taskHandle::TaskHandle, data::Int32)
+function SetAdvTrigType(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetAdvTrigType, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -12178,11 +12179,11 @@ function ResetDigEdgeAdvTrigSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigEdgeAdvTrigSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigEdgeAdvTrigEdge(taskHandle::TaskHandle, data::Int32)
+function GetDigEdgeAdvTrigEdge(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetDigEdgeAdvTrigEdge, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetDigEdgeAdvTrigEdge(taskHandle::TaskHandle, data::Int32)
+function SetDigEdgeAdvTrigEdge(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetDigEdgeAdvTrigEdge, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -12202,11 +12203,11 @@ function ResetDigEdgeAdvTrigDigFltrEnable(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigEdgeAdvTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetHshkTrigType(taskHandle::TaskHandle, data::Int32)
+function GetHshkTrigType(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetHshkTrigType, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetHshkTrigType(taskHandle::TaskHandle, data::Int32)
+function SetHshkTrigType(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetHshkTrigType, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -12226,11 +12227,11 @@ function ResetInterlockedHshkTrigSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetInterlockedHshkTrigSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetInterlockedHshkTrigAssertedLvl(taskHandle::TaskHandle, data::Int32)
+function GetInterlockedHshkTrigAssertedLvl(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetInterlockedHshkTrigAssertedLvl, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetInterlockedHshkTrigAssertedLvl(taskHandle::TaskHandle, data::Int32)
+function SetInterlockedHshkTrigAssertedLvl(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetInterlockedHshkTrigAssertedLvl, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -12238,11 +12239,11 @@ function ResetInterlockedHshkTrigAssertedLvl(taskHandle::TaskHandle)
     ccall((:DAQmxResetInterlockedHshkTrigAssertedLvl, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetPauseTrigType(taskHandle::TaskHandle, data::Int32)
+function GetPauseTrigType(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetPauseTrigType, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetPauseTrigType(taskHandle::TaskHandle, data::Int32)
+function SetPauseTrigType(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetPauseTrigType, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -12266,11 +12267,11 @@ function ResetAnlgLvlPauseTrigSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgLvlPauseTrigSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgLvlPauseTrigWhen(taskHandle::TaskHandle, data::Int32)
+function GetAnlgLvlPauseTrigWhen(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetAnlgLvlPauseTrigWhen, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetAnlgLvlPauseTrigWhen(taskHandle::TaskHandle, data::Int32)
+function SetAnlgLvlPauseTrigWhen(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetAnlgLvlPauseTrigWhen, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -12278,11 +12279,11 @@ function ResetAnlgLvlPauseTrigWhen(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgLvlPauseTrigWhen, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgLvlPauseTrigLvl(taskHandle::TaskHandle, data::Float64)
+function GetAnlgLvlPauseTrigLvl(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAnlgLvlPauseTrigLvl, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAnlgLvlPauseTrigLvl(taskHandle::TaskHandle, data::Float64)
+function SetAnlgLvlPauseTrigLvl(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAnlgLvlPauseTrigLvl, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -12290,11 +12291,11 @@ function ResetAnlgLvlPauseTrigLvl(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgLvlPauseTrigLvl, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgLvlPauseTrigHyst(taskHandle::TaskHandle, data::Float64)
+function GetAnlgLvlPauseTrigHyst(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAnlgLvlPauseTrigHyst, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAnlgLvlPauseTrigHyst(taskHandle::TaskHandle, data::Float64)
+function SetAnlgLvlPauseTrigHyst(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAnlgLvlPauseTrigHyst, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -12302,11 +12303,11 @@ function ResetAnlgLvlPauseTrigHyst(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgLvlPauseTrigHyst, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgLvlPauseTrigCoupling(taskHandle::TaskHandle, data::Int32)
+function GetAnlgLvlPauseTrigCoupling(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetAnlgLvlPauseTrigCoupling, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetAnlgLvlPauseTrigCoupling(taskHandle::TaskHandle, data::Int32)
+function SetAnlgLvlPauseTrigCoupling(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetAnlgLvlPauseTrigCoupling, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -12326,11 +12327,11 @@ function ResetAnlgLvlPauseTrigDigFltrEnable(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgLvlPauseTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgLvlPauseTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Float64)
+function GetAnlgLvlPauseTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAnlgLvlPauseTrigDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAnlgLvlPauseTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Float64)
+function SetAnlgLvlPauseTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAnlgLvlPauseTrigDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -12350,11 +12351,11 @@ function ResetAnlgLvlPauseTrigDigFltrTimebaseSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgLvlPauseTrigDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgLvlPauseTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function GetAnlgLvlPauseTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAnlgLvlPauseTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAnlgLvlPauseTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function SetAnlgLvlPauseTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAnlgLvlPauseTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -12386,11 +12387,11 @@ function ResetAnlgWinPauseTrigSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgWinPauseTrigSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgWinPauseTrigWhen(taskHandle::TaskHandle, data::Int32)
+function GetAnlgWinPauseTrigWhen(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetAnlgWinPauseTrigWhen, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetAnlgWinPauseTrigWhen(taskHandle::TaskHandle, data::Int32)
+function SetAnlgWinPauseTrigWhen(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetAnlgWinPauseTrigWhen, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -12398,11 +12399,11 @@ function ResetAnlgWinPauseTrigWhen(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgWinPauseTrigWhen, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgWinPauseTrigTop(taskHandle::TaskHandle, data::Float64)
+function GetAnlgWinPauseTrigTop(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAnlgWinPauseTrigTop, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAnlgWinPauseTrigTop(taskHandle::TaskHandle, data::Float64)
+function SetAnlgWinPauseTrigTop(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAnlgWinPauseTrigTop, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -12410,11 +12411,11 @@ function ResetAnlgWinPauseTrigTop(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgWinPauseTrigTop, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgWinPauseTrigBtm(taskHandle::TaskHandle, data::Float64)
+function GetAnlgWinPauseTrigBtm(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAnlgWinPauseTrigBtm, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAnlgWinPauseTrigBtm(taskHandle::TaskHandle, data::Float64)
+function SetAnlgWinPauseTrigBtm(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAnlgWinPauseTrigBtm, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -12422,11 +12423,11 @@ function ResetAnlgWinPauseTrigBtm(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgWinPauseTrigBtm, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgWinPauseTrigCoupling(taskHandle::TaskHandle, data::Int32)
+function GetAnlgWinPauseTrigCoupling(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetAnlgWinPauseTrigCoupling, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetAnlgWinPauseTrigCoupling(taskHandle::TaskHandle, data::Int32)
+function SetAnlgWinPauseTrigCoupling(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetAnlgWinPauseTrigCoupling, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -12446,11 +12447,11 @@ function ResetAnlgWinPauseTrigDigFltrEnable(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgWinPauseTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgWinPauseTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Float64)
+function GetAnlgWinPauseTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAnlgWinPauseTrigDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAnlgWinPauseTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Float64)
+function SetAnlgWinPauseTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAnlgWinPauseTrigDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -12470,11 +12471,11 @@ function ResetAnlgWinPauseTrigDigFltrTimebaseSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetAnlgWinPauseTrigDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetAnlgWinPauseTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function GetAnlgWinPauseTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetAnlgWinPauseTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetAnlgWinPauseTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function SetAnlgWinPauseTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetAnlgWinPauseTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -12506,11 +12507,11 @@ function ResetDigLvlPauseTrigSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigLvlPauseTrigSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigLvlPauseTrigWhen(taskHandle::TaskHandle, data::Int32)
+function GetDigLvlPauseTrigWhen(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetDigLvlPauseTrigWhen, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetDigLvlPauseTrigWhen(taskHandle::TaskHandle, data::Int32)
+function SetDigLvlPauseTrigWhen(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetDigLvlPauseTrigWhen, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -12530,11 +12531,11 @@ function ResetDigLvlPauseTrigDigFltrEnable(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigLvlPauseTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigLvlPauseTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Float64)
+function GetDigLvlPauseTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetDigLvlPauseTrigDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetDigLvlPauseTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Float64)
+function SetDigLvlPauseTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetDigLvlPauseTrigDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -12554,11 +12555,11 @@ function ResetDigLvlPauseTrigDigFltrTimebaseSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigLvlPauseTrigDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigLvlPauseTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function GetDigLvlPauseTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetDigLvlPauseTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetDigLvlPauseTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function SetDigLvlPauseTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetDigLvlPauseTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -12602,11 +12603,11 @@ function ResetDigPatternPauseTrigPattern(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigPatternPauseTrigPattern, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigPatternPauseTrigWhen(taskHandle::TaskHandle, data::Int32)
+function GetDigPatternPauseTrigWhen(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetDigPatternPauseTrigWhen, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetDigPatternPauseTrigWhen(taskHandle::TaskHandle, data::Int32)
+function SetDigPatternPauseTrigWhen(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetDigPatternPauseTrigWhen, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -12614,11 +12615,11 @@ function ResetDigPatternPauseTrigWhen(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigPatternPauseTrigWhen, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetArmStartTrigType(taskHandle::TaskHandle, data::Int32)
+function GetArmStartTrigType(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetArmStartTrigType, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetArmStartTrigType(taskHandle::TaskHandle, data::Int32)
+function SetArmStartTrigType(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetArmStartTrigType, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -12642,11 +12643,11 @@ function ResetDigEdgeArmStartTrigSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigEdgeArmStartTrigSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigEdgeArmStartTrigEdge(taskHandle::TaskHandle, data::Int32)
+function GetDigEdgeArmStartTrigEdge(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetDigEdgeArmStartTrigEdge, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetDigEdgeArmStartTrigEdge(taskHandle::TaskHandle, data::Int32)
+function SetDigEdgeArmStartTrigEdge(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetDigEdgeArmStartTrigEdge, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -12666,11 +12667,11 @@ function ResetDigEdgeArmStartTrigDigFltrEnable(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigEdgeArmStartTrigDigFltrEnable, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigEdgeArmStartTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Float64)
+function GetDigEdgeArmStartTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetDigEdgeArmStartTrigDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetDigEdgeArmStartTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Float64)
+function SetDigEdgeArmStartTrigDigFltrMinPulseWidth(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetDigEdgeArmStartTrigDigFltrMinPulseWidth, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -12690,11 +12691,11 @@ function ResetDigEdgeArmStartTrigDigFltrTimebaseSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigEdgeArmStartTrigDigFltrTimebaseSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigEdgeArmStartTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function GetDigEdgeArmStartTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetDigEdgeArmStartTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetDigEdgeArmStartTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Float64)
+function SetDigEdgeArmStartTrigDigFltrTimebaseRate(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetDigEdgeArmStartTrigDigFltrTimebaseRate, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -12726,11 +12727,11 @@ function ResetArmStartTrigTrigWhen(taskHandle::TaskHandle)
     ccall((:DAQmxResetArmStartTrigTrigWhen, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetArmStartTrigTimescale(taskHandle::TaskHandle, data::Int32)
+function GetArmStartTrigTimescale(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetArmStartTrigTimescale, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetArmStartTrigTimescale(taskHandle::TaskHandle, data::Int32)
+function SetArmStartTrigTimescale(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetArmStartTrigTimescale, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -12750,11 +12751,11 @@ function ResetArmStartTrigTimestampEnable(taskHandle::TaskHandle)
     ccall((:DAQmxResetArmStartTrigTimestampEnable, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetArmStartTrigTimestampTimescale(taskHandle::TaskHandle, data::Int32)
+function GetArmStartTrigTimestampTimescale(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetArmStartTrigTimestampTimescale, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetArmStartTrigTimestampTimescale(taskHandle::TaskHandle, data::Int32)
+function SetArmStartTrigTimestampTimescale(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetArmStartTrigTimestampTimescale, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -12766,11 +12767,11 @@ function GetArmStartTrigTimestampVal(taskHandle::TaskHandle, data::Vector{CVIAbs
     ccall((:DAQmxGetArmStartTrigTimestampVal, :libnidaqmx), Cint, (TaskHandle, Ref{CVIAbsoluteTime}), taskHandle, data)
 end
 
-function GetTriggerSyncType(taskHandle::TaskHandle, data::Int32)
+function GetTriggerSyncType(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetTriggerSyncType, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetTriggerSyncType(taskHandle::TaskHandle, data::Int32)
+function SetTriggerSyncType(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetTriggerSyncType, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -12778,11 +12779,11 @@ function ResetTriggerSyncType(taskHandle::TaskHandle)
     ccall((:DAQmxResetTriggerSyncType, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetWatchdogTimeout(taskHandle::TaskHandle, data::Float64)
+function GetWatchdogTimeout(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetWatchdogTimeout, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetWatchdogTimeout(taskHandle::TaskHandle, data::Float64)
+function SetWatchdogTimeout(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetWatchdogTimeout, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -12790,11 +12791,11 @@ function ResetWatchdogTimeout(taskHandle::TaskHandle)
     ccall((:DAQmxResetWatchdogTimeout, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetWatchdogExpirTrigType(taskHandle::TaskHandle, data::Int32)
+function GetWatchdogExpirTrigType(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetWatchdogExpirTrigType, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetWatchdogExpirTrigType(taskHandle::TaskHandle, data::Int32)
+function SetWatchdogExpirTrigType(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetWatchdogExpirTrigType, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -12826,11 +12827,11 @@ function ResetDigEdgeWatchdogExpirTrigSrc(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigEdgeWatchdogExpirTrigSrc, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetDigEdgeWatchdogExpirTrigEdge(taskHandle::TaskHandle, data::Int32)
+function GetDigEdgeWatchdogExpirTrigEdge(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetDigEdgeWatchdogExpirTrigEdge, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetDigEdgeWatchdogExpirTrigEdge(taskHandle::TaskHandle, data::Int32)
+function SetDigEdgeWatchdogExpirTrigEdge(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetDigEdgeWatchdogExpirTrigEdge, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -12838,11 +12839,11 @@ function ResetDigEdgeWatchdogExpirTrigEdge(taskHandle::TaskHandle)
     ccall((:DAQmxResetDigEdgeWatchdogExpirTrigEdge, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetWatchdogDOExpirState(taskHandle::TaskHandle, lines::String, data::Int32)
+function GetWatchdogDOExpirState(taskHandle::TaskHandle, lines::String, data::Integer)
     ccall((:DAQmxGetWatchdogDOExpirState, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{Cint}), taskHandle, lines, data)
 end
 
-function SetWatchdogDOExpirState(taskHandle::TaskHandle, lines::String, data::Int32)
+function SetWatchdogDOExpirState(taskHandle::TaskHandle, lines::String, data::Integer)
     ccall((:DAQmxSetWatchdogDOExpirState, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cint), taskHandle, lines, data)
 end
 
@@ -12850,11 +12851,11 @@ function ResetWatchdogDOExpirState(taskHandle::TaskHandle, lines::String)
     ccall((:DAQmxResetWatchdogDOExpirState, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}), taskHandle, lines)
 end
 
-function GetWatchdogAOOutputType(taskHandle::TaskHandle, lines::String, data::Int32)
+function GetWatchdogAOOutputType(taskHandle::TaskHandle, lines::String, data::Integer)
     ccall((:DAQmxGetWatchdogAOOutputType, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{Cint}), taskHandle, lines, data)
 end
 
-function SetWatchdogAOOutputType(taskHandle::TaskHandle, lines::String, data::Int32)
+function SetWatchdogAOOutputType(taskHandle::TaskHandle, lines::String, data::Integer)
     ccall((:DAQmxSetWatchdogAOOutputType, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cint), taskHandle, lines, data)
 end
 
@@ -12862,11 +12863,11 @@ function ResetWatchdogAOOutputType(taskHandle::TaskHandle, lines::String)
     ccall((:DAQmxResetWatchdogAOOutputType, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}), taskHandle, lines)
 end
 
-function GetWatchdogAOExpirState(taskHandle::TaskHandle, lines::String, data::Float64)
+function GetWatchdogAOExpirState(taskHandle::TaskHandle, lines::String, data::Real)
     ccall((:DAQmxGetWatchdogAOExpirState, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{Cdouble}), taskHandle, lines, data)
 end
 
-function SetWatchdogAOExpirState(taskHandle::TaskHandle, lines::String, data::Float64)
+function SetWatchdogAOExpirState(taskHandle::TaskHandle, lines::String, data::Real)
     ccall((:DAQmxSetWatchdogAOExpirState, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cdouble), taskHandle, lines, data)
 end
 
@@ -12874,11 +12875,11 @@ function ResetWatchdogAOExpirState(taskHandle::TaskHandle, lines::String)
     ccall((:DAQmxResetWatchdogAOExpirState, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}), taskHandle, lines)
 end
 
-function GetWatchdogCOExpirState(taskHandle::TaskHandle, lines::String, data::Int32)
+function GetWatchdogCOExpirState(taskHandle::TaskHandle, lines::String, data::Integer)
     ccall((:DAQmxGetWatchdogCOExpirState, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{Cint}), taskHandle, lines, data)
 end
 
-function SetWatchdogCOExpirState(taskHandle::TaskHandle, lines::String, data::Int32)
+function SetWatchdogCOExpirState(taskHandle::TaskHandle, lines::String, data::Integer)
     ccall((:DAQmxSetWatchdogCOExpirState, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Cint), taskHandle, lines, data)
 end
 
@@ -12890,11 +12891,11 @@ function GetWatchdogHasExpired(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetWatchdogHasExpired, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function GetWriteRelativeTo(taskHandle::TaskHandle, data::Int32)
+function GetWriteRelativeTo(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetWriteRelativeTo, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetWriteRelativeTo(taskHandle::TaskHandle, data::Int32)
+function SetWriteRelativeTo(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetWriteRelativeTo, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -12902,11 +12903,11 @@ function ResetWriteRelativeTo(taskHandle::TaskHandle)
     ccall((:DAQmxResetWriteRelativeTo, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetWriteOffset(taskHandle::TaskHandle, data::Int32)
+function GetWriteOffset(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetWriteOffset, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetWriteOffset(taskHandle::TaskHandle, data::Int32)
+function SetWriteOffset(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetWriteOffset, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -12914,11 +12915,11 @@ function ResetWriteOffset(taskHandle::TaskHandle)
     ccall((:DAQmxResetWriteOffset, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetWriteRegenMode(taskHandle::TaskHandle, data::Int32)
+function GetWriteRegenMode(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetWriteRegenMode, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetWriteRegenMode(taskHandle::TaskHandle, data::Int32)
+function SetWriteRegenMode(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetWriteRegenMode, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -13010,11 +13011,11 @@ function GetWriteNumChans(taskHandle::TaskHandle, data::Ref{UInt32})
     ccall((:DAQmxGetWriteNumChans, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function GetWriteWaitMode(taskHandle::TaskHandle, data::Int32)
+function GetWriteWaitMode(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetWriteWaitMode, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetWriteWaitMode(taskHandle::TaskHandle, data::Int32)
+function SetWriteWaitMode(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetWriteWaitMode, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 
@@ -13022,11 +13023,11 @@ function ResetWriteWaitMode(taskHandle::TaskHandle)
     ccall((:DAQmxResetWriteWaitMode, :libnidaqmx), Cint, (TaskHandle,), taskHandle)
 end
 
-function GetWriteSleepTime(taskHandle::TaskHandle, data::Float64)
+function GetWriteSleepTime(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxGetWriteSleepTime, :libnidaqmx), Cint, (TaskHandle, Ref{Cdouble}), taskHandle, data)
 end
 
-function SetWriteSleepTime(taskHandle::TaskHandle, data::Float64)
+function SetWriteSleepTime(taskHandle::TaskHandle, data::Real)
     ccall((:DAQmxSetWriteSleepTime, :libnidaqmx), Cint, (TaskHandle, Cdouble), taskHandle, data)
 end
 
@@ -13038,11 +13039,11 @@ function GetWriteDigitalLinesBytesPerChan(taskHandle::TaskHandle, data::Ref{UInt
     ccall((:DAQmxGetWriteDigitalLinesBytesPerChan, :libnidaqmx), Cint, (TaskHandle, Ref{Cuint}), taskHandle, data)
 end
 
-function GetSampClkTimingResponseMode(taskHandle::TaskHandle, data::Int32)
+function GetSampClkTimingResponseMode(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxGetSampClkTimingResponseMode, :libnidaqmx), Cint, (TaskHandle, Ref{Cint}), taskHandle, data)
 end
 
-function SetSampClkTimingResponseMode(taskHandle::TaskHandle, data::Int32)
+function SetSampClkTimingResponseMode(taskHandle::TaskHandle, data::Integer)
     ccall((:DAQmxSetSampClkTimingResponseMode, :libnidaqmx), Cint, (TaskHandle, Cint), taskHandle, data)
 end
 

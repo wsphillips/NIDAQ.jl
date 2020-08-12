@@ -30,13 +30,14 @@ include("analog.jl")
 const VERSION_SUPPORT = v"20.1.0"
 global CLIENT_VERSION
 
-#=
-function __init__()
-    global CLIENT_VERSION = version()
+const event_notify_c = Ref{Ptr{Cvoid}}(0)
+const done_notify_c = Ref{Ptr{Cvoid}}(0)
 
-    VERSION_SUPPORT == CLIENT_VERSION || @warn("Installed NIDAQmx version: v$hostver is not " *
-                                               "officially supported. This may result in " *
-                                               "undefined behavior/errors/segfaults.")
+function __init__()
+    event_notify_c[] = @cfunction(event_notify, Cint,
+                                  (TaskHandle, Cint, Cuint, Ptr{Cvoid}))
+    done_notify_c[] = @cfunction(done_notify, Cint,
+                                 (TaskHandle, Cint, Ptr{Cvoid}))
 end
-=#
+
 end

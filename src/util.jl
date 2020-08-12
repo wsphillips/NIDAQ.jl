@@ -14,23 +14,18 @@ end
 
 function catch_error(code::Int32)
     code == DAQmx.Success && return
-    
     buf = DAQStringBuffer(DAQmx.GetErrorString(code, Vector{UInt8}(),UInt32(0)))
     DAQmx.GetErrorString(code, buf.str, buf.size)
-
-    code > Int32(0) && (@warn convert(String, buf); return)
-    code < Int32(0) && throw(convert(String, buf))
+    code > 0 && (@warn convert(String, buf); return)
+    code < 0 && throw(convert(String, buf))
 end
 
 function version()
     major, minor, update = Ref{UInt32}(), Ref{UInt32}(), Ref{UInt32}()
-    
     DAQmx.GetSysNIDAQMajorVersion(major) |> catch_error
     DAQmx.GetSysNIDAQMinorVersion(minor) |> catch_error
     DAQmx.GetSysNIDAQUpdateVersion(update) |> catch_error
-    
     major, minor, update = Int(major[]), Int(minor[]), Int(update[])
-
     return VersionNumber(major,minor,update)
 end
 
@@ -51,43 +46,36 @@ function Base.show(io::IO, dev::DAQDevice)
     return nothing
 end
 
-function Base.append!(task::DAQTask{AI},
+function Base.push!(task::DAQTask{AI},
                       chan::PhysicalChannel{AI};
                      alias::String                  = "",
                       tcfg::DAQmx.DAQmxConstant     = DAQmx.Diff,
                      range::Tuple{Float64,Float64}  = (-10.0,10.0),
                      units::DAQmx.DAQmxConstant     = DAQmx.Volts,
                  scalename::String                  = "")
-    
     #NOTE: TaskChannel not implemented yet--will simplify this...
     if (task.channels !== nothing && chan ∈ task.channels)
         return @warn "Channel $(chan.name) already appended to task."
     end
-
     alias == "" && (alias = string(split(chan.name,"/")[2]))
-
     DAQmx.CreateAIVoltageChan(task.handle, chan.name, alias,
                               tcfg, range[1], range[2],
                               units, scalename) |> catch_error
-    
-    task.device == nothing && (task.device = chan.parent)
-    task.channels == nothing && (task.channels = [chan]; return)
+    task.device === nothing && (task.device = chan.parent)
+    task.channels === nothing && (task.channels = [chan]; return)
     push!(task.channels, chan)
     return 
 end
 
-function Base.append!(task::DAQTask{AI}, index::ChannelIndex, dev::DAQDevice=DefaultDev())
-   
+function Base.push!(task::DAQTask{AI}, index::ChannelIndex, dev::DAQDevice=DefaultDev())
     if any(index .< 1)
         @error "Channel index not in valid range"
         return nothing
     end
-
     new_channels = dev.channels[AI][index]
-    !isa(new_channels, Vector) && (append!(task,new_channels); return)
-    
+    !isa(new_channels, Vector) && (push!(task, new_channels); return)
     for chan in new_channels
-        append!(task, chan)
+        push!(task, chan)
     end
 end
 
