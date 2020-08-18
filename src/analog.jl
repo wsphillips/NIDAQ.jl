@@ -105,11 +105,13 @@ function start(task::DAQTask{AI}, callback::Function, samples_perchan::Integer, 
             @async while isrunning(task)
                 Base.wait(donecb)
                 catch_error(status_ref[].status)
+                GC.safepoint()
             end
             while isrunning(task)
                 Base.wait(nsamplescb)
                 data = data_ref[]
                 callback(data.task_handle, data.num_samples, args...)
+                GC.safepoint()
             end
         catch
             rethrow()
