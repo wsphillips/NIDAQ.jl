@@ -57,7 +57,6 @@ function Base.push!(task::DAQTask{AI},
     if (task.channels !== nothing && chan ∈ task.channels)
         return @warn "Channel $(chan.name) already appended to task."
     end
-    alias == "" && (alias = string(split(chan.name,"/")[2]))
     DAQmx.CreateAIVoltageChan(task.handle, chan.name, alias,
                               tcfg, range[1], range[2],
                               units, scalename) |> catch_error
@@ -78,5 +77,4 @@ function Base.push!(task::DAQTask{AI}, index::ChannelIndex, dev::DAQDevice=Defau
         push!(task, chan)
     end
 end
-
 

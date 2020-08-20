@@ -1,4 +1,52 @@
-"""
+
+function pulses(task::DAQTask{CO}, source::PhysicalChannel{CO}, output::String = "/Dev1/PFI0",
+                alias::String = "", interval::Real = 0.05, duration::Real = 0.03, delay::Real = 0.0)
+
+    if (task.channels !== nothing && source ∈ task.channels)
+        return @warn "Channel $(source.name) already appended to task. Use a different channel, create a new task or call modifiers to change task/channel parameters."
+    end
+    low_time = interval - duration
+    isrunning(task) && stop(task)
+    DAQmx.CreateCOPulseChanTime(task.handle, source.name, alias, DAQmx.Seconds, DAQmx.Low, delay, low_time, duration) |> catch_error
+    task.device === nothing && (task.device = source.parent)
+    task.channels === nothing ? task.channels = [source] : push!(task.channels, source)
+    DAQmx.CfgImplicitTiming(task.handle, DAQmx.ContSamps, UInt64(100000)) |> catch_error
+    DAQmx.SetCOPulseTerm(task.handle, source.name, output) |> catch_error
+    return
+end
+
+function pulses!(task::DAQTask{CO}, args...)
+    pulses(task, args...)
+    start(task)
+end
+
+function pulsetiming(task::DAQTask{CO}, chan::PhysicalChannel{CO}, interval::Real, duration::Real)
+    low_time = interval - duration
+    isrunning(task) && stop(task)
+    DAQmx.SetCOPulseHighTime(task.handle, chan.name, duration) |> catch_error
+    DAQmx.SetCOPulseLowTime(task.handle, chan.name, low_time) |> catch_error
+end
+
+function pulsetiming(task::DAQTask{CO}, interval::Real, duration::Real)
+    low_time = interval - duration
+    isrunning(task) && stop(task)
+    for chan in task.channels
+        DAQmx.SetCOPulseHighTime(task.handle, chan.name, duration) |> catch_error
+        DAQmx.SetCOPulseLowTime(task.handle, chan.name, low_time) |> catch_error
+    end
+end
+
+function pulsetiming!(task::DAQTask{CO}, args...)
+    pulsetiming(task, args...)
+    start(task)
+end
+
+# stubs for possible API extension
+function triggered_pulse!() end
+function finitepulses!() end
+function pulse!() end
+
+#="""
 `count_edges(channel; edge="rising",initial_count=0,direction="up") -> task`
 
 create a NIDAQ counter input channel
@@ -197,3 +245,4 @@ function read(t::CITask, channel::String; num_samples::Integer = -1)
     end
     data
 end
+=#

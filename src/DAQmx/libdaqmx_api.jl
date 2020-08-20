@@ -416,8 +416,8 @@ function CreateCOPulseChanFreq(taskHandle::TaskHandle, counter::String, nameToAs
     ccall((:DAQmxCreateCOPulseChanFreq, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cint, Cdouble, Cdouble, Cdouble), taskHandle, counter, nameToAssignToChannel, units, idleState, initialDelay, freq, dutyCycle)
 end
 
-function CreateCOPulseChanTime(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, units::Integer, idleState::Integer, initialDelay::Real, lowTime::Real, highTime::Real)
-    ccall((:DAQmxCreateCOPulseChanTime, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Cint, Cdouble, Cdouble, Cdouble), taskHandle, counter, nameToAssignToChannel, units, idleState, initialDelay, lowTime, highTime)
+function CreateCOPulseChanTime(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, units::DAQmxConstant, idleState::DAQmxConstant, initialDelay::Real, lowTime::Real, highTime::Real)
+    ccall((:DAQmxCreateCOPulseChanTime, :libnidaqmx), Cint, (TaskHandle, Cstring, Cstring, Cint, Cint, Cdouble, Cdouble, Cdouble), taskHandle, counter, nameToAssignToChannel, units, idleState, initialDelay, lowTime, highTime)
 end
 
 function CreateCOPulseChanTicks(taskHandle::TaskHandle, counter::String, nameToAssignToChannel::String, sourceTerminal::String, idleState::Integer, initialDelay::Integer, lowTicks::Integer, highTicks::Integer)
@@ -474,7 +474,7 @@ function CfgChangeDetectionTiming(taskHandle::TaskHandle, risingEdgeChan::String
     ccall((:DAQmxCfgChangeDetectionTiming, :libnidaqmx), Cint, (TaskHandle, Ref{UInt8}, Ref{UInt8}, Cint, Culonglong), taskHandle, risingEdgeChan, fallingEdgeChan, sampleMode, sampsPerChan)
 end
 
-function CfgImplicitTiming(taskHandle::TaskHandle, sampleMode::Integer, sampsPerChan::Culonglong)
+function CfgImplicitTiming(taskHandle::TaskHandle, sampleMode::DAQmxConstant, sampsPerChan::Integer)
     ccall((:DAQmxCfgImplicitTiming, :libnidaqmx), Cint, (TaskHandle, Cint, Culonglong), taskHandle, sampleMode, sampsPerChan)
 end
 
@@ -7903,8 +7903,8 @@ function GetCOPulseTerm(taskHandle::TaskHandle, channel::String, data::Vector{UI
     ccall((:DAQmxGetCOPulseTerm, :libnidaqmx), Cint, (TaskHandle, Cstring, Ref{UInt8}, Cuint), taskHandle, channel, data, bufferSize)
 end
 
-function SetCOPulseTerm(taskHandle::TaskHandle, channel::String, data)
-    ccall((:DAQmxSetCOPulseTerm, :libnidaqmx), Cint, (TaskHandle, Cstring, Cstring), taskHandle, channel, data)
+function SetCOPulseTerm(taskHandle::TaskHandle, source_channel::String, target_channel::String)
+    ccall((:DAQmxSetCOPulseTerm, :libnidaqmx), Cint, (TaskHandle, Cstring, Cstring), taskHandle, source_channel, target_channel)
 end
 
 function ResetCOPulseTerm(taskHandle::TaskHandle, channel::String)

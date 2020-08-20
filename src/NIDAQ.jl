@@ -25,7 +25,7 @@ include("task.jl")
 include("properties.jl")
 include("analog.jl")
 #include("digital.jl")
-#include("counter.jl")
+include("counter.jl")
 
 const VERSION_SUPPORT = v"20.1.0"
 global CLIENT_VERSION
