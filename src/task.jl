@@ -17,7 +17,8 @@ end
 
 function stop(task::DAQTask)
     DAQmx.StopTask(task.handle) |> catch_error
-    return println("Stopped $(task.name)...")
+    @async println("Stopped $(task.name)...")
+    return
 end
 
 function clear(task::DAQTask)

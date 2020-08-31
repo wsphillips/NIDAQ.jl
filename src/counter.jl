@@ -1,5 +1,5 @@
 
-function pulses(task::DAQTask{CO}, source::PhysicalChannel{CO}, output::String = "/Dev1/PFI0",
+function pulses(task::DAQTask{CO}, source::PhysicalChannel{CO}; output::String = "/Dev1/PFI0",
                 alias::String = "", interval::Real = 0.05, duration::Real = 0.03, delay::Real = 0.0)
 
     if (task.channels !== nothing && source ∈ task.channels)
@@ -15,12 +15,13 @@ function pulses(task::DAQTask{CO}, source::PhysicalChannel{CO}, output::String =
     return
 end
 
-function pulses!(task::DAQTask{CO}, args...)
-    pulses(task, args...)
+function pulses!(task::DAQTask{CO}, source::PhysicalChannel{CO}; kwargs...)
+    pulses(task, source, kwargs...)
     start(task)
 end
 
 function pulsetiming(task::DAQTask{CO}, chan::PhysicalChannel{CO}, interval::Real, duration::Real)
+    chan ∈ task.channels || throw("Specified channel not in task's assigned channels.")
     low_time = interval - duration
     isrunning(task) && stop(task)
     DAQmx.SetCOPulseHighTime(task.handle, chan.name, duration) |> catch_error

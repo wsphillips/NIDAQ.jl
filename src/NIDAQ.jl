@@ -17,6 +17,7 @@ export start, stop, clear, isrunning
 export taskalloc, read!
 export rate, maxrate
 export record!
+export pulses, pulses!, pulsetiming, pulsetiming!
 
 include("types.jl")
 include("constructors.jl")
