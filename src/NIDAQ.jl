@@ -5,6 +5,7 @@ include("DAQmx/DAQmx.jl")
 using .DAQmx
 using PrettyTables, OrderedCollections, InteractiveUtils, OffsetArrays
 using DataStructures, Distributed
+using DelimitedFiles, Dates, HDF5
 import Base.write, Base.read!, Base.push!, Base.show
 
 export DAQmx

@@ -92,7 +92,13 @@ end
 function start(task::DAQTask{AI}, callback::Function, samples_perchan::Integer, args...) 
     nsamplescb = Base.AsyncCondition()
     donecb = Base.AsyncCondition()
-    GC.@preserve nsamplescb donecb task begin
+    num_channels = length(task.channels)
+    filename = Dates.format(Dates.now(), "yyyy_mm_dd_HHMMSS") * "data.h5"
+    logfile = h5open(filename, "w")
+    # Here we are using Float64 but it should pull the type from the buffer data type
+    A = create_dataset(logfile, "A", Float64, ((samples_perchan*num_channels,),(-1,)), chunk=(samples_perchan * num_channels,))
+
+    GC.@preserve nsamplescb donecb task filename logfile A begin
         data_ref = Ref(DAQEventCB(Base.unsafe_convert(Ptr{Cvoid}, nsamplescb), C_NULL, 0, 0))
         status_ref = Ref(DAQDoneCB(Base.unsafe_convert(Ptr{Cvoid}, donecb), C_NULL, 0))
         clearevents!(task) # remove any stale callbacks
@@ -110,7 +116,7 @@ function start(task::DAQTask{AI}, callback::Function, samples_perchan::Integer, 
             while isrunning(task)
                 Base.wait(nsamplescb)
                 data = data_ref[]
-                callback(data.task_handle, data.num_samples, args...)
+                callback(data.task_handle, data.num_samples, A, args...)
                 GC.safepoint()
             end
         catch
@@ -118,14 +124,19 @@ function start(task::DAQTask{AI}, callback::Function, samples_perchan::Integer, 
         finally
             close(nsamplescb)
             close(donecb)
+            close(logfile)
         end
     end
     end # GC preserve
     return nothing
 end
 
-function read_to_feed(handle::TaskHandle, num_samples::Integer, dst::AbstractArray, feed::Union{RemoteChannel,Channel})
+function read_to_feed(handle::TaskHandle, num_samples::Integer, log, dst::AbstractArray, feed::Union{RemoteChannel,Channel})
     read!(handle, num_samples, dst)
+    dims = HDF5.get_extent_dims(log)[1]
+    new_dims = (dims[1]+length(dst),)
+    HDF5.set_extent_dims(log, new_dims)
+    log[(dims[1]+1):new_dims[1]] = dst
     put!(feed, dst)
     return
 end
