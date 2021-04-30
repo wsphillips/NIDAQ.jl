@@ -97,7 +97,7 @@ function start(task::DAQTask{AI}, callback::Function, samples_perchan::Integer, 
     logfile = h5open(filename, "w")
     # Here we are using Float64 but it should pull the type from the buffer data type
     A = create_dataset(logfile, "A", Float64, ((samples_perchan*num_channels,),(-1,)), chunk=(samples_perchan * num_channels,))
-
+    
     GC.@preserve nsamplescb donecb task filename logfile A begin
         data_ref = Ref(DAQEventCB(Base.unsafe_convert(Ptr{Cvoid}, nsamplescb), C_NULL, 0, 0))
         status_ref = Ref(DAQDoneCB(Base.unsafe_convert(Ptr{Cvoid}, donecb), C_NULL, 0))
