@@ -90,40 +90,48 @@ function clearevents!(task::DAQTask{AI})
 end
 
 function start(task::DAQTask{AI}, callback::Function, samples_perchan::Integer, args...) 
+
+    num_channels = length(task.channels)
+    
     nsamplescb = Base.AsyncCondition()
     donecb = Base.AsyncCondition()
-    num_channels = length(task.channels)
+    push!(task.conditions, nsamplescb)
+    push!(task.conditions, donecb)
+
+    data_ref = Ref(DAQEventCB(Base.unsafe_convert(Ptr{Cvoid}, nsamplescb), C_NULL, 0, 0))
+    status_ref = Ref(DAQDoneCB(Base.unsafe_convert(Ptr{Cvoid}, donecb), C_NULL, 0))
+
     filename = Dates.format(Dates.now(), "yyyy_mm_dd_HHMMSS") * "data.h5"
     logfile = h5open(filename, "w")
-    # Here we are using Float64 but it should pull the type from the buffer data type
     A = create_dataset(logfile, "A", Float64, ((samples_perchan*num_channels,),(-1,)), chunk=(samples_perchan * num_channels,))
+
+    GC.@preserve nsamplescb donecb task data_ref status_ref logfile A begin
     
-    GC.@preserve nsamplescb donecb task filename logfile A begin
-        data_ref = Ref(DAQEventCB(Base.unsafe_convert(Ptr{Cvoid}, nsamplescb), C_NULL, 0, 0))
-        status_ref = Ref(DAQDoneCB(Base.unsafe_convert(Ptr{Cvoid}, donecb), C_NULL, 0))
-        clearevents!(task) # remove any stale callbacks
-        DAQmx.RegisterEveryNSamplesEvent(task.handle, DAQmx.Acquired_Into_Buffer,
-                                         samples_perchan, event_notify_c[], data_ref) |> catch_error
-        DAQmx.RegisterDoneEvent(task.handle, done_notify_c[], status_ref) |> catch_error
+    clearevents!(task) # remove any stale callbacks
+    DAQmx.RegisterEveryNSamplesEvent(task.handle, DAQmx.Acquired_Into_Buffer,
+                                     samples_perchan, event_notify_c[], data_ref) |> catch_error
+    DAQmx.RegisterDoneEvent(task.handle, done_notify_c[], status_ref) |> catch_error
+
     @async begin
         try
             start(task)
             @async while isrunning(task)
-                Base.wait(donecb)
+                Base.isopen(donecb) && Base.wait(donecb)
                 catch_error(status_ref[].status)
                 GC.safepoint()
             end
             while isrunning(task)
-                Base.wait(nsamplescb)
-                data = data_ref[]
-                callback(data.task_handle, data.num_samples, A, args...)
+                Base.isopen(nsamplescb) && Base.wait(nsamplescb)
+                if isrunning(task) # maybe excessively paranoid...
+                    data = data_ref[]
+                    callback(data.task_handle, data.num_samples, A, args...)
+                end
                 GC.safepoint()
             end
         catch
             rethrow()
         finally
-            close(nsamplescb)
-            close(donecb)
+            flush(logfile)
             close(logfile)
         end
     end
@@ -131,12 +139,12 @@ function start(task::DAQTask{AI}, callback::Function, samples_perchan::Integer, 
     return nothing
 end
 
-function read_to_feed(handle::TaskHandle, num_samples::Integer, log, dst::AbstractArray, feed::Union{RemoteChannel,Channel})
+function read_to_feed(handle::TaskHandle, num_samples::Integer, A, dst::AbstractArray, feed::Union{RemoteChannel,Channel})
     read!(handle, num_samples, dst)
-    dims = HDF5.get_extent_dims(log)[1]
+    dims = HDF5.get_extent_dims(A)[1]
     new_dims = (dims[1]+length(dst),)
-    HDF5.set_extent_dims(log, new_dims)
-    log[(dims[1]+1):new_dims[1]] = dst
+    HDF5.set_extent_dims(A, new_dims)
+    A[(dims[1]+1):new_dims[1]] = dst
     put!(feed, dst)
     return
 end
@@ -151,7 +159,6 @@ function record!(task::DAQTask{AI},
     DAQmx.CfgSampClkTiming(task.handle, "", sampling, DAQmx.Rising,
                           DAQmx.ContSamps, num_samples_perchan) |> catch_error 
     start(task, read_to_feed, num_samples_perchan, buffer, feed)
-    return
 end
 
 # Write functions

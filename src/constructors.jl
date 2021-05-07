@@ -18,7 +18,8 @@ end
 function DAQTask{T}(name::String) where T <: AbstractIO
     handleptr = Ref{TaskHandle}()
     DAQmx.CreateTask(name, handleptr) |> catch_error
-    task = DAQTask{T}(name, handleptr[], nothing, nothing)
+    conditions = Base.AsyncCondition[]
+    task = DAQTask{T}(name, handleptr[], nothing, nothing, conditions)
     finalizer(task) do task
         isrunning(task) && stop(task)
         clear(task)

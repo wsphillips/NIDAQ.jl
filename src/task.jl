@@ -17,7 +17,16 @@ end
 
 function stop(task::DAQTask)
     DAQmx.StopTask(task.handle) |> catch_error
-    @async println("Stopped $(task.name)...")
+    if length(task.conditions) > 0
+        while length(task.conditions) > 0
+            x = pop!(task.conditions)
+            ccall(:uv_async_send, Nothing, (Ptr{Nothing},), x)
+            close(x)
+        end
+        println("Stopped $(task.name) and closed async conditions...")
+    else
+        println("Stopped $(task.name)...")
+    end
     return
 end
 

@@ -64,5 +64,6 @@ mutable struct DAQTask{T<:AbstractIO}
       handle::TaskHandle
       device::Union{DAQDevice,Nothing}
     channels::Union{Vector{PhysicalChannel{T}},Nothing}
+    conditions::Vector{Base.AsyncCondition}
 end
 
